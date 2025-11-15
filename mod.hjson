@@ -4,9 +4,9 @@ version: 0.0.1
 minGameVersion: 150
 
 displayName: "Deep Sea"
-description: "Sea. Underwater technologies. (*=)< (fish)."
+description: "The mod is about planet z-378 and more. Some fishes and underwater campaign"
 subtitle: "Буль Буль Буль"
 
-author: "Sputnuc"
+author: "Authors: \n Sputnuc - main creator \n AnDashik - co-creator"
 
 java: true
