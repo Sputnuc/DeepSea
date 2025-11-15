@@ -1,5 +1,5 @@
 name: "deep-sea"
-main: "deepsea.DeepSeaMod"
+main: "ds.DeepSea"
 version: 0.0.1
 minGameVersion: 150
 
