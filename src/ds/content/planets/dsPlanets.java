@@ -1,6 +1,8 @@
 package ds.content.planets;
 
 import arc.graphics.Color;
+import arc.graphics.Mesh;
+import ds.world.meta.DSEnv;
 import mindustry.content.Planets;
 import mindustry.graphics.g3d.*;
 import mindustry.maps.planet.SerpuloPlanetGenerator;
@@ -28,7 +30,7 @@ public class dsPlanets {
             clearSectorOnLose = true;
             allowLaunchToNumbered = false;
             allowCampaignRules = true;
-            defaultEnv = Env.terrestrial | Env.underwater & ~(Env.groundOil | Env.scorching | Env.spores);
+            defaultEnv = Env.terrestrial | DSEnv.underwaterWarm & ~(Env.groundOil | Env.scorching | Env.spores);
         }};
     }
 }

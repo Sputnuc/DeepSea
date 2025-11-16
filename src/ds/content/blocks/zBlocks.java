@@ -15,8 +15,10 @@ import static mindustry.type.ItemStack.with;
 
 public class zBlocks {
     public static Block
+            //Production
+            hydraulicDrill, hydraulicWallDrill,
             //Cores
-            coreInfluence, coreenForcement, coreEminence;
+            coreInfluence, coreEnforcement, coreEminence;
             //Turrets
     public static void load(){
     }
