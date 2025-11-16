@@ -6,6 +6,7 @@ import ds.content.planets.dsPlanets;
 
 public class ContentLoader {
     public static void load(){
+        dsSounds.load();
         dsItemLoader.load();
         dsBlocksLoader.load();
 

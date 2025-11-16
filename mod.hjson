@@ -1,4 +1,4 @@
-name: "deep-sea"
+name: "deepsea"
 main: "ds.DeepSea"
 version: 0.0.1
 minGameVersion: 150

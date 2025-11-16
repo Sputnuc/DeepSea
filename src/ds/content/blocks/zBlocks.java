@@ -1,12 +1,23 @@
 package ds.content.blocks;
 
+import arc.audio.Sound;
+import arc.graphics.Color;
+import ds.content.dsSounds;
+import ds.newContent.type.entities.HarpoonBulletType;
+import mindustry.content.Fx;
+import mindustry.content.Items;
+import mindustry.gen.Sounds;
+import mindustry.type.Category;
 import mindustry.world.Block;
+import mindustry.world.blocks.defense.turrets.ItemTurret;
+
+import static mindustry.type.ItemStack.with;
 
 public class zBlocks {
     public static Block
             //Cores
             coreInfluence, coreenForcement, coreEminence;
+            //Turrets
     public static void load(){
-
     }
 }
