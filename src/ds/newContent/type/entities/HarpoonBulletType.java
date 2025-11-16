@@ -1,12 +1,8 @@
 package ds.newContent.type.entities;
 
 import arc.graphics.Color;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.Fill;
 import arc.math.Mathf;
-import arc.util.Time;
-import ds.newContent.world.draw.DrawWire;
-import mindustry.content.Fx;
+import ds.world.draw.DrawWire;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.gen.Bullet;
 import mindustry.gen.Posc;
