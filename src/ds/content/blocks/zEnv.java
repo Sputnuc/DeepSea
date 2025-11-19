@@ -11,6 +11,5 @@ public class zEnv {
             //Sulfur biome
             sulfurWall, sulfurFloor, sulfurGeyser, sulfurCrystals, sulfurCrackedFloor, sulfurDust;
     public static void load(){
-
     }
 }
