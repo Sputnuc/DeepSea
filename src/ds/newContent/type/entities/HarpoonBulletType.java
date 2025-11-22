@@ -94,7 +94,7 @@ public class HarpoonBulletType extends BasicBulletType {
     @Override
     public void hit(Bullet b, float x, float y) {
         b.vel().scl(0.5f);
-        b.rotation(b.rotation() + Mathf.random(-20f, 20f));
+        b.rotation(b.rotation() + Mathf.random(-30f, 30f));
         super.hit(b, x, y);
     }
 }

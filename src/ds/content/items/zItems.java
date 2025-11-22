@@ -4,7 +4,7 @@ import arc.graphics.Color;
 import mindustry.type.Item;
 
 public class zItems {
-    public static Item aluminium, silver, manganeseHydroxide, manganese, sulfur;
+    public static Item aluminium, silver, manganeseHydroxide, manganese, sulfur, magnesium;
     public static void load(){
         aluminium = new Item("aluminium"){{
             color = Color.valueOf("b6e5f0");
@@ -29,6 +29,11 @@ public class zItems {
             hardness = 3;
             flammability = 0.5f;
             explosiveness = 0.95f;
+        }};
+        magnesium = new Item("magnesium", Color.valueOf("7de8c1")){{
+            cost = 2;
+            hardness = 4;
+            charge = 0.2f;
         }};
     }
 }

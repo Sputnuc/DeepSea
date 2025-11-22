@@ -1,8 +1,6 @@
 package ds.newContent.type.entities;
 
 import ds.newContent.ai.PassiveAi;
-import mindustry.entities.units.AIController;
-import mindustry.gen.UnitEntity;
 import mindustry.type.UnitType;
 
 public class FaunaUnitType extends UnitType {
