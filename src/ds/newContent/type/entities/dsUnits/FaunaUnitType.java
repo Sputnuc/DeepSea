@@ -1,9 +1,9 @@
-package ds.newContent.type.entities;
+package ds.newContent.type.entities.dsUnits;
 
 import ds.newContent.ai.PassiveAi;
-import mindustry.type.UnitType;
+import ds.newContent.type.entities.dsUnitType;
 
-public class FaunaUnitType extends UnitType {
+public class FaunaUnitType extends dsUnitType {
     public FaunaUnitType(String name) {
         super(name);
         aiController = PassiveAi::new;
