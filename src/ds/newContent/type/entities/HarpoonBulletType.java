@@ -20,7 +20,7 @@ public class HarpoonBulletType extends BasicBulletType {
     public HarpoonBulletType(float speed, float damage, String bulletSprite) {
         super(speed, damage, bulletSprite);
         pierce = true;
-        sprite = "deepsea-hb";
+        sprite = "deepsea-spear";
         pierceDamageFactor = 0.1f;
         pierceBuilding = false;
         pierceCap = -1;
