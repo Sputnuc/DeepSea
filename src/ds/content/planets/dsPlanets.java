@@ -2,6 +2,7 @@ package ds.content.planets;
 
 import arc.graphics.Color;
 import arc.graphics.Mesh;
+import ds.content.blocks.zBlocks;
 import ds.world.meta.DSEnv;
 import mindustry.content.Blocks;
 import mindustry.content.Planets;
@@ -51,6 +52,7 @@ public class dsPlanets {
             startSector = 10;
             alwaysUnlocked = true;
             allowSelfSectorLaunch = true;
+            defaultCore = zBlocks.coreInfluence;
             defaultEnv = Env.terrestrial | DSEnv.underwaterWarm & ~(Env.groundOil | Env.scorching | Env.spores);
         }};
     }

@@ -1,0 +1,19 @@
+package ds.newContent.type.entities.dsUnits;
+
+import arc.graphics.Color;
+import ds.newContent.type.entities.dsUnitType;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.abilities.MoveEffectAbility;
+
+public class SubmarineUnitType extends dsUnitType {
+    public float bubblesInterval = 5;
+    public Effect bubbleEffect = Fx.bubble;
+
+    public SubmarineUnitType(String name) {
+        super(name);
+        abilities.add(new MoveEffectAbility(0, engineOffset, Color.white, bubbleEffect, bubblesInterval));
+        engineOffset = 0;
+        engineSize = 0;
+    }
+}
