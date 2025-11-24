@@ -23,6 +23,7 @@ public class HarpoonBulletType extends BasicBulletType {
     public float returnSpeed = 2;
     public float returnDelay = 60f;
     public static TextureRegion wireRegion;
+    public float pierceDrag = 0.5f;
 
     public HarpoonBulletType(float speed, float damage, String bulletSprite) {
         super(speed, damage, bulletSprite);
@@ -114,7 +115,7 @@ public class HarpoonBulletType extends BasicBulletType {
     @Override
     public void hit(Bullet b, float x, float y) {
         if(b.data == null) {
-            b.vel().scl(0.5f);
+            b.vel().scl(pierceDrag);
             super.hit(b, x, y);
         }
     }
