@@ -1,9 +1,13 @@
 package ds.content.units;
 
+import ds.newContent.ai.PassiveAi;
+import ds.newContent.type.entities.HarpoonBulletType;
 import ds.newContent.type.entities.dsUnitType;
 import ds.newContent.type.entities.dsUnits.FaunaUnitType;
+import ds.newContent.type.entities.dsUnits.SubmarineUnitType;
 import mindustry.gen.UnitEntity;
 import mindustry.type.UnitType;
+import mindustry.type.Weapon;
 
 import static mindustry.Vars.tilesize;
 
@@ -14,14 +18,15 @@ public class zUnits {
             //fauna
             testfish;
     public static void loadUnits(){
-        moment = new dsUnitType("moment"){{
+        moment = new SubmarineUnitType("moment"){{
             constructor = UnitEntity::create;
-            speed = 4;
+            speed = 3;
             buildRange = 20 * tilesize;
             buildSpeed = 1;
-            mineSpeed = 2.5f;
+            mineSpeed = 5.5f;
             mineFloor = true;
             mineWalls = true;
+            mineTier = 3;
         }};
 
 

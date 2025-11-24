@@ -1,8 +1,11 @@
 package ds.newContent.type.entities;
 
+import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
+import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
 import ds.world.draw.DrawWire;
@@ -19,40 +22,41 @@ public class HarpoonBulletType extends BasicBulletType {
     public float wireStroke = 1f;
     public float returnSpeed = 2;
     public float returnDelay = 60f;
+    public static TextureRegion wireRegion;
 
     public HarpoonBulletType(float speed, float damage, String bulletSprite) {
         super(speed, damage, bulletSprite);
         pierce = true;
         sprite = "deepsea-spear";
-        pierceDamageFactor = 0.1f;
         pierceBuilding = false;
         pierceCap = -1;
         drag = 0.05f;
         shrinkX = shrinkY = 0;
         layer = Layer.bullet - 2;
+        despawnEffect = Fx.none;
     }
     public HarpoonBulletType(float speed, float damage) {
         super(speed, damage, "deepsea-spear");
         pierce = true;
         sprite = "deepsea-spear";
-        pierceDamageFactor = 0.1f;
         pierceBuilding = false;
         pierceCap = -1;
         drag = 0.05f;
         shrinkX = shrinkY = 0;
         layer = Layer.bullet - 2;
+        despawnEffect = Fx.none;
     }
     public HarpoonBulletType() {
         super(8, 50, "deepsea-spear");
         pierce = true;
         returnDelay = this.lifetime/1.1f;
         sprite = "deepsea-spear";
-        pierceDamageFactor = 0.1f;
         pierceBuilding = false;
         pierceCap = -1;
         drag = 0.05f;
         shrinkX = shrinkY = 0;
         layer = Layer.bullet - 2;
+        despawnEffect = Fx.none;
     }
     @Override
     public void init(Bullet b){
@@ -62,6 +66,11 @@ public class HarpoonBulletType extends BasicBulletType {
         float length = speed * lifetime;
         float returnTime = length / returnSpeed;
         b.time -= returnTime;
+    }
+    @Override
+    public void load(){
+        super.load();
+        wireRegion = Core.atlas.find("deepsea-harpoon-wire");
     }
     @Override
     public void update(Bullet b) {
@@ -79,45 +88,34 @@ public class HarpoonBulletType extends BasicBulletType {
     }
     @Override
     public void draw(Bullet b) {
-        drawTrail(b);
-        drawParts(b);
-        float shrink = shrinkInterp.apply(b.fout());
-        float height = this.height * ((1f - shrinkY) + shrinkY * shrink);
-        float width = this.width * ((1f - shrinkX) + shrinkX * shrink);
-        float offset = -90 + (spin != 0 ? Mathf.randomSeed(b.id, 360f) + b.time * spin : 0f) + rotationOffset;
-
-        Color mix = Tmp.c1.set(mixColorFrom).lerp(mixColorTo, b.fin());
-
-        Draw.mixcol(mix, mix.a);
-
-        if(backRegion.found()){
-            Draw.color(backColor);
-            Draw.rect(backRegion, b.x, b.y, width, height, b.rotation() + offset);
-        }
-
-        Draw.color(frontColor);
-        Draw.rect(frontRegion, b.x, b.y, width, height, b.rotation() + offset);
-
-        Draw.reset();
-
+        super.draw(b);
         if (b.owner != null && b.owner instanceof Posc) {
             float ownerX = ((Posc)b.owner).getX();
             float ownerY = ((Posc)b.owner).getY();
-            DrawWire.draw(b.x, b.y, ownerX, ownerY, wireColor, wireStroke);
+            DrawWire.draw(b.x, b.y, ownerX, ownerY, wireRegion, wireStroke);
         }
     }
     private void  updateReturn(Bullet b, Posc owner){
         float targetAngle = b.angleTo(owner);
-        float newAngle = Mathf.slerpDelta(b.rotation(), targetAngle, 0.3f);
-        b.vel().setAngle(newAngle).setLength(returnSpeed);
+        b.x(b.x + Mathf.cosDeg(targetAngle) * Time.delta * returnSpeed);
+        b.y(b.y + Mathf.sinDeg(targetAngle) * Time.delta * returnSpeed);
+        b.time = -1;
         if(b.dst(owner) < 20f){
             Fx.bubble.at(b.x, b.y);
             b.remove();
         }
     }
     @Override
+    public void hitEntity(Bullet b, Hitboxc entity, float health){
+        if(b.data == null) {
+            super.hitEntity(b, entity, health);
+        }
+    }
+    @Override
     public void hit(Bullet b, float x, float y) {
-        b.vel().scl(0.5f);
-        super.hit(b, x, y);
+        if(b.data == null) {
+            b.vel().scl(0.5f);
+            super.hit(b, x, y);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package ds.utilities;
 
 import arc.math.Mathf;
+import arc.math.geom.Vec2;
 
 public class dsMath {
     //for FX
@@ -13,4 +14,5 @@ public class dsMath {
         float angleRad = rotation * Mathf.degRad;
         return Mathf.sin(angleRad) * offset;
     }
+
 }

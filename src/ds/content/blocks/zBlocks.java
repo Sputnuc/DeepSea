@@ -44,13 +44,15 @@ public class zBlocks {
             shake = 2;
             shootSound = dsSounds.harpoon;
             ammo(
-                    zItems.sulfur, new HarpoonBulletType(10, 60){{
+                    zItems.sulfur, new HarpoonBulletType(16, 60){{
                         layer = Layer.bullet - 3;
+                        drag = 0.05f;
                         frontColor = Color.valueOf("d4d4d4");
                         backColor = Color.valueOf("929aa8");
-                        wireStroke = 1.75f;
-                        width = 13;
-                        height = 18;
+                        wireStroke = 3.75f;
+                        width = 10;
+                        height = 25;
+                        returnSpeed = 3;
                     }}
             );
         }};
