@@ -32,9 +32,9 @@ public class HarpoonBulletType extends BasicBulletType {
         layer = Layer.bullet - 2;
     }
     public HarpoonBulletType(float speed, float damage) {
-        super(speed, damage, "ds-harpoon");
+        super(speed, damage, "deepsea-spear");
         pierce = true;
-        sprite = "deepsea-hb";
+        sprite = "deepsea-spear";
         pierceDamageFactor = 0.1f;
         pierceBuilding = false;
         pierceCap = -1;
@@ -43,10 +43,10 @@ public class HarpoonBulletType extends BasicBulletType {
         layer = Layer.bullet - 2;
     }
     public HarpoonBulletType() {
-        super(8, 50, "ds-harpoon");
+        super(8, 50, "deepsea-spear");
         pierce = true;
         returnDelay = this.lifetime/1.1f;
-        sprite = "deepsea-hb";
+        sprite = "deepsea-spear";
         pierceDamageFactor = 0.1f;
         pierceBuilding = false;
         pierceCap = -1;
