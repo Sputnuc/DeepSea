@@ -13,5 +13,7 @@ public class FaunaUnitType extends dsUnitType {
         drawCell = false;
         engineSize = 0;
         engineOffset = 0;
+        faceTarget = false;
+        controller = u -> new PassiveAi();
     }
 }

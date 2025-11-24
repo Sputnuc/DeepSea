@@ -27,10 +27,10 @@ public class dsPlanets {
                     new HexSkyMesh(this, 5, 0.7f, 0.09f, 5, Color.valueOf("edfeff").a(0.65f), 3, 0.12f, 1.5f, 0.32f),
                     new HexSkyMesh(this, 8, 0.3f, 0.08f, 5, Color.valueOf("d3cad7").a(0.55f), 2, 0.08f, 1.6f, 0.35f)
             );
-            sectorSeed = 2;
+            sectorSeed = 4;
             allowWaves = true;
             allowWaveSimulation = false;
-            allowSectorInvasion = false;
+            allowSectorInvasion = true;
             allowLaunchSchematics = true;
             enemyCoreSpawnReplace = true;
             allowLaunchLoadout = true;
@@ -54,6 +54,9 @@ public class dsPlanets {
             allowSelfSectorLaunch = true;
             defaultCore = zBlocks.coreInfluence;
             defaultEnv = Env.terrestrial | DSEnv.underwaterWarm & ~(Env.groundOil | Env.scorching | Env.spores);
+            unlockedOnLand.add(
+                    zBlocks.coreInfluence
+            );
         }};
     }
 }

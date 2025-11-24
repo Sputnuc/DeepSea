@@ -12,8 +12,12 @@ public class SubmarineUnitType extends dsUnitType {
 
     public SubmarineUnitType(String name) {
         super(name);
-        abilities.add(new MoveEffectAbility(0, engineOffset, Color.white, bubbleEffect, bubblesInterval));
-        engineOffset = 0;
+        abilities.add(new MoveEffectAbility(0, -engineOffset, Color.white, bubbleEffect, bubblesInterval){{
+            minVelocity = 0.5f;
+        }});
+        flying = true;
+        engineOffset = 3;
         engineSize = 0;
+        omniMovement = false;
     }
 }
