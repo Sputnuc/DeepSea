@@ -9,7 +9,7 @@ import mindustry.graphics.Layer;
 public class DrawWire {
     public static void draw(float x1, float y1, float x2, float y2, TextureRegion region, float stroke) {
         Lines.stroke(stroke);
-        Draw.z(Layer.bullet - 5);
+        Draw.z(Layer.turret - 1);
         Lines.line(region, x1, y1, x2, y2, false);
     }
 }

@@ -79,7 +79,7 @@ public class zGenerator extends PlanetGenerator {
 
         });
 
-        Schematics.placeLaunchLoadout(width / 3, height / 3);
+        Schematics.placeLaunchLoadout(width / 2, height / 2);
     }
 
     float rawHeight(Vec3 position){

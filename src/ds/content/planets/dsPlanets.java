@@ -29,12 +29,16 @@ public class dsPlanets {
             );
             sectorSeed = 4;
             allowWaves = true;
-            allowWaveSimulation = false;
-            allowSectorInvasion = true;
             allowLaunchSchematics = true;
             enemyCoreSpawnReplace = true;
-            allowLaunchLoadout = true;
-            prebuildBase = false;
+            alwaysUnlocked = true;
+            accessible = true;
+            allowLaunchToNumbered = false;
+            allowLaunchLoadout = false;
+            allowSectorInvasion = false;
+            startSector = 0;
+            allowWaveSimulation = true;
+            clearSectorOnLose = true;
             ruleSetter = r -> {
                 r.lighting = true;
                 r.ambientLight = Color.valueOf("59719642");
@@ -49,14 +53,10 @@ public class dsPlanets {
             atmosphereColor = Color.valueOf("998abf");
             atmosphereRadIn = 0.02f;
             atmosphereRadOut = 0.3f;
-            startSector = 10;
             alwaysUnlocked = true;
-            allowSelfSectorLaunch = true;
             defaultCore = zBlocks.coreInfluence;
+            unlockedOnLand.add(zBlocks.coreInfluence);
             defaultEnv = Env.terrestrial | DSEnv.underwaterWarm & ~(Env.groundOil | Env.scorching | Env.spores);
-            unlockedOnLand.add(
-                    zBlocks.coreInfluence
-            );
         }};
     }
 }
