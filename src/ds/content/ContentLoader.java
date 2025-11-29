@@ -19,5 +19,6 @@ public class ContentLoader {
         //end load
         dsPlanets.loadContent();
         dsZTechTree.load();
+        dsMusicLoader.load();
     }
 }

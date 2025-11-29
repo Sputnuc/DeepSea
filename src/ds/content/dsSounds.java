@@ -14,9 +14,9 @@ public class dsSounds {
     }
 
     //Just copy all this function
-    public static Sound loadSound(String sName){
+    public static Sound loadSound(String soundName){
         if(!Vars.headless){
-            String name = "sounds/" + sName;
+            String name = "sounds/" + soundName;
             String path = Vars.tree.get(name + ".ogg").exists() ? name + ".ogg" : name + ".mp3";
 
             Sound sound = new Sound();
