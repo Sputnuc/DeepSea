@@ -34,7 +34,7 @@ public class dsPlanets {
             alwaysUnlocked = true;
             accessible = true;
             allowLaunchToNumbered = false;
-            allowLaunchLoadout = false;
+            allowLaunchLoadout = true;
             allowSectorInvasion = false;
             startSector = 0;
             allowWaveSimulation = true;
