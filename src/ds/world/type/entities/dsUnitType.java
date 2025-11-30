@@ -1,4 +1,4 @@
-package ds.newContent.type.entities;
+package ds.world.type.entities;
 
 import mindustry.type.UnitType;
 

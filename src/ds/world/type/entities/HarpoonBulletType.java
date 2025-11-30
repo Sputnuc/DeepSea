@@ -1,4 +1,4 @@
-package ds.newContent.type.entities;
+package ds.world.type.entities;
 
 import arc.Core;
 import arc.graphics.Color;
@@ -7,7 +7,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.Angles;
 import arc.util.Time;
-import ds.newContent.blocks.dsHarpoonTurret;
+import ds.world.blocks.dsHarpoonTurret;
 import ds.world.draw.DrawWire;
 import mindustry.content.Fx;
 import mindustry.entities.bullet.BasicBulletType;

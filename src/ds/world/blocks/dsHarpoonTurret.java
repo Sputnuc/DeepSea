@@ -1,9 +1,8 @@
-package ds.newContent.blocks;
+package ds.world.blocks;
 
-import ds.newContent.type.entities.HarpoonBulletType;
 import mindustry.entities.bullet.BulletType;
 
-public class dsHarpoonTurret extends dsFuelTurret{
+public class dsHarpoonTurret extends dsFuelTurret {
     public dsHarpoonTurret(String name) {
         super(name);
     }

@@ -1,7 +1,7 @@
-package ds.newContent.type.entities.dsUnits;
+package ds.world.type.entities.dsUnits;
 
-import ds.newContent.ai.PassiveAi;
-import ds.newContent.type.entities.dsUnitType;
+import ds.world.ai.PassiveAi;
+import ds.world.type.entities.dsUnitType;
 
 public class FaunaUnitType extends dsUnitType {
     public FaunaUnitType(String name) {

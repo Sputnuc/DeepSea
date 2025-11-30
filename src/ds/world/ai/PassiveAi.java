@@ -1,4 +1,4 @@
-package ds.newContent.ai;
+package ds.world.ai;
 
 import arc.math.Mathf;
 import arc.math.geom.Vec2;

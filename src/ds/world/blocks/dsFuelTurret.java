@@ -1,4 +1,4 @@
-package ds.newContent.blocks;
+package ds.world.blocks;
 
 import arc.Core;
 import arc.graphics.Color;

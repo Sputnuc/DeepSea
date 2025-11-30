@@ -1,10 +1,7 @@
 package ds.content.units;
 
-import ds.newContent.ai.PassiveAi;
-import ds.newContent.type.entities.HarpoonBulletType;
-import ds.newContent.type.entities.dsUnitType;
-import ds.newContent.type.entities.dsUnits.FaunaUnitType;
-import ds.newContent.type.entities.dsUnits.SubmarineUnitType;
+import ds.world.type.entities.dsUnits.FaunaUnitType;
+import ds.world.type.entities.dsUnits.SubmarineUnitType;
 import mindustry.gen.UnitEntity;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;

@@ -1,4 +1,4 @@
-package ds.newContent.blocks;
+package ds.world.blocks;
 
 import mindustry.world.blocks.defense.turrets.PayloadAmmoTurret;
 

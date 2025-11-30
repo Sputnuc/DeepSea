@@ -1,7 +1,7 @@
-package ds.newContent.type.entities.dsUnits;
+package ds.world.type.entities.dsUnits;
 
 import arc.graphics.Color;
-import ds.newContent.type.entities.dsUnitType;
+import ds.world.type.entities.dsUnitType;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.abilities.MoveEffectAbility;

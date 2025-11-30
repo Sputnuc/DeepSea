@@ -1,6 +1,6 @@
-package ds.newContent.type.entities.dsUnits;
+package ds.world.type.entities.dsUnits;
 
-import ds.newContent.type.entities.dsUnitType;
+import ds.world.type.entities.dsUnitType;
 
 public class dsMechUnitType extends dsUnitType {
     public dsMechUnitType(String name) {
