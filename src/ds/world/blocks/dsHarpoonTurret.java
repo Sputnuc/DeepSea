@@ -6,8 +6,9 @@ public class dsHarpoonTurret extends dsFuelTurret {
     public dsHarpoonTurret(String name) {
         super(name);
     }
-    public class HarpoonTurretBuild extends  FuelTurretBuild{
+    public class HarpoonTurretBuild extends FuelTurretBuild{
         public boolean returnedBullet = true;
+
         public void bulletReturned(){
             returnedBullet = true;
         }

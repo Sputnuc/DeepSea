@@ -35,6 +35,7 @@ public class HarpoonBulletType extends BasicBulletType {
         layer = Layer.bullet - 2;
         despawnEffect = Fx.none;
         drawSize = 999;
+
     }
 
     public HarpoonBulletType(float speed, float damage) {
@@ -48,6 +49,8 @@ public class HarpoonBulletType extends BasicBulletType {
         layer = Layer.bullet - 2;
         despawnEffect = Fx.none;
         drawSize = 999;
+        hittable = false;
+        absorbable = false;
     }
 
     public HarpoonBulletType() {
@@ -62,6 +65,8 @@ public class HarpoonBulletType extends BasicBulletType {
         layer = Layer.bullet - 2;
         despawnEffect = Fx.none;
         drawSize = 999;
+        hittable = false;
+        absorbable = false;
     }
 
     @Override
@@ -152,10 +157,14 @@ public class HarpoonBulletType extends BasicBulletType {
             if (b.dst(targetX, targetY) < 20f) {
                 Fx.bubble.at(b.x, b.y);
                 b.remove();
-                if(b.owner instanceof dsHarpoonTurret.HarpoonTurretBuild){
-                    ((dsHarpoonTurret.HarpoonTurretBuild) b.owner).bulletReturned();
-                }
             }
+        }
+    }
+    @Override
+    public void removed(Bullet b){
+        super.removed(b);
+        if(b.owner instanceof dsHarpoonTurret.HarpoonTurretBuild){
+            ((dsHarpoonTurret.HarpoonTurretBuild) b.owner).bulletReturned();
         }
     }
 
