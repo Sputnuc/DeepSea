@@ -6,6 +6,7 @@ import arc.graphics.g2d.Lines;
 import arc.math.Interp;
 import arc.math.Mathf;
 import mindustry.entities.Effect;
+import mindustry.graphics.Drawf;
 
 import static arc.graphics.g2d.Draw.*;
 import static arc.math.Angles.randLenVectors;
@@ -37,5 +38,10 @@ public class dsFx {
         randLenVectors(e.id, 7, 30 * e.fin(), (x, y)->{
             Fill.circle(e.x + x, e.y + y, e.fin() * 1.75f + 1.5f);
         });
+    }),
+    dsShoot = new Effect(20, e->{
+        color(Color.valueOf("a1e9ff"), Color.valueOf("ffffff"), Color.valueOf("2e4b94"), e.fin());
+        Drawf.tri(e.x, e.y, 3 * e.fout(Interp.circleOut), 2 + 6 * e.fout(), e.rotation);
+        Drawf.tri(e.x, e.y, 3 * e.fout(Interp.circleOut), 1 + 3 * e.fout(), e.rotation + 180);
     });
 }

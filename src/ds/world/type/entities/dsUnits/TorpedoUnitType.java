@@ -5,6 +5,7 @@ import ds.content.dsFx;
 import ds.world.meta.DSEnv;
 import mindustry.entities.abilities.MoveEffectAbility;
 import mindustry.gen.Sounds;
+import mindustry.graphics.Pal;
 import mindustry.type.unit.MissileUnitType;
 
 public class TorpedoUnitType extends MissileUnitType {
@@ -17,6 +18,7 @@ public class TorpedoUnitType extends MissileUnitType {
         engineSize = 0;
         engineOffset = 0;
         loopSound = Sounds.none;
+        outlineColor = Pal.darkOutline;
         abilities.add(new MoveEffectAbility(){{
             effect = dsFx.torpedoTrail;
             minVelocity = 0.05f;

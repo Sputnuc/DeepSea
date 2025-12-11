@@ -1,13 +1,20 @@
 package ds.content.units;
 
+import arc.graphics.Color;
+import ds.content.dsFx;
+import ds.world.graphics.DSPal;
 import ds.world.type.entities.dsUnits.FaunaUnitType;
 import ds.world.type.entities.dsUnits.SubmarineUnitType;
 import ds.world.type.entities.dsUnits.TorpedoUnitType;
+import ds.world.type.entities.dsUnits.dsMechUnitType;
 import mindustry.content.Fx;
+import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.bullet.ExplosionBulletType;
+import mindustry.gen.MechUnit;
 import mindustry.gen.Sounds;
 import mindustry.gen.UnitEntity;
+import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 
@@ -17,11 +24,14 @@ public class zUnits {
     public static UnitType
             //Core units
             moment,
+            //Assault units
+            condition,
             //fauna
             untitledFish;
     public static void loadUnits(){
         moment = new SubmarineUnitType("moment"){{
             constructor = UnitEntity::create;
+            outlineColor = Pal.darkOutline;
             speed = 3;
             health = 75;
             buildRange = 20 * tilesize;
@@ -58,6 +68,34 @@ public class zUnits {
                             }};
                         }});
                     }};
+                }};
+            }});
+        }};
+
+        condition = new dsMechUnitType("condition"){{
+            speed = 0.65f;
+            health = 195;
+            armor = 3;
+            hitSize = 8;
+            weapons.add(new Weapon("deepsea-condition-weapon"){{
+                x = -17 / 4f; y = 2;
+                reload = 25;
+                rotate = false;
+                mirror = true;
+                top = false;
+                layerOffset = -0.01f;
+                bullet = new BasicBulletType(3.5f, 20){{
+                    height = 14;
+                    width = 10;
+                    lightOpacity = 0.75f;
+                    lightRadius = 5f;
+                    shootEffect = dsFx.dsShoot;
+                    lightColor = Color.valueOf("bfe8ff");
+                    frontColor = hitColor = DSPal.dsBulletFront;
+                    backColor = DSPal.dsBulletBack;
+                    lifetime = 45;
+                    hitEffect = Fx.hitBulletColor;
+                    despawnEffect = Fx.hitBulletColor;
                 }};
             }});
         }};
