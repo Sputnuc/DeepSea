@@ -19,5 +19,6 @@ public class SubmarineUnitType extends dsUnitType {
         engineOffset = 3;
         engineSize = 0;
         omniMovement = false;
+        drawCell = false;
     }
 }

@@ -1,8 +1,7 @@
-package ds.world.type.entities;
+package ds.world.type.entities.bullets;
 
 import arc.Core;
 import arc.graphics.Color;
-import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.Angles;
@@ -122,8 +121,8 @@ public class HarpoonBulletType extends BasicBulletType {
 
             if(b.owner instanceof Turret.TurretBuild turret){
                 float rotation = turret.rotation;
-                float muzzleX = turret.x + Angles.trnsx(rotation, turret.block.size * 4f);
-                float muzzleY = turret.y + Angles.trnsy(rotation, turret.block.size * 4f);
+                float muzzleX = turret.x + Angles.trnsx(rotation, turret.block.size * 2f);
+                float muzzleY = turret.y + Angles.trnsy(rotation, turret.block.size * 2f);
 
                 ownerX = muzzleX;
                 ownerY = muzzleY;

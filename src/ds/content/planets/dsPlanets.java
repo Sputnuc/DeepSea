@@ -41,7 +41,7 @@ public class dsPlanets {
             clearSectorOnLose = true;
             ruleSetter = r -> {
                 r.lighting = true;
-                r.ambientLight = Color.valueOf("59719642");
+                r.ambientLight = Color.valueOf("010208e1");
                 r.fog = false; //tru
                 r.defaultTeam = Team.sharded;
                 r.waveTeam = Team.crux;
@@ -50,7 +50,7 @@ public class dsPlanets {
                 r.env = Env.terrestrial | DSEnv.underwaterWarm & ~(Env.groundOil | Env.scorching | Env.spores);
             };
             iconColor = Color.valueOf("96a4d6");
-            atmosphereColor = Color.valueOf("998abf");
+            atmosphereColor = Color.valueOf("a5b1f0");
             atmosphereRadIn = 0.02f;
             atmosphereRadOut = 0.3f;
             alwaysUnlocked = true;

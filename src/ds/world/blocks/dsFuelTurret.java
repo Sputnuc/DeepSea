@@ -39,7 +39,7 @@ public class dsFuelTurret extends Turret {
     public void setBars(){
         super.setBars();
         addBar("Fuel", (FuelTurretBuild entity) ->  new Bar(
-                () -> Core.bundle.format("dsbar.Fuel"),
+                () -> Core.bundle.format("bar.fuel"),
                 () -> Color.valueOf("edcdaf"),
                 () -> (float) (entity).items.get(fuelItem) / itemCapacity
         ));

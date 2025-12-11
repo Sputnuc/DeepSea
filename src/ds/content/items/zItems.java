@@ -1,18 +1,19 @@
 package ds.content.items;
 
 import arc.graphics.Color;
+import arc.struct.Seq;
 import mindustry.type.Item;
 
 public class zItems {
     public static Item aluminium, silver, manganeseHydroxide, manganese, sulfur, magnesium, lithium;
     public static void load(){
         aluminium = new Item("aluminium"){{
-            color = Color.valueOf("b6e5f0");
+            color = Color.valueOf("d7c0e0");
             cost = 1.15f;
             hardness = 3;
         }};
         silver = new Item("silver"){{
-            color = Color.valueOf("f7f7f7");
+            color = Color.valueOf("edfdff");
             cost = 1.45f;
             hardness = 4;
         }};
@@ -40,6 +41,7 @@ public class zItems {
             hardness = 3;
             explosiveness = 0.95f;
             flammability = 0.75f;
+
         }};
     }
 }

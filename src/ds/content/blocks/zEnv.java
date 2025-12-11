@@ -1,12 +1,16 @@
 package ds.content.blocks;
 
+import ds.content.items.zItems;
 import ds.world.blocks.environment.TiledFloor;
 import mindustry.world.Block;
 import mindustry.world.blocks.environment.Floor;
+import mindustry.world.blocks.environment.OreBlock;
 import mindustry.world.blocks.environment.StaticWall;
 
 public class zEnv {
     public static Block
+            //Ores
+            aluminiumOre, silverOre,
             //Limestone
             limestoneFloor, limestoneWall,
 
@@ -26,6 +30,15 @@ public class zEnv {
             // some sea bushes
 
     public static void load(){
+        //Ores
+        aluminiumOre = new OreBlock("ore-aluminium", zItems.aluminium){{
+            variants = 3;
+        }};
+        silverOre = new OreBlock("ore-silver", zItems.silver){{
+            variants = 3;
+        }};
+
+        //Other
         limestoneFloor = new Floor("limestone-floor"){{
             variants = 3;
         }};
