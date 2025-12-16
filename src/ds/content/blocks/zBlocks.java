@@ -54,6 +54,7 @@ public class zBlocks {
             shake = 2;
             shootSound = dsSounds.harpoon;
             fuelItem = sulfur;
+            shootCone = 1;
             drawer = new DrawTurret("ds-turret-");
             shootY = 2;
             shootType = new HarpoonBulletType(16, 45){{

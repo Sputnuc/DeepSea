@@ -62,7 +62,7 @@ public class zUnits {
                             reload = 1f;
                             shootOnDeath = true;
                             shootSound = Sounds.none;
-                            bullet = new ExplosionBulletType(20,3.5f * tilesize){{
+                            bullet = new ExplosionBulletType(47,3.5f * tilesize){{
                                 despawnEffect = Fx.massiveExplosion;
                                 buildingDamageMultiplier = 0.1f;
                             }};
@@ -79,7 +79,7 @@ public class zUnits {
             hitSize = 8;
             weapons.add(new Weapon("deepsea-condition-weapon"){{
                 x = -17 / 4f; y = 2;
-                reload = 25;
+                reload = 15;
                 rotate = false;
                 mirror = true;
                 top = false;
@@ -89,13 +89,14 @@ public class zUnits {
                     width = 10;
                     lightOpacity = 0.75f;
                     lightRadius = 5f;
+                    trailInterval = 3;
+                    trailEffect = dsFx.dsBulletTrail;
                     shootEffect = dsFx.dsShoot;
                     lightColor = Color.valueOf("bfe8ff");
                     frontColor = hitColor = DSPal.dsBulletFront;
                     backColor = DSPal.dsBulletBack;
                     lifetime = 45;
-                    hitEffect = Fx.hitBulletColor;
-                    despawnEffect = Fx.hitBulletColor;
+                    hitEffect = despawnEffect = dsFx.dsBulletHit;
                 }};
             }});
         }};

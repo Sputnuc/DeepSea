@@ -5,17 +5,20 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.math.Interp;
 import arc.math.Mathf;
+import arc.math.Rand;
 import mindustry.entities.Effect;
 import mindustry.graphics.Drawf;
 
 import static arc.graphics.g2d.Draw.*;
+import static arc.graphics.g2d.Lines.*;
 import static arc.math.Angles.randLenVectors;
 
 public class dsFx {
+    public static final Rand rand = new Rand();
     public static Effect
     dsInclinedWave = new Effect(30, e -> {
         color(Color.valueOf("ffffff"), Color.valueOf("ffffff00"), e.fin());
-        Lines.stroke(1 * e.fout(Interp.circleOut));
+        stroke(1 * e.fout(Interp.circleOut));
         float foffset = 3;
         float eX = Mathf.cosDeg(e.rotation)* foffset;
         float eY = Mathf.sinDeg(e.rotation) * foffset;
@@ -39,9 +42,30 @@ public class dsFx {
             Fill.circle(e.x + x, e.y + y, e.fin() * 1.75f + 1.5f);
         });
     }),
-    dsShoot = new Effect(20, e->{
+    dsShoot = new Effect(15, e->{
         color(Color.valueOf("a1e9ff"), Color.valueOf("ffffff"), Color.valueOf("2e4b94"), e.fin());
-        Drawf.tri(e.x, e.y, 3 * e.fout(Interp.circleOut), 2 + 6 * e.fout(), e.rotation);
-        Drawf.tri(e.x, e.y, 3 * e.fout(Interp.circleOut), 1 + 3 * e.fout(), e.rotation + 180);
+        Drawf.tri(e.x, e.y, 1.75f * e.fout(Interp.circleOut), 5.75f * e.fout(), e.rotation - 90);
+        Drawf.tri(e.x, e.y, 1.75f * e.fout(Interp.circleOut), 5.75f * e.fout(), e.rotation + 90);
+        Drawf.tri(e.x, e.y, 2.5f * e.fout(Interp.circleOut), 2 + 7 * e.fout(), e.rotation);
+        Drawf.tri(e.x, e.y, 2.5f * e.fout(Interp.circleOut), 1 + 1 * e.fout(), e.rotation + 180);
+    }),
+
+    dsBulletTrail = new Effect(15, e ->{
+        color(Color.valueOf("e0f4ff"), Color.valueOf("bfe0f200"), e.fin());
+        randLenVectors(e.id, 3, 5 * e.fin(), (x, y)->{
+            Fill.circle(e.x + x, e.y + y, e.fin() * 0.85f + 0.45f);
+        });
+    }),
+    dsBulletHit = new Effect(15, e->{
+        Color eColor = e.color;
+        color(Color.valueOf("ffffff"), eColor, e.fin());
+        stroke(0.75f);
+        randLenVectors(e.id, 6, 3 + 13 * e.fin(), (x, y)->{
+            float ang = Mathf.angle(x, y);
+            lineAngle(e.x + x, e.y + y, ang, e.fout() * 6);
+        });
+        stroke(1.5f * e.fout());
+        Lines.circle(e.x, e.y, 10 * e.fin());
+        Drawf.light(e.x, e.y, 6, Color.valueOf("ccdef0"), 0.7f);
     });
 }

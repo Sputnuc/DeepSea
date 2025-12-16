@@ -16,9 +16,9 @@ import mindustry.type.Planet;
 import mindustry.world.meta.Env;
 
 public class dsPlanets {
-    public static Planet z378;
+    public static Planet z387;
     public static void loadContent(){
-        z378 = new Planet("z378", Planets.sun, 2f, 3){{
+        z387 = new Planet("z387", Planets.sun, 2f, 3){{
             loadPlanetData = true;
             generator = new zGenerator();
             meshLoader = () -> new HexMesh(this, 6);
@@ -37,7 +37,6 @@ public class dsPlanets {
             allowLaunchLoadout = true;
             allowSectorInvasion = false;
             startSector = 0;
-            allowWaveSimulation = true;
             clearSectorOnLose = true;
             ruleSetter = r -> {
                 r.lighting = true;
