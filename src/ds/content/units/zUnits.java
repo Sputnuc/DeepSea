@@ -1,12 +1,11 @@
 package ds.content.units;
 
 import arc.graphics.Color;
+import arc.math.geom.Rect;
 import ds.content.dsFx;
+import ds.content.dsSounds;
 import ds.world.graphics.DSPal;
-import ds.world.type.entities.dsUnits.FaunaUnitType;
-import ds.world.type.entities.dsUnits.SubmarineUnitType;
-import ds.world.type.entities.dsUnits.TorpedoUnitType;
-import ds.world.type.entities.dsUnits.dsMechUnitType;
+import ds.world.type.entities.dsUnits.*;
 import mindustry.content.Fx;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
@@ -17,6 +16,7 @@ import mindustry.gen.UnitEntity;
 import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
+import mindustry.type.unit.TankUnitType;
 
 import static mindustry.Vars.tilesize;
 
@@ -25,7 +25,10 @@ public class zUnits {
             //Core units
             moment,
             //Assault units
+                //Mech
             condition,
+                //Tank
+            note,
             //fauna
             untitledFish;
     public static void loadUnits(){
@@ -71,21 +74,23 @@ public class zUnits {
                 }};
             }});
         }};
-
+        //Mech
         condition = new dsMechUnitType("condition"){{
-            speed = 0.65f;
+            speed = 0.35f;
             health = 195;
             armor = 3;
             hitSize = 8;
+            stepSound = dsSounds.dsMechStep;
             weapons.add(new Weapon("deepsea-condition-weapon"){{
                 x = -17 / 4f; y = 2;
-                reload = 15;
+                reload = 19;
                 rotate = false;
                 mirror = true;
                 top = false;
                 layerOffset = -0.01f;
+                shootSound = dsSounds.shootSmallWeapon;
                 bullet = new BasicBulletType(3.5f, 20){{
-                    height = 14;
+                    height = 13;
                     width = 10;
                     lightOpacity = 0.75f;
                     lightRadius = 5f;
@@ -100,7 +105,44 @@ public class zUnits {
                 }};
             }});
         }};
-
+        //Tanks
+        note = new dsTankUnitType("note"){{
+            speed = 0.29f;
+            health = 360;
+            armor = 5;
+            hitSize = 8;
+            treadRects = new Rect[] {
+                    new Rect(-15f, -17f, 5, 33)
+            };
+            weapons.add(new Weapon("deepsea-note-weapon"){{
+                x = 0;
+                y = 1;
+                mirror = false;
+                rotate = true;
+                rotateSpeed = 1.7f;
+                reload = 120;
+                shake = 1;
+                shootSound = dsSounds.shootTank;
+                bullet = new BasicBulletType(8f, 39){{
+                    height = 13;
+                    width = 9;
+                    sprite = "missile-large";
+                    lightOpacity = 0.85f;
+                    lightRadius = 9f;
+                    trailInterval = 2;
+                    trailEffect = dsFx.dsBulletTrail;
+                    shootEffect = dsFx.dsShootBig;
+                    lightColor = Color.valueOf("bfe8ff");
+                    frontColor = hitColor = DSPal.dsBulletFront;
+                    backColor = DSPal.dsBulletBack;
+                    trailColor = DSPal.dsBulletBack;
+                    trailLength = 5;
+                    trailWidth = 0.75f;
+                    lifetime = 25;
+                    hitEffect = despawnEffect = dsFx.dsBulletHit;
+                }};
+            }});
+        }};
         //End load
         loadFauna();
     }

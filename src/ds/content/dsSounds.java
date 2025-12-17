@@ -8,9 +8,18 @@ import mindustry.Vars;
 
 public class dsSounds {
     public static Sound
-            harpoon = new Sound();
+            //Shoot
+            shootHarpoon = new Sound(),
+            shootSmallWeapon = new Sound(),
+            shootTank = new Sound(),
+            //Mech steps
+            dsMechStep = new Sound();
+
     public static void load(){
-        harpoon = loadSound("harpoon-shoot");
+        shootHarpoon = loadSound("harpoon-shoot");
+        shootSmallWeapon = loadSound("shoot-small-weapons");
+        shootTank = loadSound("shoot-tank-weapon");
+        dsMechStep = loadSound("mech-step");
     }
 
     //Just copy all this function

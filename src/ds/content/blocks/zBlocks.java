@@ -10,7 +10,6 @@ import ds.world.blocks.distribution.ClosedConveyor;
 import ds.world.blocks.dsHarpoonTurret;
 import ds.world.meta.DSEnv;
 import ds.world.type.entities.bullets.HarpoonBulletType;
-import mindustry.entities.effect.ParticleEffect;
 import mindustry.graphics.Layer;
 import mindustry.type.Category;
 import mindustry.world.Block;
@@ -52,7 +51,7 @@ public class zBlocks {
             reload = 300;
             range = 200;
             shake = 2;
-            shootSound = dsSounds.harpoon;
+            shootSound = dsSounds.shootHarpoon;
             fuelItem = sulfur;
             shootCone = 1;
             drawer = new DrawTurret("ds-turret-");
