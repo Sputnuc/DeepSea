@@ -5,7 +5,7 @@ import arc.struct.Seq;
 import mindustry.type.Item;
 
 public class zItems {
-    public static Item aluminium, silver, manganeseHydroxide, manganese, sulfur, magnesium, lithium;
+    public static Item aluminium, silver, manganeseHydroxide, manganese, sulfur, ferrum, magnesium, lithium, potassium;
     public static void load(){
         aluminium = new Item("aluminium"){{
             color = Color.valueOf("d7c0e0");
@@ -31,6 +31,10 @@ public class zItems {
             flammability = 0.5f;
             explosiveness = 0.95f;
         }};
+        ferrum = new Item("ferrum", Color.valueOf("ab7272")){{
+            cost = 2.2f;
+            hardness = 4;
+        }};
         magnesium = new Item("magnesium", Color.valueOf("7de8c1")){{
             cost = 2;
             hardness = 4;
@@ -41,7 +45,12 @@ public class zItems {
             hardness = 3;
             explosiveness = 0.95f;
             flammability = 0.75f;
-
+        }};
+        potassium = new Item("potassium", Color.valueOf("e8bdc5")){{
+            cost = 1.45f;
+            hardness = 3;
+            explosiveness = 0.95f;
+            flammability = 0.8f;
         }};
     }
 }

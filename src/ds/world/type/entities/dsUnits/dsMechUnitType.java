@@ -8,6 +8,5 @@ public class dsMechUnitType extends dsUnitType {
     public dsMechUnitType(String name) {
         super(name);
         constructor = MechUnit::create;
-        outlineColor = Pal.darkOutline;
     }
 }

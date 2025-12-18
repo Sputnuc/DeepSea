@@ -18,6 +18,7 @@ import mindustry.world.meta.StatValues;
 public class dsFuelTurret extends Turret {
     public BulletType shootType;
     public @Nullable Item fuelItem;
+    public int fuelAmount  = 1;
     public dsFuelTurret(String name) {
         super(name);
         hasItems = true;
@@ -31,7 +32,7 @@ public class dsFuelTurret extends Turret {
 
     @Override
     public void init(){
-        consumeItem(fuelItem);
+        consumeItem(fuelItem, fuelAmount);
         super.init();
     }
 

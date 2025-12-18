@@ -8,12 +8,18 @@ import ds.content.items.zItems;
 import ds.content.units.zUnits;
 import ds.world.blocks.distribution.ClosedConveyor;
 import ds.world.blocks.dsHarpoonTurret;
+import ds.world.graphics.DSPal;
 import ds.world.meta.DSEnv;
 import ds.world.type.entities.bullets.HarpoonBulletType;
+import mindustry.content.Fx;
+import mindustry.entities.bullet.BasicBulletType;
+import mindustry.entities.pattern.ShootSpread;
+import mindustry.gen.Sounds;
 import mindustry.graphics.Layer;
 import mindustry.type.Category;
 import mindustry.world.Block;
 import mindustry.world.blocks.defense.Wall;
+import mindustry.world.blocks.defense.turrets.ItemTurret;
 import mindustry.world.blocks.distribution.Router;
 import mindustry.world.blocks.production.BurstDrill;
 import mindustry.world.blocks.storage.CoreBlock;
@@ -22,6 +28,7 @@ import mindustry.world.meta.Env;
 
 
 import static ds.content.items.zItems.*;
+import static mindustry.Vars.tilesize;
 import static mindustry.type.ItemStack.with;
 
 public class zBlocks {
@@ -33,7 +40,7 @@ public class zBlocks {
             //Cores
             coreInfluence, coreEnforcement, coreEminence,
             //Turrets
-            cutoff,
+            cutoff, irritation,
             //Defends
             aluminiumWall, aluminiumWallLarge;
     public static void load(){
@@ -47,12 +54,14 @@ public class zBlocks {
     public static void loadTurrets(){
         cutoff = new dsHarpoonTurret("cutoff"){{
             requirements(Category.turret, with(aluminium, 75, silver, 45));
+            outlineColor = DSPal.dsTurretOutline;
             size = 2;
             reload = 300;
             range = 200;
             shake = 2;
             shootSound = dsSounds.shootHarpoon;
             fuelItem = sulfur;
+            fuelAmount = 3;
             shootCone = 1;
             drawer = new DrawTurret("ds-turret-");
             shootY = 2;
@@ -69,6 +78,50 @@ public class zBlocks {
                 height = 25;
                 returnSpeed = 3;
             }};
+        }};
+        irritation = new ItemTurret("irritation"){{
+            requirements(Category.turret, with(aluminium, 75, silver, 45));
+            outlineColor = DSPal.dsTurretOutline;
+            size = 2;
+            shoot = new ShootSpread(){{
+                spread = 2;
+                shots = 9;
+            }};
+            inaccuracy = 1;
+            shootCone = 10;
+            velocityRnd = 0.1f;
+            shootSound = Sounds.shootDiffuse;
+            range = 17 * tilesize;
+            reload = 60;
+            targetAir = false;
+            drawer = new DrawTurret("ds-turret-");
+            ammo(
+                    silver, new BasicBulletType(8,19){{
+                        pierce = true;
+                        pierceCap = 2;
+                        lifetime = 17;
+                        trailLength = 4;
+                        trailWidth = 0.6f;
+                        width = 5;
+                        height = 6;
+                        frontColor = hitColor = Color.valueOf("f0fdff");
+                        backColor = trailColor = Color.valueOf("ace1e8");
+                        hitEffect = despawnEffect = Fx.hitBulletColor;
+                    }},
+                    ferrum, new BasicBulletType(8,25){{
+                        reloadMultiplier = 0.85f;
+                        pierce = true;
+                        pierceCap = 3;
+                        lifetime = 17;
+                        trailLength = 4;
+                        trailWidth = 0.6f;
+                        width = 5;
+                        height = 6;
+                        frontColor = hitColor = Color.valueOf("ffc7bf");
+                        backColor = trailColor = Color.valueOf("d98e84");
+                        hitEffect = despawnEffect = Fx.hitBulletColor;
+                    }}
+            );
         }};
     }
     public static void loadEffectBlocks(){

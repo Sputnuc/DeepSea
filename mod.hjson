@@ -1,7 +1,7 @@
 name: "deepsea"
 main: "ds.DeepSea"
 version: 0.0.1
-minGameVersion: 150
+minGameVersion: 154.2
 
 displayName: "[#324ba6[]]Deep [#5aa9d6[]]Sea[white[]]"
 description: "The mod is about planet Z-378 and more. Some fishes and underwater campaign \nSpecial thanks to: \n- [#5865f2[]]@meepoffaith[white[]] for the pseudo-3D drawing code. \n\n[gray]Fish: (*=)<[]"
