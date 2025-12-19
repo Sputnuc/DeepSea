@@ -84,22 +84,23 @@ public class zBlocks {
             outlineColor = DSPal.dsTurretOutline;
             size = 2;
             shoot = new ShootSpread(){{
-                spread = 2;
+                spread = 1.75f;
                 shots = 9;
             }};
             inaccuracy = 1;
             shootCone = 10;
             velocityRnd = 0.1f;
             shootSound = Sounds.shootDiffuse;
-            range = 17 * tilesize;
-            reload = 60;
+            range = 15 * tilesize;
+            reload = 40;
             targetAir = false;
             drawer = new DrawTurret("ds-turret-");
+            ammoUseEffect = Fx.casing2Double;
             ammo(
                     silver, new BasicBulletType(8,19){{
                         pierce = true;
                         pierceCap = 2;
-                        lifetime = 17;
+                        lifetime = 15;
                         trailLength = 4;
                         trailWidth = 0.6f;
                         width = 5;
@@ -108,11 +109,12 @@ public class zBlocks {
                         backColor = trailColor = Color.valueOf("ace1e8");
                         hitEffect = despawnEffect = Fx.hitBulletColor;
                     }},
-                    ferrum, new BasicBulletType(8,25){{
-                        reloadMultiplier = 0.85f;
+                    ferrum, new BasicBulletType(8,26){{
+                        reloadMultiplier = 0.75f;
                         pierce = true;
                         pierceCap = 3;
-                        lifetime = 17;
+                        lifetime = 20;
+                        rangeChange = 5 * tilesize;
                         trailLength = 4;
                         trailWidth = 0.6f;
                         width = 5;

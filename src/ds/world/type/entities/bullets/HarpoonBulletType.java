@@ -8,6 +8,7 @@ import arc.math.Angles;
 import arc.util.Time;
 import ds.world.blocks.dsHarpoonTurret;
 import ds.world.draw.DrawWire;
+import ds.world.type.entities.comp.HarpoonBulletComp;
 import mindustry.content.Fx;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.gen.*;
@@ -34,6 +35,8 @@ public class HarpoonBulletType extends BasicBulletType {
         layer = Layer.bullet - 2;
         despawnEffect = Fx.none;
         drawSize = 999;
+        weaveMag = 3;
+        weaveScale = 1.9f;
 
     }
 
@@ -50,6 +53,8 @@ public class HarpoonBulletType extends BasicBulletType {
         drawSize = 999;
         hittable = false;
         absorbable = false;
+        weaveMag = 3;
+        weaveScale = 1.9f;
     }
 
     public HarpoonBulletType() {
@@ -66,12 +71,17 @@ public class HarpoonBulletType extends BasicBulletType {
         drawSize = 999;
         hittable = false;
         absorbable = false;
+        weaveMag = 3;
+        weaveScale = 1.9f;
     }
 
     @Override
     public void init(Bullet b){
         super.init(b);
-        b.fdata = returnDelay;
+        HarpoonBulletComp hdata = new HarpoonBulletComp(){};
+        hdata.BulletReturnData = returnDelay;
+        hdata.BulletReturn = false;
+        b.data = hdata;
         b.time = (lifetime - returnDelay) >= 0 ? lifetime - returnDelay : lifetime;
         float length = speed * lifetime;
         float returnTime = length / returnSpeed;
@@ -87,14 +97,20 @@ public class HarpoonBulletType extends BasicBulletType {
     @Override
     public void update(Bullet b) {
         super.update(b);
-        if(b.data == null){
-            b.fdata -= Time.delta;
-            if(b.fdata <= 0 && b.owner instanceof Posc){
-                b.data = Boolean.TRUE;
+        HarpoonBulletComp hdata = (HarpoonBulletComp)b.data;
+        if(b.data != null && !hdata.BulletReturn){
+            hdata.BulletReturnData -= Time.delta;
+            if(hdata.BulletReturnData <= 0 && b.owner instanceof Posc){
+                hdata.BulletReturn = true;
                 Fx.bubble.at(b.x, b.y);
             }
-        }else if(b.owner instanceof Posc){
-            updateReturn(b, (Posc)b.owner);
+        }else {
+            if(b.owner instanceof Posc) {
+                assert hdata != null;
+                if (hdata.BulletReturn) {
+                    updateReturn(b, (Posc) b.owner);
+                }
+            }
         }
     }
 
@@ -115,7 +131,7 @@ public class HarpoonBulletType extends BasicBulletType {
     @Override
     public void draw(Bullet b) {
         super.draw(b);
-        if (b.owner != null && b.owner instanceof Posc && ownerValid(b)){
+        if (b.owner instanceof Posc && ownerValid(b)){
             float ownerX = ((Posc)b.owner).getX();
             float ownerY = ((Posc)b.owner).getY();
 
@@ -147,13 +163,14 @@ public class HarpoonBulletType extends BasicBulletType {
                 targetX = muzzleX;
                 targetY = muzzleY;
             }
-
+            float oldRot = b.rotation();
             float targetAngle = b.angleTo(targetX, targetY);
             b.x(b.x + Mathf.cosDeg(targetAngle) * Time.delta * returnSpeed);
             b.y(b.y + Mathf.sinDeg(targetAngle) * Time.delta * returnSpeed);
+            b.rotation(oldRot);
             b.time = -1;
 
-            if (b.dst(targetX, targetY) < 20f) {
+            if (b.dst(targetX, targetY) < 10f) {
                 Fx.bubble.at(b.x, b.y);
                 b.remove();
             }
@@ -169,14 +186,16 @@ public class HarpoonBulletType extends BasicBulletType {
 
     @Override
     public void hitEntity(Bullet b, Hitboxc entity, float health){
-        if(b.data == null) {
+        HarpoonBulletComp hdata = (HarpoonBulletComp)b.data;
+        if(!hdata.BulletReturn) {
             super.hitEntity(b, entity, health);
         }
     }
 
     @Override
     public void hit(Bullet b, float x, float y) {
-        if(b.data == null) {
+        HarpoonBulletComp hdata = (HarpoonBulletComp)b.data;
+        if(!hdata.BulletReturn) {
             b.vel().scl(pierceDrag);
             super.hit(b, x, y);
         }

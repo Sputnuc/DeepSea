@@ -108,8 +108,8 @@ public class zUnits {
         //Tanks
         note = new dsTankUnitType("note"){{
             speed = 0.29f;
-            health = 360;
-            armor = 5;
+            health = 450;
+            armor = 6;
             hitSize = 8;
             treadRects = new Rect[] {
                     new Rect(-15f, -17f, 5, 33)
@@ -120,7 +120,7 @@ public class zUnits {
                 mirror = false;
                 rotate = true;
                 rotateSpeed = 1.7f;
-                reload = 120;
+                reload = 90;
                 shake = 1;
                 shootSound = dsSounds.shootTank;
                 bullet = new BasicBulletType(8f, 39){{
