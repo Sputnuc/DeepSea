@@ -18,7 +18,7 @@ public class zEnv {
             manganeseCrystalFloor, manganeseCrystals, getManganeseCrystalWalls,
 
             // Quartz biome
-            quartzFloor, quartzSlabs, quartsCrystals, quartsWall,
+            quartzFloor, quartzSlabs, quartsCrystalWall, quartsWall,
 
             // Sulfur biome
             sulfurFloor, sulfurCrackedFloor, sulfurGeyser, sulfurWall, sulfurCrystals, sulfurDust,
@@ -52,14 +52,16 @@ public class zEnv {
             tilingSize = 4;
             //attributes.set(light, 0.3f);
         }};
-        quartzFloor = new Floor("quartz-floor"){{variants = 8;}};
-        quartsCrystals = new StaticWall("quarts-crystals"){{
+        quartzFloor = new Floor("quartz-floor"){{
+            variants = 8;
+        }};
+        quartsCrystalWall = new StaticWall("quarts-crystal-wall"){{
             variants = 3;
         }};
 
         // Sulfur
         sulfurFloor = new Floor("sulfur-floor"){{
-            variants = 4;
+            variants = 3;
         }};
         sulfurWall = new StaticWall("sulfur-wall"){{
             variants = 3;
