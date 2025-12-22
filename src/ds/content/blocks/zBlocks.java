@@ -20,6 +20,7 @@ import mindustry.type.Category;
 import mindustry.world.Block;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
+import mindustry.world.blocks.distribution.Junction;
 import mindustry.world.blocks.distribution.Router;
 import mindustry.world.blocks.production.BurstDrill;
 import mindustry.world.blocks.storage.CoreBlock;
@@ -36,7 +37,7 @@ public class zBlocks {
             //Production
             hydraulicDrill, hydraulicWallDrill,
             //Logistic
-            isolatedConveyor, isolatedRouter,
+            isolatedConveyor, isolatedRouter, isolatedJunction,
             //Cores
             coreInfluence, coreEnforcement, coreEminence,
             //Turrets
@@ -143,14 +144,19 @@ public class zBlocks {
         }};
     }
     public static void loadLogisticBlocks(){
+        float spd = 0.085f;
         isolatedConveyor = new ClosedConveyor("isolated-conveyor"){{
             requirements(Category.distribution, with(aluminium, 1));
-            speed = 0.085f;
-            displayedSpeed = 11.25f;
+            speed = spd;
+            displayedSpeed = 12.5f;
         }};
         isolatedRouter = new Router("isolated-router"){{
             requirements(Category.distribution, with(aluminium, 5));
-            speed =  1 / 0.085f;
+            speed =  1 / spd;
+        }};
+        isolatedJunction = new Junction("isolated-junction"){{
+            requirements(Category.distribution, with(aluminium, 2));
+            speed = 1 / spd;
         }};
     }
     public static void loadProductionBlocks(){

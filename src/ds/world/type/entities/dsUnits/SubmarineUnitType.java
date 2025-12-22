@@ -1,14 +1,15 @@
 package ds.world.type.entities.dsUnits;
 
 import arc.graphics.Color;
+import ds.content.dsFx;
 import ds.world.type.entities.dsUnitType;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.abilities.MoveEffectAbility;
 
 public class SubmarineUnitType extends dsUnitType {
-    public float bubblesInterval = 5;
-    public Effect bubbleEffect = Fx.bubble;
+    public float bubblesInterval = 2;
+    public Effect bubbleEffect = dsFx.dsMoveEffect;
 
     public SubmarineUnitType(String name) {
         super(name);

@@ -6,6 +6,7 @@ import ds.content.dsFx;
 import ds.content.dsSounds;
 import ds.world.graphics.DSPal;
 import ds.world.type.entities.dsUnits.*;
+import ds.world.type.entities.weapons.AdvancedLightWeapon;
 import mindustry.content.Fx;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
@@ -43,11 +44,15 @@ public class zUnits {
             mineFloor = true;
             mineWalls = true;
             mineTier = 3;
-            weapons.add(new Weapon(){{
+            weapons.add(new AdvancedLightWeapon(){{
                 x = 14/4f;
                 y = 1;
                 reload = 120;
-                shootCone = 75;
+                shootCone = 125;
+                alternate = false;
+                lightCone = 50;
+                lightLength = 30 * tilesize;
+                lightTileable = false;
                 shootSound = Sounds.none;
                 predictTarget = false;
                 rotate = false;
@@ -55,8 +60,8 @@ public class zUnits {
                 bullet = new BulletType(){{
                     instantDisappear = true;
                     spawnUnit = new TorpedoUnitType("moment-torpedo"){{
-                        speed = 4;
-                        lifetime = 60;
+                        speed = 3.5f;
+                        lifetime = 120;
                         predictTarget = false;
                         missileAccelTime = 0;
                         weapons.add(new Weapon(){{
@@ -81,7 +86,7 @@ public class zUnits {
             armor = 3;
             hitSize = 8;
             stepSound = dsSounds.dsMechStep;
-            weapons.add(new Weapon("deepsea-condition-weapon"){{
+            weapons.add(new AdvancedLightWeapon("deepsea-condition-weapon"){{
                 x = -17 / 4f; y = 2;
                 reload = 19;
                 rotate = false;
@@ -114,13 +119,14 @@ public class zUnits {
             treadRects = new Rect[] {
                     new Rect(-15f, -17f, 5, 33)
             };
-            weapons.add(new Weapon("deepsea-note-weapon"){{
+            weapons.add(new AdvancedLightWeapon("deepsea-note-weapon"){{
                 x = 0;
                 y = 1;
                 mirror = false;
                 rotate = true;
                 rotateSpeed = 1.7f;
                 reload = 90;
+                lightCone = 45;
                 shake = 1;
                 shootSound = dsSounds.shootTank;
                 bullet = new BasicBulletType(8f, 39){{

@@ -39,8 +39,9 @@ public class dsPlanets {
             startSector = 0;
             clearSectorOnLose = true;
             ruleSetter = r -> {
-                r.lighting = false;
-                r.ambientLight = Color.valueOf("010208e1");
+                r.lighting = true;
+                r.ambientLight = Color.valueOf("020308ec");
+                r.fire = false;
                 r.fog = false; //tru
                 r.defaultTeam = Team.sharded;
                 r.waveTeam = Team.crux;

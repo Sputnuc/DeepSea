@@ -35,9 +35,6 @@ public class HarpoonBulletType extends BasicBulletType {
         layer = Layer.bullet - 2;
         despawnEffect = Fx.none;
         drawSize = 999;
-        weaveMag = 3;
-        weaveScale = 1.9f;
-
     }
 
     public HarpoonBulletType(float speed, float damage) {
@@ -53,8 +50,6 @@ public class HarpoonBulletType extends BasicBulletType {
         drawSize = 999;
         hittable = false;
         absorbable = false;
-        weaveMag = 3;
-        weaveScale = 1.9f;
     }
 
     public HarpoonBulletType() {
@@ -71,8 +66,6 @@ public class HarpoonBulletType extends BasicBulletType {
         drawSize = 999;
         hittable = false;
         absorbable = false;
-        weaveMag = 3;
-        weaveScale = 1.9f;
     }
 
     @Override

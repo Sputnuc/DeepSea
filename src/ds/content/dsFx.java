@@ -24,6 +24,12 @@ public class dsFx {
         float eY = Mathf.sinDeg(e.rotation) * foffset;
         Lines.ellipse(e.x + eX, e.y + eY, 0.45f * e.fin()+ 0.45f, 2.5f, 8, e.rotation);
     }),
+    dsMoveEffect = new Effect(45, e -> {
+        color(Color.valueOf("e0f4ff"), Color.valueOf("bfe0f200"), e.fin());
+        randLenVectors(e.id, 3, 10 * e.fin(), (x, y)->{
+            Fill.circle(e.x + x, e.y + y, e.fin() * 0.75f + 1);
+        });
+    }),
     waterBlood = new Effect(600, e ->{
         color(Color.valueOf("e52020fe"), Color.valueOf("9e191900"), e.fin());
         randLenVectors(e.id, 9, 8f * e.fin(Interp.circleOut) * 4.25f, (x, y) -> {

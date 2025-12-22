@@ -32,7 +32,7 @@ public class DSEnvRenderers{
 
         renderer.addEnvRenderer(DSEnv.underwaterWarm, () -> {
             Draw.draw(Layer.light + 1, () -> {
-                Draw.color(waterColor, 0.3f);
+                Draw.color(waterColor, 0.45f);
                 Fill.rect(Core.camera.position.x, Core.camera.position.y, Core.camera.width, Core.camera.height);
                 Draw.reset();
 
