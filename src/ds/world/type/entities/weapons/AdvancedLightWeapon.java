@@ -33,10 +33,6 @@ public class AdvancedLightWeapon extends Weapon {
         super.update(unit, mount);
         drawLight(unit, mount);
     }
-    @Override
-    public void draw(Unit unit, WeaponMount mount){
-        super.update(unit, mount);
-    }
 
     public void drawLight(Unit unit , WeaponMount mount){
         if (Vars.state.rules.lighting){

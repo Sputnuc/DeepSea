@@ -6,7 +6,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.Angles;
 import arc.util.Time;
-import ds.world.blocks.dsHarpoonTurret;
+import ds.world.blocks.turret.dsHarpoonTurret;
 import ds.world.draw.DrawWire;
 import ds.world.type.entities.comp.HarpoonBulletComp;
 import mindustry.content.Fx;

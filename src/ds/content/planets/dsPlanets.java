@@ -2,6 +2,7 @@ package ds.content.planets;
 
 import arc.graphics.Color;
 import arc.graphics.Mesh;
+import arc.struct.Seq;
 import ds.content.blocks.zBlocks;
 import ds.world.meta.DSEnv;
 import mindustry.content.Blocks;
@@ -12,8 +13,11 @@ import mindustry.graphics.g3d.*;
 import mindustry.maps.planet.AsteroidGenerator;
 import mindustry.maps.planet.SerpuloPlanetGenerator;
 import mindustry.maps.planet.TantrosPlanetGenerator;
+import mindustry.type.ItemStack;
 import mindustry.type.Planet;
 import mindustry.world.meta.Env;
+
+import static ds.content.items.zItems.aluminium;
 
 public class dsPlanets {
     public static Planet z387;
@@ -41,6 +45,7 @@ public class dsPlanets {
             ruleSetter = r -> {
                 r.lighting = true;
                 r.ambientLight = Color.valueOf("020308ec");
+                r.loadout = new Seq<>();
                 r.fire = false;
                 r.fog = false; //tru
                 r.defaultTeam = Team.sharded;

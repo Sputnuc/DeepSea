@@ -74,7 +74,7 @@ public class dsMusicLoader {
     //call this function in the main class when the client loads. Like this -> Events.on(EventType.ClientLoadEvent.class, e -> dsMusicLoader.attach());
     public static void attach(){
         Events.on(EventType.WorldLoadEvent.class, e -> {
-            if (Vars.state.rules.planet.parent != null && Vars.state.rules.planet.parent.name.equals("aquarion-citun")) {
+            if (Vars.state.rules.planet.parent != null && Vars.state.rules.planet.parent.name.equals("deepsea-z387")) {
                 deepMusic();
             } else if (customMusic) {
                 vannilaMusic();

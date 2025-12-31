@@ -1,11 +1,18 @@
 package ds.content.blocks;
 
+import arc.graphics.Color;
+import arc.math.Interp;
+import ds.content.dsAttributes;
+import ds.content.dsFx;
 import ds.content.items.zItems;
 import ds.world.blocks.environment.TiledFloor;
+import mindustry.entities.Effect;
+import mindustry.entities.effect.ParticleEffect;
+import mindustry.graphics.Layer;
 import mindustry.world.Block;
-import mindustry.world.blocks.environment.Floor;
-import mindustry.world.blocks.environment.OreBlock;
-import mindustry.world.blocks.environment.StaticWall;
+import mindustry.world.blocks.environment.*;
+
+import static ds.content.dsAttributes.*;
 
 public class zEnv {
     public static Block
@@ -21,13 +28,14 @@ public class zEnv {
             quartzFloor, quartzSlabs, quartsCrystalWall, quartsWall,
 
             // Sulfur biome
-            sulfurFloor, sulfurCrackedFloor, sulfurGeyser, sulfurWall, sulfurCrystals, sulfurDust,
+            sulfurFloor, sulfurSandFloor, sulfurSandWall, sulfurGeyser, sulfurVent, sulfurWall, sulfurCrystal,
 
             // Basalt
-            basaltWall;
+            basaltWall,
 
             // Nature
             // some sea bushes
+            seaweedFloor, seaweedWall, seaweed;
 
     public static void load(){
         //Ores
@@ -40,7 +48,7 @@ public class zEnv {
 
         //Other
         limestoneFloor = new Floor("limestone-floor"){{
-            variants = 3;
+            variants = 4;
         }};
         limestoneWall = new StaticWall("limestone-wall"){{
             variants = 3;
@@ -60,6 +68,12 @@ public class zEnv {
         }};
 
         // Sulfur
+        sulfurSandFloor = new Floor("sulfur-sand-floor"){{
+            variants = 3;
+        }};
+        sulfurSandWall = new StaticWall("sulfur-sand-wall"){{
+            variants = 3;
+        }};
         sulfurFloor = new Floor("sulfur-floor"){{
             variants = 3;
         }};
@@ -67,9 +81,36 @@ public class zEnv {
             variants = 3;
         }};
 
+        sulfurVent = new SteamVent("sulfur-vent"){{
+            parent = blendGroup = sulfurSandFloor;
+            variants = 3;
+            effectColor = Color.valueOf("202411");
+            effect = dsFx.sulfurVentSteam;
+            attributes.set(sulfuric, 1f);
+        }};
+
         // Basalt
         basaltWall = new StaticWall("basalt-wall"){{
             variants = 3;
+        }};
+
+        //Nature
+        seaweedFloor = new Floor("seaweed-floor"){{
+            variants = 12;
+            lightColor = Color.valueOf("a8ffd5").a(0.09f);
+            emitLight = true;
+            lightRadius = 40f;
+        }};
+        seaweedWall = new StaticWall("seaweed-wall"){{
+            variants = 4;
+            emitLight = true;
+            lightRadius = 40f;
+            lightColor = Color.valueOf("a8ffd5").a(0.09f);
+        }};
+
+        seaweed = new Seaweed("seaweed"){{
+            variants = 2;
+            seaweedFloor.asFloor().decoration = this;
         }};
     }
 }

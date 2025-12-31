@@ -6,8 +6,11 @@ import arc.graphics.g2d.Lines;
 import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.Rand;
+import arc.math.geom.Vec2;
 import mindustry.entities.Effect;
 import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
 
 import static arc.graphics.g2d.Draw.*;
 import static arc.graphics.g2d.Lines.*;
@@ -15,6 +18,7 @@ import static arc.math.Angles.randLenVectors;
 
 public class dsFx {
     public static final Rand rand = new Rand();
+    public static final Vec2 v = new Vec2();
     public static Effect
     dsInclinedWave = new Effect(30, e -> {
         color(Color.valueOf("ffffff"), Color.valueOf("ffffff00"), e.fin());
@@ -62,14 +66,10 @@ public class dsFx {
         Drawf.tri(e.x, e.y, 3.75f * e.fout(Interp.circleOut), 2 + 10 * e.fout(), e.rotation);
         Drawf.tri(e.x, e.y, 3.75f * e.fout(Interp.circleOut), 1 + 2.5f * e.fout(), e.rotation + 180);
         stroke(1 * e.fout(Interp.circleOut));
-        float foffset = 1 + 2 * e.fin();
-        float foffset2 = 2 + 2 * e.fin();
+        float foffset = 2 + 2 * e.fin();
         float eX = Mathf.cosDeg(e.rotation)* foffset;
         float eY = Mathf.sinDeg(e.rotation) * foffset;
-        float eX2 = Mathf.cosDeg(e.rotation)* foffset;
-        float eY2 = Mathf.sinDeg(e.rotation) * foffset;
         Lines.ellipse(e.x + eX, e.y + eY, 0.45f * e.fin()+ 0.25f, 1.5f, 3, e.rotation);
-        Lines.ellipse(e.x + eX2, e.y + eY2, 0.25f * e.fin()+ 0.25f, 1.5f, 3, e.rotation);
     }),
     dsBulletTrail = new Effect(15, e ->{
         color(Color.valueOf("e0f4ff"), Color.valueOf("bfe0f200"), e.fin());
@@ -88,5 +88,17 @@ public class dsFx {
         stroke(1.5f * e.fout());
         Lines.circle(e.x, e.y, 10 * e.fin());
         Drawf.light(e.x, e.y, 4 + 7 * e.fout(), Color.valueOf("ccdef0"), 0.7f * e.fout());
-    });
+    }),
+    sulfurVentSteam = new Effect(250f, e -> {
+        color(e.color, Color.valueOf("22261000"), e.fin());
+
+        alpha(e.fslope() * 0.78f);
+
+        float length = 3f + e.finpow() * 15f;
+        rand.setSeed(e.id);
+        for(int i = 0; i < rand.random(3, 5); i++){
+            v.trns(rand.random(360f), rand.random(length));
+            Fill.circle(e.x + v.x, e.y + v.y, rand.random(1.2f, 2.5f) + e.fin() * 1.95f);
+        }
+    }).layer(Layer.darkness - 1);
 }

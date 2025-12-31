@@ -7,7 +7,7 @@ import ds.content.dsSounds;
 import ds.content.items.zItems;
 import ds.content.units.zUnits;
 import ds.world.blocks.distribution.ClosedConveyor;
-import ds.world.blocks.dsHarpoonTurret;
+import ds.world.blocks.turret.dsHarpoonTurret;
 import ds.world.graphics.DSPal;
 import ds.world.meta.DSEnv;
 import ds.world.type.entities.bullets.HarpoonBulletType;
@@ -17,27 +17,40 @@ import mindustry.entities.pattern.ShootSpread;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Layer;
 import mindustry.type.Category;
+import mindustry.type.ItemStack;
+import mindustry.type.LiquidStack;
 import mindustry.world.Block;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
+import mindustry.world.blocks.distribution.ItemBridge;
 import mindustry.world.blocks.distribution.Junction;
 import mindustry.world.blocks.distribution.Router;
+import mindustry.world.blocks.power.PowerNode;
+import mindustry.world.blocks.production.AttributeCrafter;
 import mindustry.world.blocks.production.BurstDrill;
+import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.draw.*;
 import mindustry.world.meta.Env;
 
 
+import static ds.content.dsAttributes.*;
 import static ds.content.items.zItems.*;
+import static ds.content.liquids.zLiquids.*;
 import static mindustry.Vars.tilesize;
+import static mindustry.content.Liquids.*;
 import static mindustry.type.ItemStack.with;
 
 public class zBlocks {
     public static Block
             //Production
             hydraulicDrill, hydraulicWallDrill,
+            //Power
+            powerDistributor,
+            //Crafting
+            hydrogenSulfideCollector, hydrogenSulfideDiffuser,
             //Logistic
-            isolatedConveyor, isolatedRouter, isolatedJunction,
+            isolatedConveyor, isolatedRouter, isolatedJunction, isolatedBridge,
             //Cores
             coreInfluence, coreEnforcement, coreEminence,
             //Turrets
@@ -47,6 +60,7 @@ public class zBlocks {
     public static void load(){
         loadLogisticBlocks();
         loadProductionBlocks();
+        loadPowerBlocks();
         loadCraftBlocks();
         loadEffectBlocks();
         loadTurrets();
@@ -93,7 +107,7 @@ public class zBlocks {
             velocityRnd = 0.1f;
             shootSound = Sounds.shootDiffuse;
             range = 15 * tilesize;
-            reload = 40;
+            reload = 30;
             targetAir = false;
             drawer = new DrawTurret("ds-turret-");
             ammoUseEffect = Fx.casing2Double;
@@ -158,11 +172,17 @@ public class zBlocks {
             requirements(Category.distribution, with(aluminium, 2));
             speed = 1 / spd;
         }};
+        isolatedBridge = new ItemBridge("isolated-bridge"){{
+            requirements(Category.distribution, with(aluminium, 7, silver, 3));
+            range = 5;
+            transportTime = 60/13f;
+        }};
     }
     public static void loadProductionBlocks(){
         hydraulicDrill = new BurstDrill("hydraulic-drill"){{
             requirements(Category.production, with(aluminium, 12));
-            drillTime = 60 * 6;
+            drillTime = 600;
+            liquidBoostIntensity = 1;
             size = 2;
             tier = 4;
             shake = 1.5f;
@@ -170,8 +190,41 @@ public class zBlocks {
             arrows = 0;
         }};
     }
+    public static void loadPowerBlocks(){
+        powerDistributor = new PowerNode("power-distributor"){{
+            requirements(Category.power, with(aluminium, 15, silver, 3));
+            size = 2;
+            laserColor1 = Color.valueOf("ffdede");
+            laserColor2 = Color.valueOf("e56e6e");
+            laserScale = 0.75f;
+            maxNodes = 3;
+            laserRange = 15;
+            underBullets = true;
+        }};
+    }
     public static void loadCraftBlocks(){
-
+        hydrogenSulfideCollector = new AttributeCrafter("hydrogen-sulfide-collector"){{
+            requirements(Category.production, with(aluminium, 65, silver, 25));
+            attribute = sulfuric;
+            boostScale = 1f/9f;
+            minEfficiency = 9f - 0.0001f;
+            baseEfficiency = 0;
+            outputLiquid = new LiquidStack(hydrogenSulfide, 0.1f);
+            size = 3;
+            consumePower(0.5f);
+            drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(hydrogenSulfide), new DrawBlurSpin("-rotator", 12), new DrawDefault());
+        }};
+        hydrogenSulfideDiffuser = new GenericCrafter("hydrogen-sulfide-diffuser"){{
+            requirements(Category.crafting, with(aluminium, 85, silver, 55));
+            size = 3;
+            consumeLiquid(hydrogenSulfide, 15/60f);
+            consumePower(1);
+            craftTime = 120;
+            outputItem = new ItemStack(sulfur, 1);
+            outputLiquid = new LiquidStack(hydrogen, 9/60f);
+            drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(hydrogenSulfide), new DrawLiquidTile(hydrogen),new DrawDefault());
+            ignoreLiquidFullness = true;
+        }};
     }
     public static void loadDefence(){
         float dswallHealthMultiplier = 45;
