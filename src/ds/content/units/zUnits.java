@@ -11,15 +11,14 @@ import mindustry.content.Fx;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.bullet.ExplosionBulletType;
-import mindustry.gen.MechUnit;
 import mindustry.gen.Sounds;
 import mindustry.gen.UnitEntity;
 import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
-import mindustry.type.unit.TankUnitType;
 
 import static mindustry.Vars.tilesize;
+import static mindustry.content.Fx.*;
 
 public class zUnits {
     public static UnitType
@@ -30,49 +29,82 @@ public class zUnits {
             condition,
                 //Tank
             note,
+                //Submarines
+            complicity,
             //fauna
             untitledFish;
     public static void loadUnits(){
+        //Core units
         moment = new SubmarineUnitType("moment"){{
             constructor = UnitEntity::create;
             outlineColor = Pal.darkOutline;
             speed = 3;
             health = 75;
             buildRange = 20 * tilesize;
-            buildSpeed = 1;
-            mineSpeed = 5.5f;
+            buildSpeed = 2.75f;
+            mineSpeed = 7.5f;
             mineFloor = true;
             mineWalls = true;
             mineTier = 3;
             weapons.add(new AdvancedLightWeapon(){{
                 x = 14/4f;
                 y = 1;
-                reload = 120;
-                shootCone = 125;
-                alternate = false;
-                lightCone = 50;
-                lightLength = 30 * tilesize;
+                shootCone = 0;
+                lightCone = 75;
+                lightLength = 38 * tilesize;
                 lightTileable = false;
                 shootSound = Sounds.none;
-                predictTarget = false;
                 rotate = false;
                 mirror = true;
+                reload = 60;
+                bullet = new BulletType();
+                display = false;
+                noAttack = true;
+                predictTarget = false;
+            }});
+        }};
+        //Assault Submarines
+        complicity = new SubmarineUnitType("complicity"){{
+            constructor = UnitEntity::create;
+            speed = 2.85f;
+            health = 175;
+            armor = 1;
+            hitSize = 8;
+            circleTarget = true;
+            moveSound = Sounds.none;
+            weapons.add(new AdvancedLightWeapon(){{
+                x = 18/4f; y = 1;
+                mirror = true;
+                lightCone = 80;
+                lightLength = 36*tilesize;
+                shootSound = Sounds.none;
+                lightTileable = false;
+                reload = 120;
+                rotate = false;
+                shootCone = 10;
+                inaccuracy = 7;
+                shoot.shots = 2;
+                shoot.shotDelay = 10;
                 bullet = new BulletType(){{
                     instantDisappear = true;
-                    spawnUnit = new TorpedoUnitType("moment-torpedo"){{
+                    keepVelocity = false;
+                    spawnUnit = new TorpedoUnitType("basic-torpedo"){{
                         speed = 3.5f;
-                        lifetime = 120;
-                        predictTarget = false;
+                        homingRange = 10;
+                        homingPower = 0.35f;
+                        lifetime = 90;
+                        maxRange = 5f;
+                        homingDelay = 10f;
                         missileAccelTime = 0;
+                        rotateSpeed = 0.25f;
                         weapons.add(new Weapon(){{
                             shootCone = 360f;
                             mirror = false;
                             reload = 1f;
                             shootOnDeath = true;
                             shootSound = Sounds.none;
-                            bullet = new ExplosionBulletType(47,3.5f * tilesize){{
+                            bullet = new ExplosionBulletType(25,3.5f * tilesize){{
                                 despawnEffect = Fx.massiveExplosion;
-                                buildingDamageMultiplier = 0.1f;
                             }};
                         }});
                     }};
@@ -117,16 +149,17 @@ public class zUnits {
             armor = 6;
             hitSize = 8;
             treadRects = new Rect[] {
-                    new Rect(-15f, -17f, 5, 33)
+                    new Rect(-21f, -21f, 17, 48)
             };
             weapons.add(new AdvancedLightWeapon("deepsea-note-weapon"){{
                 x = 0;
-                y = 1;
+                y = -1;
                 mirror = false;
                 rotate = true;
                 rotateSpeed = 1.7f;
                 reload = 90;
                 lightCone = 45;
+                lightLength = 230;
                 shake = 1;
                 shootSound = dsSounds.shootTank;
                 bullet = new BasicBulletType(8f, 39){{

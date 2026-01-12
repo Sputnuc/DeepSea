@@ -23,7 +23,6 @@ public class dsPlanets {
     public static Planet z387;
     public static void loadContent(){
         z387 = new Planet("z387", Planets.sun, 2f, 3){{
-            loadPlanetData = true;
             generator = new zGenerator();
             meshLoader = () -> new HexMesh(this, 6);
             cloudMeshLoader = () -> new MultiMesh(
@@ -33,14 +32,14 @@ public class dsPlanets {
             );
             sectorSeed = 4;
             allowWaves = true;
-            allowLaunchSchematics = true;
-            enemyCoreSpawnReplace = true;
+            allowLaunchSchematics = false;
             alwaysUnlocked = true;
             accessible = true;
             allowLaunchToNumbered = false;
-            allowLaunchLoadout = true;
+            allowLaunchLoadout = false;
             allowSectorInvasion = false;
-            startSector = 0;
+            startSector = 10;
+            updateLighting = false;
             clearSectorOnLose = true;
             ruleSetter = r -> {
                 r.lighting = true;
@@ -60,7 +59,6 @@ public class dsPlanets {
             atmosphereRadOut = 0.3f;
             alwaysUnlocked = true;
             defaultCore = zBlocks.coreInfluence;
-            unlockedOnLand.add(zBlocks.coreInfluence);
             defaultEnv = Env.terrestrial | DSEnv.underwaterWarm & ~(Env.groundOil | Env.scorching | Env.spores);
         }};
     }

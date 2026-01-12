@@ -4,6 +4,7 @@ import ds.content.blocks.dsBlocksLoader;
 import ds.content.items.dsItemLoader;
 import ds.content.liquids.zLiquids;
 import ds.content.planets.dsPlanets;
+import ds.content.planets.zSectors;
 import ds.content.units.zUnits;
 
 public class ContentLoader {
@@ -11,6 +12,7 @@ public class ContentLoader {
         dsAttributes.load();
         SchematicsLoader.load();
         dsSounds.load();
+        dsMusicLoader.load();
         dsItemLoader.load();
         zLiquids.load();
         zUnits.loadUnits();
@@ -18,7 +20,7 @@ public class ContentLoader {
 
         //end load
         dsPlanets.loadContent();
-        dsMusicLoader.load();
+        zSectors.load();
         z387TechTree.load();
     }
 }

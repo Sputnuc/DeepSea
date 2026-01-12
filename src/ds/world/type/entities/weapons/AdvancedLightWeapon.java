@@ -21,6 +21,7 @@ public class AdvancedLightWeapon extends Weapon {
     public float lightLength = 180;
     public float rayWidth = 10;
     public float lightCone = 90;
+    public boolean canShoot;
     public boolean lightTileable = true;
     public AdvancedLightWeapon(String name){
         super(name);
@@ -28,6 +29,7 @@ public class AdvancedLightWeapon extends Weapon {
     public AdvancedLightWeapon(){
         super();
     }
+
     @Override
     public void update(Unit unit, WeaponMount mount){
         super.update(unit, mount);
@@ -41,7 +43,11 @@ public class AdvancedLightWeapon extends Weapon {
             float weaponRotation = unit.rotation - 90 + (rotate ? mount.rotation : baseRotation);
             float wX = mountX + Angles.trnsx(weaponRotation, this.shootX, this.shootY);
             float wY = mountY + Angles.trnsy(weaponRotation, this.shootX, this.shootY);
-            DrawDirLight.DrawLightBeam(wX, wY, mount.rotation + unit.rotation(), lightLength, lightCone, rayWidth);
+            if (lightTileable) {
+                DrawDirLight.DrawLightBeam(wX, wY, mount.rotation + unit.rotation(), lightLength, lightCone, rayWidth);
+            } else {
+                DrawDirLight.DrawLightBeamNonTileable(wX, wY, mount.rotation + unit.rotation(), lightLength, lightCone, rayWidth);
+            }
         }
     }
 }

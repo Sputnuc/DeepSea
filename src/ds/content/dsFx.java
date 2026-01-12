@@ -8,6 +8,7 @@ import arc.math.Mathf;
 import arc.math.Rand;
 import arc.math.geom.Vec2;
 import mindustry.entities.Effect;
+import mindustry.entities.effect.ParticleEffect;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
@@ -77,6 +78,16 @@ public class dsFx {
             Fill.circle(e.x + x, e.y + y, e.fin() * 0.85f + 0.45f);
         });
     }),
+    dsBulletSparkTrail = new Effect(4, e ->{
+        color(Color.valueOf("ffffff"), e.color, e.fin());
+        stroke(0.75f);
+        randLenVectors(e.id, 3, 6 * e.fin(), (x, y)->{
+            float ang = Mathf.angle(x, y);
+            lineAngle(e.x + x, e.y + y, ang, e.fout() * 3);
+        });
+        Drawf.light(e.x, e.y, 6 * e.fin(), e.color, 0.2f * e.fout());
+        stroke(1.5f * e.fout());
+    }),
     dsBulletHit = new Effect(15, e->{
         Color eColor = e.color;
         color(Color.valueOf("ffffff"), eColor, e.fin());
@@ -100,5 +111,36 @@ public class dsFx {
             v.trns(rand.random(360f), rand.random(length));
             Fill.circle(e.x + v.x, e.y + v.y, rand.random(1.2f, 2.5f) + e.fin() * 1.95f);
         }
-    }).layer(Layer.darkness - 1);
+    }).layer(Layer.darkness - 1),
+
+    geyserSteam = new Effect(60f, e -> {
+        color(e.color, Color.valueOf("22261000"), e.fin());
+
+        alpha(e.fslope() * 0.78f);
+
+        float length = 3f + e.finpow() * 5f;
+        rand.setSeed(e.id);
+        for(int i = 0; i < rand.random(3, 5); i++){
+            v.trns(rand.random(360f), rand.random(length));
+            Fill.circle(e.x + v.x, e.y + v.y, rand.random(1.2f, 2.5f) + e.fin() * 1.95f);
+        }
+    }).layer(Layer.darkness - 1),
+
+    geotermalBubbles = new ParticleEffect(){{
+        particles = 1;
+        lifetime = 240;
+        region = "deepsea-water-bubble";
+        cone = 10;
+        lightScl = 0;
+        lightOpacity = 0;
+        rotWithParent = false;
+        useRotation = false;
+        baseRotation = 90;
+        length = 45;
+        interp = Interp.circleOut;
+        sizeInterp = Interp.pow5Out;
+        sizeFrom = 1; sizeTo = 0.35f;
+        colorFrom = Color.white;
+        colorTo = Color.valueOf("ffffff").a(0);
+    }};
 }

@@ -25,7 +25,9 @@ import mindustry.world.blocks.defense.turrets.ItemTurret;
 import mindustry.world.blocks.distribution.ItemBridge;
 import mindustry.world.blocks.distribution.Junction;
 import mindustry.world.blocks.distribution.Router;
+import mindustry.world.blocks.liquid.*;
 import mindustry.world.blocks.power.PowerNode;
+import mindustry.world.blocks.power.ThermalGenerator;
 import mindustry.world.blocks.production.AttributeCrafter;
 import mindustry.world.blocks.production.BurstDrill;
 import mindustry.world.blocks.production.GenericCrafter;
@@ -46,11 +48,11 @@ public class zBlocks {
             //Production
             hydraulicDrill, hydraulicWallDrill,
             //Power
-            powerDistributor,
+            powerTransmitter, hydroTurbineGenerator,
             //Crafting
             hydrogenSulfideCollector, hydrogenSulfideDiffuser,
             //Logistic
-            isolatedConveyor, isolatedRouter, isolatedJunction, isolatedBridge,
+            isolatedConveyor, isolatedRouter, isolatedJunction, isolatedBridge, pipe, pipeRouter,
             //Cores
             coreInfluence, coreEnforcement, coreEminence,
             //Turrets
@@ -106,6 +108,7 @@ public class zBlocks {
             shootCone = 10;
             velocityRnd = 0.1f;
             shootSound = Sounds.shootDiffuse;
+            consumePower(15/60f);
             range = 15 * tilesize;
             reload = 30;
             targetAir = false;
@@ -119,10 +122,12 @@ public class zBlocks {
                         trailLength = 4;
                         trailWidth = 0.6f;
                         width = 5;
-                        height = 6;
+                        height = 12;
                         frontColor = hitColor = Color.valueOf("f0fdff");
                         backColor = trailColor = Color.valueOf("ace1e8");
                         hitEffect = despawnEffect = Fx.hitBulletColor;
+                        trailInterval = 2;
+                        trailEffect = dsFx.dsBulletSparkTrail;
                     }},
                     ferrum, new BasicBulletType(8,26){{
                         reloadMultiplier = 0.75f;
@@ -132,11 +137,13 @@ public class zBlocks {
                         rangeChange = 5 * tilesize;
                         trailLength = 4;
                         trailWidth = 0.6f;
-                        width = 5;
-                        height = 6;
+                        width = 5.75f;
+                        height = 13;
                         frontColor = hitColor = Color.valueOf("ffc7bf");
                         backColor = trailColor = Color.valueOf("d98e84");
                         hitEffect = despawnEffect = Fx.hitBulletColor;
+                        trailInterval = 2;
+                        trailEffect = dsFx.dsBulletSparkTrail;
                     }}
             );
         }};
@@ -163,19 +170,29 @@ public class zBlocks {
             requirements(Category.distribution, with(aluminium, 1));
             speed = spd;
             displayedSpeed = 12.5f;
-        }};
-        isolatedRouter = new Router("isolated-router"){{
-            requirements(Category.distribution, with(aluminium, 5));
-            speed =  1 / spd;
+            junctionReplacement = isolatedJunction;
+            bridgeReplacement = isolatedBridge;
         }};
         isolatedJunction = new Junction("isolated-junction"){{
             requirements(Category.distribution, with(aluminium, 2));
             speed = 1 / spd;
         }};
+        ((ClosedConveyor) isolatedConveyor).junctionReplacement = isolatedJunction;
         isolatedBridge = new ItemBridge("isolated-bridge"){{
             requirements(Category.distribution, with(aluminium, 7, silver, 3));
             range = 5;
+            hasPower = false;
             transportTime = 60/13f;
+        }};
+        ((ClosedConveyor) isolatedConveyor).bridgeReplacement = isolatedBridge;
+        isolatedRouter = new Router("isolated-router"){{
+            requirements(Category.distribution, with(aluminium, 5));
+            speed =  1 / spd;
+        }};
+        pipe = new ArmoredConduit("liquid-pipe"){{
+            requirements(Category.liquid, with(silver, 2));
+            liquidPressure = 1.025f;
+            liquidCapacity = 40;
         }};
     }
     public static void loadProductionBlocks(){
@@ -191,7 +208,7 @@ public class zBlocks {
         }};
     }
     public static void loadPowerBlocks(){
-        powerDistributor = new PowerNode("power-distributor"){{
+        powerTransmitter = new PowerNode("power-transmitter"){{
             requirements(Category.power, with(aluminium, 15, silver, 3));
             size = 2;
             laserColor1 = Color.valueOf("ffdede");
@@ -201,10 +218,24 @@ public class zBlocks {
             laserRange = 15;
             underBullets = true;
         }};
+        hydroTurbineGenerator = new ThermalGenerator("hydro-turbine-generator"){{
+            requirements(Category.power, with(aluminium, 95, silver, 85));
+            displayEfficiencyScale = 1f / 9f;
+            minEfficiency = 9f - 0.0001f;
+            displayEfficiency = false;
+            attribute = geyser;
+            size = 3;
+            powerProduction = 2f / 9f;
+            outputLiquid = new LiquidStack(hydrogenSulfide, 3f/60f/9f);
+            liquidCapacity = 30;
+            hasLiquids = true;
+            drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(hydrogenSulfide), new DrawBlurSpin("-rotator", 6), new DrawDefault());
+        }};
     }
     public static void loadCraftBlocks(){
         hydrogenSulfideCollector = new AttributeCrafter("hydrogen-sulfide-collector"){{
             requirements(Category.production, with(aluminium, 65, silver, 25));
+            liquidCapacity = 60;
             attribute = sulfuric;
             boostScale = 1f/9f;
             minEfficiency = 9f - 0.0001f;
@@ -216,10 +247,11 @@ public class zBlocks {
         }};
         hydrogenSulfideDiffuser = new GenericCrafter("hydrogen-sulfide-diffuser"){{
             requirements(Category.crafting, with(aluminium, 85, silver, 55));
+            liquidCapacity = 60;
             size = 3;
-            consumeLiquid(hydrogenSulfide, 15/60f);
+            consumeLiquid(hydrogenSulfide, 12/60f);
             consumePower(1);
-            craftTime = 120;
+            craftTime = 60;
             outputItem = new ItemStack(sulfur, 1);
             outputLiquid = new LiquidStack(hydrogen, 9/60f);
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(hydrogenSulfide), new DrawLiquidTile(hydrogen),new DrawDefault());
@@ -234,6 +266,7 @@ public class zBlocks {
             requirements(Category.defense, with(aluminium, 9 * this.size * this.size));
         }};
         aluminiumWallLarge = new Wall("aluminium-wall-large"){{
+            researchCostMultiplier = 0.5f;
             size = 2;
             health = (int) (dswallHealthMultiplier * this.size * this.size * 10);
             requirements(Category.defense, with(aluminium, 9 * this.size * this.size));

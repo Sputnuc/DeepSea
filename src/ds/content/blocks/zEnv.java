@@ -5,14 +5,18 @@ import arc.math.Interp;
 import ds.content.dsAttributes;
 import ds.content.dsFx;
 import ds.content.items.zItems;
+import ds.world.blocks.environment.EffectFloor;
+import ds.world.blocks.environment.GlowingSeaweed;
 import ds.world.blocks.environment.TiledFloor;
 import mindustry.entities.Effect;
 import mindustry.entities.effect.ParticleEffect;
 import mindustry.graphics.Layer;
 import mindustry.world.Block;
 import mindustry.world.blocks.environment.*;
+import mindustry.world.meta.Attribute;
 
 import static ds.content.dsAttributes.*;
+import static mindustry.content.Blocks.*;
 
 public class zEnv {
     public static Block
@@ -31,7 +35,7 @@ public class zEnv {
             sulfurFloor, sulfurSandFloor, sulfurSandWall, sulfurGeyser, sulfurVent, sulfurWall, sulfurCrystal,
 
             // Basalt
-            basaltWall,
+            basaltWall, geotermalFloor,
 
             // Nature
             // some sea bushes
@@ -76,9 +80,11 @@ public class zEnv {
         }};
         sulfurFloor = new Floor("sulfur-floor"){{
             variants = 3;
+            itemDrop = zItems.sulfur;
         }};
         sulfurWall = new StaticWall("sulfur-wall"){{
             variants = 3;
+            itemDrop = zItems.sulfur;
         }};
 
         sulfurVent = new SteamVent("sulfur-vent"){{
@@ -89,9 +95,27 @@ public class zEnv {
             attributes.set(sulfuric, 1f);
         }};
 
+        sulfurGeyser = new SteamVent("sulfur-geyser"){{
+            effectSpacing = 5;
+            parent = blendGroup = sulfurSandFloor;
+            variants = 1;
+            effectColor = Color.valueOf("202411");
+            effect = dsFx.geyserSteam;
+            attributes.set(geyser, 1f);
+            attributes.set(sulfuric, 1f);
+        }};
+
         // Basalt
         basaltWall = new StaticWall("basalt-wall"){{
             variants = 3;
+        }};
+        geotermalFloor = new EffectFloor("geotermal-floor"){{
+            variants = 4;
+            emitLight = true;
+            lightRadius = 40f;
+            lightColor = hotrock.lightColor;
+            attributes.set(Attribute.heat, 0.75f);
+            effectChance = 0.04f;
         }};
 
         //Nature
@@ -108,8 +132,9 @@ public class zEnv {
             lightColor = Color.valueOf("a8ffd5").a(0.09f);
         }};
 
-        seaweed = new Seaweed("seaweed"){{
+        seaweed = new GlowingSeaweed("seaweed"){{
             variants = 2;
+            lightRadius = 9;
             seaweedFloor.asFloor().decoration = this;
         }};
     }

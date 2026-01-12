@@ -7,6 +7,6 @@ public class SchematicsLoader {
     public static Schematic
             baseCoreInfluence;
     public static void load(){
-        baseCoreInfluence = Schematics.readBase64("bXNjaAF4nF3MQQqAIBRF0VdKg4KG7aKltIJoYPYCwb6iNor2Xk2DyxleKCgNLeYgehsSRye7PymWaG2QQimTiaivG93GbJOLxQUB0Hiz0mfU81Jh2MiYacbfA6i+Xh5GWBz5");
+        baseCoreInfluence = Schematics.readBase64("bXNjaAF4nF3MSwoCMRBF0dfdfqAFh+6il+IKxEFZeWIgqYSuciTuXZ0KlzO8mDBtsTGpxFHbyiXbvTxpSszaLGhxlo7x9cbeg1Jzwuz6YJXI6jgkuq65R24GYFfkxuIYL9cBp0R2pyx/Y2D49eUDUe4kFg==");
     }
 }

@@ -8,7 +8,10 @@ public class zLiquids {
     public static void load(){
         hydrogenSulfide = new Liquid("hydrogen-sulfide", Color.valueOf("d7dba9")){{
             gas = true;
+            alwaysUnlocked = false;
         }};
-        sulfuricAcid = new Liquid("sulfuric-acid", Color.valueOf("d5fa84")){{}};
+        sulfuricAcid = new Liquid("sulfuric-acid", Color.valueOf("d5fa84")){{
+            alwaysUnlocked = false;
+        }};
     }
 }

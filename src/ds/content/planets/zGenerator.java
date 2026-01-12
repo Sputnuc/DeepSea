@@ -15,6 +15,7 @@ import mindustry.type.Sector;
 import mindustry.world.Block;
 import mindustry.world.TileGen;
 
+import static ds.content.SchematicsLoader.baseCoreInfluence;
 import static mindustry.Vars.world;
 
 public class zGenerator extends PlanetGenerator {
