@@ -1,29 +1,28 @@
 package ds.world.blocks.turret;
 
 import arc.Core;
-import arc.graphics.Color;
-import arc.math.*;
-import arc.util.*;
-import arc.util.io.*;
+import arc.math.Mathf;
+import arc.util.Strings;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
 import ds.world.meta.dsStats;
-import mindustry.content.Fx;
-import mindustry.entities.Effect;
 import mindustry.entities.bullet.BulletType;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
-import mindustry.world.blocks.defense.turrets.*;
+import mindustry.world.blocks.defense.turrets.ItemTurret;
+import mindustry.world.blocks.defense.turrets.PowerTurret;
 import mindustry.world.consumers.ConsumeLiquidFilter;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
 import static mindustry.Vars.tilesize;
 
-public class AccelTurret extends ItemTurret {
+public class AccelPowerTurret extends PowerTurret {
     public float speedUpPerShoot = 2;
     public float maxAccel = 0.5f;
     public float cooldownSpeed = 1;
 
-    public AccelTurret(String name){
+    public AccelPowerTurret(String name){
         super(name);
     }
 
@@ -47,7 +46,7 @@ public class AccelTurret extends ItemTurret {
         stats.add(dsStats.acTurrReloadEnd, (reload / (maxAccel + 1.0f)) / 60f, StatUnit.seconds);
     }
 
-    public  class AccelTurretBuild extends ItemTurretBuild {
+    public  class AccelTurretBuild extends PowerTurretBuild {
         protected float speedUp = 0;
         protected float coolantSpeedMultiplier;
         protected  boolean overheated = false;

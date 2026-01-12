@@ -7,12 +7,20 @@ import ds.content.dsSounds;
 import ds.content.items.zItems;
 import ds.content.units.zUnits;
 import ds.world.blocks.distribution.ClosedConveyor;
+import ds.world.blocks.turret.AccelItemTurret;
+import ds.world.blocks.turret.AccelPowerTurret;
 import ds.world.blocks.turret.dsHarpoonTurret;
 import ds.world.graphics.DSPal;
 import ds.world.meta.DSEnv;
 import ds.world.type.entities.bullets.HarpoonBulletType;
+import ds.world.type.entities.bullets.PosLightningBulletType;
 import mindustry.content.Fx;
+import mindustry.entities.Effect;
 import mindustry.entities.bullet.BasicBulletType;
+import mindustry.entities.bullet.BulletType;
+import mindustry.entities.bullet.LightningBulletType;
+import mindustry.entities.effect.WaveEffect;
+import mindustry.entities.part.RegionPart;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Layer;
@@ -56,7 +64,7 @@ public class zBlocks {
             //Cores
             coreInfluence, coreEnforcement, coreEminence,
             //Turrets
-            cutoff, irritation,
+            cutoff, irritation, discharge,
             //Defends
             aluminiumWall, aluminiumWallLarge;
     public static void load(){
@@ -70,6 +78,7 @@ public class zBlocks {
     }
     public static void loadTurrets(){
         cutoff = new dsHarpoonTurret("cutoff"){{
+            health = 785;
             requirements(Category.turret, with(aluminium, 75, silver, 45));
             outlineColor = DSPal.dsTurretOutline;
             size = 2;
@@ -97,6 +106,7 @@ public class zBlocks {
             }};
         }};
         irritation = new ItemTurret("irritation"){{
+            health = 650;
             requirements(Category.turret, with(aluminium, 75, silver, 45));
             outlineColor = DSPal.dsTurretOutline;
             size = 2;
@@ -146,6 +156,45 @@ public class zBlocks {
                         trailEffect = dsFx.dsBulletSparkTrail;
                     }}
             );
+        }};
+        discharge = new AccelPowerTurret("discharge"){{
+            shootY = 28/4f;
+            health = 975;
+            requirements(Category.turret, with(aluminium, 95, silver, 75, manganese, 55));
+            outlineColor = DSPal.dsTurretOutline;
+            size = 3;
+            range = 25 * tilesize;
+            shootCone = 15;
+            shootSound = Sounds.shootArc;
+            consumePower(360/60f);
+            reload = 300;
+            maxAccel = 40;
+            shake = 1.65f;
+            speedUpPerShoot = 3f;
+            drawer = new DrawTurret("ds-turret-"){{
+                parts.add(
+                    new RegionPart("-decal"){{
+                        progress = PartProgress.recoil;
+                        heatProgress = PartProgress.warmup;
+                        heatColor = Color.valueOf("a1fff9");
+                        drawRegion = false;
+                        mirror = false;
+                        under = false;
+                }});
+            }};
+            shoot.shots = 4;
+            shoot.shotDelay = 0.6f;
+
+            shootType = new LightningBulletType(){{
+                shootEffect = Fx.none;
+                damage = 12;
+                lifetime = 25;
+                lightningDamage = 8;
+                lightningLength = 25;
+                lightningLengthRand = 5;
+                lightningColor = Color.valueOf("a1fff9");
+                lightningCone = 3;
+            }};
         }};
     }
     public static void loadEffectBlocks(){
