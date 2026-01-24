@@ -10,6 +10,9 @@ import mindustry.world.Tile;
 import static ds.utilities.dsMath.*;
 import static mindustry.Vars.tilesize;
 
+//Draws lights from cone
+//TODO Better organisation
+
 public class DrawDirLight {
 
     public static void DrawLightBeamNonTileable(float tx, float ty, float beamRotation, float length, float cone, float rayW){
@@ -64,6 +67,7 @@ public class DrawDirLight {
             }
         }
     }
+
 
     public static void DrawGradientRayAdv(float x1, float y1, float stroke, float length, float rD, float intensity){
         Vec2 endPoint = RayCastSolid(x1, y1, rD, (int)length, 2);

@@ -1,17 +1,11 @@
 package ds.content.blocks;
 
 import arc.graphics.Color;
-import arc.math.Interp;
-import ds.content.dsAttributes;
 import ds.content.dsFx;
 import ds.content.items.zItems;
 import ds.world.blocks.environment.EffectFloor;
 import ds.world.blocks.environment.GlowingSeaweed;
 import ds.world.blocks.environment.TiledFloor;
-import ds.world.meta.DSEnv;
-import mindustry.entities.Effect;
-import mindustry.entities.effect.ParticleEffect;
-import mindustry.graphics.Layer;
 import mindustry.world.Block;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.meta.Attribute;

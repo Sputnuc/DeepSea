@@ -9,7 +9,8 @@ import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawRegion;
-//Thanks to pitchblende
+
+//Thanks to Pitchblende
 public class DrawBetterRegion extends DrawRegion {
     public TextureRegion region;
     public String suffix = "";

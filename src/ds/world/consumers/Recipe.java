@@ -7,6 +7,7 @@ import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.world.draw.DrawMulti;
 
+    //A Class for MultiRecipeCrafter
 public class Recipe {
     //Consume
     @Nullable

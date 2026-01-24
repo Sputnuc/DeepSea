@@ -12,9 +12,5 @@ public class dsItemTurret extends ItemTurret {
     @Override
     public void setStats(){
         super.setStats();
-        stats.remove(Stat.targetsAir);
-        stats.remove(Stat.targetsGround);
-        stats.add(dsStats.targetSubmarines, targetAir);
-        stats.add(Stat.targetsGround, targetGround);
     }
 }

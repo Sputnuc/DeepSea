@@ -5,15 +5,14 @@ import arc.graphics.*;
 import arc.graphics.Texture.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
-import arc.util.*;
-import ds.world.meta.DSEnv;
+import ds.world.meta.dsEnv;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Shaders;
 import mindustry.type.*;
 
 import static mindustry.Vars.*;
 
-public class DSEnvRenderers{
+public class dsEnvRenderers {
 
     public static void init(){
 
@@ -30,7 +29,7 @@ public class DSEnvRenderers{
         float darkWindSpeed = 0.56f, darkWindAngle = 170;
         float windx = Mathf.cosDeg(windAngle) * windSpeed, windy = Mathf.sinDeg(windAngle) * windSpeed;
 
-        renderer.addEnvRenderer(DSEnv.underwaterWarm, () -> {
+        renderer.addEnvRenderer(dsEnv.underwaterWarm, () -> {
             Draw.draw(Layer.light + 1, () -> {
                 Draw.color(waterColor, 0.45f);
                 Fill.rect(Core.camera.position.x, Core.camera.position.y, Core.camera.width, Core.camera.height);

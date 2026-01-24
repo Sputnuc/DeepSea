@@ -22,6 +22,8 @@ public class ConsumeRecipe extends Consume {
 
     public final @Nullable Func<Building, Recipe> recipe;
 
+    //Somehow works fine.
+
     @SuppressWarnings("unchecked")
     public <T extends Building> ConsumeRecipe(Func<T, Recipe> recipe, Func<T, Recipe> display) {
         this.recipe = (Func<Building, Recipe>) recipe;

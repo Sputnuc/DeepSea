@@ -6,25 +6,21 @@ import ds.content.dsFx;
 import ds.content.dsSounds;
 import ds.content.items.zItems;
 import ds.content.units.zUnits;
-import ds.world.blocks.crafting.MultiRecipeCrafter;
 import ds.world.blocks.distribution.ClosedConveyor;
 import ds.world.blocks.power.TestThermalGenerator;
 import ds.world.blocks.production.WallDrill;
 import ds.world.blocks.turret.AccelPowerTurret;
 import ds.world.blocks.turret.dsHarpoonTurret;
 import ds.world.blocks.turret.dsItemTurret;
-import ds.world.consumers.Recipe;
 import ds.world.draw.drawers.DrawBetterRegion;
-import ds.world.graphics.DSPal;
-import ds.world.meta.DSEnv;
+import ds.world.graphics.dsPal;
+import ds.world.meta.dsEnv;
 import ds.world.type.entities.bullets.HarpoonBulletType;
 import ds.world.type.entities.effect.RandRadialEffect;
 import mindustry.content.Fx;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.bullet.LightningBulletType;
-import mindustry.entities.effect.ParticleEffect;
-import mindustry.entities.effect.RadialEffect;
 import mindustry.entities.part.RegionPart;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.gen.Sounds;
@@ -34,7 +30,6 @@ import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.world.Block;
 import mindustry.world.blocks.defense.Wall;
-import mindustry.world.blocks.defense.turrets.ItemTurret;
 import mindustry.world.blocks.distribution.ItemBridge;
 import mindustry.world.blocks.distribution.Junction;
 import mindustry.world.blocks.distribution.Router;
@@ -91,7 +86,7 @@ public class zBlocks {
         cutoff = new dsHarpoonTurret("cutoff"){{
             health = 785;
             requirements(Category.turret, with(aluminium, 75, silver, 45));
-            outlineColor = DSPal.dsTurretOutline;
+            outlineColor = dsPal.dsTurretOutline;
             size = 2;
             reload = 300;
             range = 200;
@@ -118,7 +113,7 @@ public class zBlocks {
         irritation = new dsItemTurret("irritation"){{
             health = 650;
             requirements(Category.turret, with(aluminium, 75, silver, 45));
-            outlineColor = DSPal.dsTurretOutline;
+            outlineColor = dsPal.dsTurretOutline;
             size = 2;
             shoot = new ShootSpread(){{
                 spread = 1.75f;
@@ -173,7 +168,7 @@ public class zBlocks {
             shootY = 28/4f;
             health = 975;
             requirements(Category.turret, with(aluminium, 95, silver, 75, manganese, 55));
-            outlineColor = DSPal.dsTurretOutline;
+            outlineColor = dsPal.dsTurretOutline;
             size = 3;
             range = 25 * tilesize;
             shootCone = 15;
@@ -225,7 +220,7 @@ public class zBlocks {
             buildCostMultiplier = 3;
             unitCapModifier = 12;
             unitType = zUnits.moment;
-            envEnabled |= Env.terrestrial | DSEnv.underwaterWarm;
+            envEnabled |= Env.terrestrial | dsEnv.underwaterWarm;
             envDisabled = Env.none;
             squareSprite = false;
         }};

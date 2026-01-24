@@ -1,8 +1,7 @@
 package ds.world.type.entities.dsUnits;
 
-import arc.audio.Sound;
 import ds.content.dsFx;
-import ds.world.meta.DSEnv;
+import ds.world.meta.dsEnv;
 import mindustry.entities.abilities.MoveEffectAbility;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Pal;
@@ -12,7 +11,7 @@ public class TorpedoUnitType extends MissileUnitType {
     public TorpedoUnitType(String name) {
         super(name);
         health = 40;
-        envRequired = DSEnv.underwaterWarm;
+        envRequired = dsEnv.underwaterWarm;
         trailLength = 0;
         engineSize = 0;
         engineOffset = 0;

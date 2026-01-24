@@ -1,23 +1,14 @@
 package ds.content.planets;
 
 import arc.graphics.Color;
-import arc.graphics.Mesh;
 import arc.struct.Seq;
 import ds.content.blocks.zBlocks;
-import ds.world.meta.DSEnv;
-import mindustry.content.Blocks;
+import ds.world.meta.dsEnv;
 import mindustry.content.Planets;
 import mindustry.game.Team;
-import mindustry.graphics.Pal;
 import mindustry.graphics.g3d.*;
-import mindustry.maps.planet.AsteroidGenerator;
-import mindustry.maps.planet.SerpuloPlanetGenerator;
-import mindustry.maps.planet.TantrosPlanetGenerator;
-import mindustry.type.ItemStack;
 import mindustry.type.Planet;
 import mindustry.world.meta.Env;
-
-import static ds.content.items.zItems.aluminium;
 
 public class dsPlanets {
     public static Planet z387;
@@ -52,7 +43,7 @@ public class dsPlanets {
                 r.waveTeam = Team.crux;
                 r.coreCapture = false;
                 r.hideBannedBlocks = true;
-                r.env = Env.terrestrial | DSEnv.underwaterWarm & ~(Env.groundOil | Env.scorching | Env.spores);
+                r.env = Env.terrestrial | dsEnv.underwaterWarm & ~(Env.groundOil | Env.scorching | Env.spores);
             };
             iconColor = Color.valueOf("96a4d6");
             atmosphereColor = Color.valueOf("a5b1f0");
@@ -60,7 +51,7 @@ public class dsPlanets {
             atmosphereRadOut = 0.3f;
             alwaysUnlocked = true;
             defaultCore = zBlocks.coreInfluence;
-            defaultEnv = Env.terrestrial | DSEnv.underwaterWarm & ~(Env.groundOil | Env.scorching | Env.spores);
+            defaultEnv = Env.terrestrial | dsEnv.underwaterWarm & ~(Env.groundOil | Env.scorching | Env.spores);
         }};
     }
 }
