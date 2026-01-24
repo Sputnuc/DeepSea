@@ -8,6 +8,7 @@ import ds.content.items.zItems;
 import ds.world.blocks.environment.EffectFloor;
 import ds.world.blocks.environment.GlowingSeaweed;
 import ds.world.blocks.environment.TiledFloor;
+import ds.world.meta.DSEnv;
 import mindustry.entities.Effect;
 import mindustry.entities.effect.ParticleEffect;
 import mindustry.graphics.Layer;
@@ -26,7 +27,7 @@ public class zEnv {
             limestoneFloor, limestoneWall,
 
             //Manganese biome
-            manganeseCrystalFloor, manganeseCrystals, getManganeseCrystalWalls,
+            manganeseHydroxideCrystals,
 
             // Quartz biome
             quartzFloor, quartzSlabs, quartsCrystalWall, quartsWall,
@@ -35,7 +36,10 @@ public class zEnv {
             sulfurFloor, sulfurSandFloor, sulfurSandWall, sulfurGeyser, sulfurVent, sulfurWall, sulfurCrystal,
 
             // Basalt
-            basaltWall, geotermalFloor,
+            basaltWall, geothermalFloor,
+
+            // Deep sandstone
+            deepSandstone, deepSandstoneWall,
 
             // Nature
             // some sea bushes
@@ -109,13 +113,25 @@ public class zEnv {
         basaltWall = new StaticWall("basalt-wall"){{
             variants = 3;
         }};
-        geotermalFloor = new EffectFloor("geotermal-floor"){{
+        geothermalFloor = new EffectFloor("geothermal-floor"){{
             variants = 4;
             emitLight = true;
             lightRadius = 40f;
             lightColor = hotrock.lightColor;
-            attributes.set(Attribute.heat, 0.75f);
+            attributes.set(Attribute.heat, 1.5f);
             effectChance = 0.04f;
+        }};
+        // Sandstone
+        deepSandstone = new Floor("deep-sandstone"){{
+            variants = 4;
+        }};
+        deepSandstoneWall = new StaticWall("deep-sandstone-wall"){{
+            variants = 3;
+        }};
+        // Manganese hydroxide
+        manganeseHydroxideCrystals = new StaticWall("manganese-hydroxide-crystals"){{
+            itemDrop = zItems.manganeseHydroxide;
+            variants = 3;
         }};
 
         //Nature

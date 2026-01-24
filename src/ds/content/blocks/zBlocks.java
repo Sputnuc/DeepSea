@@ -6,20 +6,25 @@ import ds.content.dsFx;
 import ds.content.dsSounds;
 import ds.content.items.zItems;
 import ds.content.units.zUnits;
+import ds.world.blocks.crafting.MultiRecipeCrafter;
 import ds.world.blocks.distribution.ClosedConveyor;
-import ds.world.blocks.turret.AccelItemTurret;
+import ds.world.blocks.power.TestThermalGenerator;
+import ds.world.blocks.production.WallDrill;
 import ds.world.blocks.turret.AccelPowerTurret;
 import ds.world.blocks.turret.dsHarpoonTurret;
+import ds.world.blocks.turret.dsItemTurret;
+import ds.world.consumers.Recipe;
+import ds.world.draw.drawers.DrawBetterRegion;
 import ds.world.graphics.DSPal;
 import ds.world.meta.DSEnv;
 import ds.world.type.entities.bullets.HarpoonBulletType;
-import ds.world.type.entities.bullets.PosLightningBulletType;
+import ds.world.type.entities.effect.RandRadialEffect;
 import mindustry.content.Fx;
-import mindustry.entities.Effect;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.bullet.LightningBulletType;
-import mindustry.entities.effect.WaveEffect;
+import mindustry.entities.effect.ParticleEffect;
+import mindustry.entities.effect.RadialEffect;
 import mindustry.entities.part.RegionPart;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.gen.Sounds;
@@ -34,6 +39,8 @@ import mindustry.world.blocks.distribution.ItemBridge;
 import mindustry.world.blocks.distribution.Junction;
 import mindustry.world.blocks.distribution.Router;
 import mindustry.world.blocks.liquid.*;
+import mindustry.world.blocks.power.Battery;
+import mindustry.world.blocks.power.LightBlock;
 import mindustry.world.blocks.power.PowerNode;
 import mindustry.world.blocks.power.ThermalGenerator;
 import mindustry.world.blocks.production.AttributeCrafter;
@@ -41,6 +48,8 @@ import mindustry.world.blocks.production.BurstDrill;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.draw.*;
+import mindustry.world.meta.Attribute;
+import mindustry.world.meta.BuildVisibility;
 import mindustry.world.meta.Env;
 
 
@@ -56,9 +65,11 @@ public class zBlocks {
             //Production
             hydraulicDrill, hydraulicWallDrill,
             //Power
-            powerTransmitter, hydroTurbineGenerator,
+            powerTransmitter, powerDistributor, condensator, hydroTurbineGenerator, geothermalGenerator,
+            //Effect
+            lightProjector,
             //Crafting
-            hydrogenSulfideCollector, hydrogenSulfideDiffuser,
+            hydrogenSulfideCollector, hydrogenSulfideDiffuser, testCrafter, manganeseSynthesizer,
             //Logistic
             isolatedConveyor, isolatedRouter, isolatedJunction, isolatedBridge, pipe, pipeRouter,
             //Cores
@@ -86,8 +97,7 @@ public class zBlocks {
             range = 200;
             shake = 2;
             shootSound = dsSounds.shootHarpoon;
-            fuelItem = sulfur;
-            fuelAmount = 3;
+            consumeItem(sulfur, 3);
             shootCone = 1;
             drawer = new DrawTurret("ds-turret-");
             shootY = 2;
@@ -105,7 +115,7 @@ public class zBlocks {
                 returnSpeed = 3;
             }};
         }};
-        irritation = new ItemTurret("irritation"){{
+        irritation = new dsItemTurret("irritation"){{
             health = 650;
             requirements(Category.turret, with(aluminium, 75, silver, 45));
             outlineColor = DSPal.dsTurretOutline;
@@ -118,14 +128,14 @@ public class zBlocks {
             shootCone = 10;
             velocityRnd = 0.1f;
             shootSound = Sounds.shootDiffuse;
-            consumePower(15/60f);
+            consumePower(30/60f);
             range = 15 * tilesize;
             reload = 30;
             targetAir = false;
             drawer = new DrawTurret("ds-turret-");
             ammoUseEffect = Fx.casing2Double;
             ammo(
-                    silver, new BasicBulletType(8,19){{
+                    silver, new BasicBulletType(8,15){{
                         pierce = true;
                         pierceCap = 2;
                         lifetime = 15;
@@ -138,8 +148,9 @@ public class zBlocks {
                         hitEffect = despawnEffect = Fx.hitBulletColor;
                         trailInterval = 2;
                         trailEffect = dsFx.dsBulletSparkTrail;
+                        ammoMultiplier = 1;
                     }},
-                    ferrum, new BasicBulletType(8,26){{
+                    ferrum, new BasicBulletType(8,23){{
                         reloadMultiplier = 0.75f;
                         pierce = true;
                         pierceCap = 3;
@@ -154,6 +165,7 @@ public class zBlocks {
                         hitEffect = despawnEffect = Fx.hitBulletColor;
                         trailInterval = 2;
                         trailEffect = dsFx.dsBulletSparkTrail;
+                        ammoMultiplier = 2;
                     }}
             );
         }};
@@ -194,6 +206,11 @@ public class zBlocks {
                 lightningLengthRand = 5;
                 lightningColor = Color.valueOf("a1fff9");
                 lightningCone = 3;
+                lightningType = new BulletType(0.001f, 6){{
+                    hitSize = 15;
+                    lifetime = 5;
+                    hitEffect = despawnEffect = Fx.none;
+                }};
             }};
         }};
     }
@@ -211,6 +228,13 @@ public class zBlocks {
             envEnabled |= Env.terrestrial | DSEnv.underwaterWarm;
             envDisabled = Env.none;
             squareSprite = false;
+        }};
+        lightProjector = new LightBlock("light-projector"){{
+            requirements(Category.effect, BuildVisibility.lightingOnly, with(aluminium, 25, silver, 15));
+            size = 2;
+            brightness = 0.875f;
+            radius = 25 * tilesize;
+            consumePower(0.5f);
         }};
     }
     public static void loadLogisticBlocks(){
@@ -255,6 +279,15 @@ public class zBlocks {
             drillEffect = dsFx.drillImpact;
             arrows = 0;
         }};
+        hydraulicWallDrill = new WallDrill("hydraulic-wall-drill"){{
+            requirements(Category.production, with(aluminium, 50, silver, 24));
+            drillTime = 300;
+            liquidBoostIntensity = 1;
+            size = 3;
+            tier = 4;
+            drillEffectChance = 0.01f;
+            drillEffect = Fx.mineWallSmall;
+        }};
     }
     public static void loadPowerBlocks(){
         powerTransmitter = new PowerNode("power-transmitter"){{
@@ -266,6 +299,23 @@ public class zBlocks {
             maxNodes = 3;
             laserRange = 15;
             underBullets = true;
+        }};
+        powerDistributor = new PowerNode("power-distributor"){{
+            requirements(Category.power, with(aluminium, 6, silver, 4, manganese, 2));
+            size = 1;
+            laserColor1 = Color.valueOf("ffdede");
+            laserColor2 = Color.valueOf("e56e6e");
+            laserScale = 0.35f;
+            maxNodes = 10;
+            laserRange = 6;
+            underBullets = true;
+        }};
+        condensator = new Battery("condensator"){{
+            requirements(Category.power, with(aluminium, 45, silver, 25, manganese, 35));
+            size = 2;
+            fullLightColor = Color.valueOf("bed5f7");
+            consumePowerBuffered(7800f);
+            baseExplosiveness = 3.5f;
         }};
         hydroTurbineGenerator = new ThermalGenerator("hydro-turbine-generator"){{
             requirements(Category.power, with(aluminium, 95, silver, 85));
@@ -279,6 +329,47 @@ public class zBlocks {
             liquidCapacity = 30;
             hasLiquids = true;
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(hydrogenSulfide), new DrawBlurSpin("-rotator", 6), new DrawDefault());
+        }};
+        geothermalGenerator = new TestThermalGenerator("geothermal-generator"){{
+            requirements(Category.power, with(aluminium, 100, silver, 95, manganese, 65));
+            size = 4;
+            attribute = Attribute.heat;
+            powerProduction = 5/16f;
+            displayEfficiencyScale = 1/16f;
+            effectChance = 0.1f;
+            lightRadius = 1;
+            generateEffect = new RandRadialEffect(){{
+                amount = 3;
+                rotationSpacing = 360f / amount;
+                effectSpacingRndMultiplier = 1.35f;
+                lengthOffset = 42/4f;
+                effect = dsFx.geotermalBubbles;
+            }};
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"),
+                    new DrawBetterRegion("-coil", -1){{
+                        spinSprite = true;
+                        rotation = 0;
+                    }},
+                    new DrawBetterRegion("-coil", -1){{
+                        spinSprite = true;
+                        rotation = 22.5f;
+                    }},
+                    new DrawBetterRegion("-coil", -1){{
+                        spinSprite = true;
+                        rotation = 45f;
+                    }},
+                    new DrawBetterRegion("-coil", -1){{
+                        spinSprite = true;
+                        rotation = 67.5f;
+                    }},
+                    new DrawGlowRegion("-glow"){{
+                        color = Color.valueOf("ffabb5");
+                        alpha = 0.35f;
+                        glowScale = 0.1f;
+                    }},
+                    new DrawDefault()
+            );
         }};
     }
     public static void loadCraftBlocks(){
@@ -306,19 +397,42 @@ public class zBlocks {
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(hydrogenSulfide), new DrawLiquidTile(hydrogen),new DrawDefault());
             ignoreLiquidFullness = true;
         }};
+        manganeseSynthesizer = new GenericCrafter("manganese-synthesizer"){{
+            requirements(Category.crafting, with(aluminium, 125, silver, 95));
+            size = 4;
+            consumePower(2);
+            consumeLiquid(hydrogen, 9/60f);
+            consumeItems(with(manganeseHydroxide, 3, aluminium, 1));
+            craftTime = 120;
+            outputItem = new ItemStack(manganese, 2);
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom2"),
+                    new DrawLiquidTile(hydrogen),
+                    new DrawRegion("-bottom1"),
+                    new DrawArcSmelt(){{
+                        flameRad = 5;
+                        flameColor= Color.valueOf("f5a4de");
+                        midColor = Color.valueOf("db6999");
+                        circleStroke = 0;
+                        particles = 20;
+                        particleRad = 8;
+                    }},
+                    new DrawDefault()
+            );
+        }};
     }
     public static void loadDefence(){
         float dswallHealthMultiplier = 45;
         aluminiumWall = new Wall("aluminium-wall"){{
             size = 1;
             health = (int) (dswallHealthMultiplier * this.size * this.size * 10);
-            requirements(Category.defense, with(aluminium, 9 * this.size * this.size));
+            requirements(Category.defense, with(aluminium, 6 * this.size * this.size));
         }};
         aluminiumWallLarge = new Wall("aluminium-wall-large"){{
             researchCostMultiplier = 0.5f;
             size = 2;
             health = (int) (dswallHealthMultiplier * this.size * this.size * 10);
-            requirements(Category.defense, with(aluminium, 9 * this.size * this.size));
+            requirements(Category.defense, with(aluminium, 6 * this.size * this.size));
         }};
     }
 }

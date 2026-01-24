@@ -1,103 +1,167 @@
 package ds.world.consumers;
 
 import arc.func.Func;
+import arc.math.Mathf;
+import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
+import arc.util.Nullable;
+import ds.world.blocks.crafting.MultiRecipeCrafter;
 import mindustry.gen.Building;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.type.Liquid;
 import mindustry.type.LiquidStack;
+import mindustry.ui.ReqImage;
 import mindustry.world.Block;
 import mindustry.world.consumers.Consume;
-
 import mindustry.world.*;
+import mindustry.world.consumers.ConsumePower;
 import mindustry.world.meta.*;
 
 public class ConsumeRecipe extends Consume {
 
-    private final Func<Building, ItemStack[]> items;
+    public final @Nullable Func<Building, Recipe> recipe;
 
     @SuppressWarnings("unchecked")
-    public <T extends Building> ConsumeRecipe(Func<T, ItemStack[]> items){
-        this.items = (Func<Building, ItemStack[]>)items;
+    public <T extends Building> ConsumeRecipe(Func<T, Recipe> recipe, Func<T, Recipe> display) {
+        this.recipe = (Func<Building, Recipe>) recipe;
     }
 
-
-    public Recipe currentRecipe;
-
-    public Seq<Recipe> recipes = new Seq<>();
-
-    public ConsumeRecipe(Recipe... recipes){
-        if(recipes.length > 0) {
-            this.recipes.addAll(recipes);
-            this.currentRecipe = recipes[0];
-        }
-        items = null;
-    }
-
-    public void setRecipe(int index) {
-        if(index >= 0 && index < recipes.size) {
-            currentRecipe = recipes.get(index);
-        }
+    @SuppressWarnings("unchecked")
+    public <T extends Building> ConsumeRecipe(Func<T, Recipe> recipe) {
+        this.recipe = (Func<Building, Recipe>) recipe;
     }
 
     @Override
-    public void apply(Block block) {
-        // Настраиваем блок
-        block.hasItems = true;
-        block.hasLiquids = true;
-        block.hasPower = true;
-    }
+    public void update(Building build) {
+        if(build instanceof MultiRecipeCrafter.MultiRecipeCrafterBuild){
+            Recipe curRecipe = ((MultiRecipeCrafter.MultiRecipeCrafterBuild) build).currentRecipe;
+            if(curRecipe == null) return;
 
-    public boolean valid(Building build) {
-        if (currentRecipe == null) return false;
+            LiquidStack[] liquids = curRecipe.inputLiquids;
 
-        // Проверяем предметы
-        if (currentRecipe.inputItem != null) {
-            if (build.items.get(currentRecipe.inputItem.item) < currentRecipe.inputItem.amount) {
-                return false;
+            if(liquids == null && curRecipe.inputLiquid != null) {
+                liquids = new LiquidStack[]{curRecipe.inputLiquid};
             }
-        }
 
-        if (currentRecipe.inputItems != null) {
-            for (ItemStack stack : currentRecipe.inputItems) {
-                if (build.items.get(stack.item) < stack.amount) {
-                    return false;
+            if (liquids != null){
+                float mult = multiplier.get(build);
+                for (var stack : liquids) {
+                    if(stack != null && stack.liquid != null) {
+                        build.liquids.remove(stack.liquid, stack.amount * build.edelta() * mult);
+                    }
                 }
             }
         }
-
-        // Проверяем жидкости
-        if (currentRecipe.inputLiquid != null) {
-            if (build.liquids.get(currentRecipe.inputLiquid.liquid) < currentRecipe.inputLiquid.amount) {
-                return false;
-            }
-        }
-
-        if (currentRecipe.inputLiquids != null) {
-            for (LiquidStack stack : currentRecipe.inputLiquids) {
-                if (build.liquids.get(stack.liquid) < stack.amount) {
-                    return false;
-                }
-            }
-        }
-
-        // Проверяем энергию
-        if (currentRecipe.powerUse > 0) {
-            if (build.power == null || build.power.status <= 0) {
-                return false;
-            }
-        }
-        return true;
     }
 
     @Override
     public void trigger(Building build){
-        for(ItemStack stack : items.get(build)){
-            build.items.remove(stack.item, Math.round(stack.amount * multiplier.get(build)));
+        if(build instanceof MultiRecipeCrafter.MultiRecipeCrafterBuild) {
+            Recipe curRecipe = ((MultiRecipeCrafter.MultiRecipeCrafterBuild) build).currentRecipe;
+            if(curRecipe == null) return;
+
+            ItemStack[] items = curRecipe.inputItems;
+
+            if(items == null && curRecipe.inputItem != null) {
+                items = new ItemStack[]{curRecipe.inputItem};
+            }
+
+            if (items != null) {
+                for (var stack : items) {
+                    if(stack != null && stack.item != null) {
+                        build.items.remove(stack.item, Math.round(stack.amount * multiplier.get(build)));
+                    }
+                }
+            }
         }
-        for(ItemStack stack : items.get(build)){
-            build.items.remove(stack.item, Math.round(stack.amount * multiplier.get(build)));
+    }
+
+    @Override
+    public void build(Building build, Table table){
+        if(build instanceof MultiRecipeCrafter.MultiRecipeCrafterBuild) {
+            Recipe curRecipe = ((MultiRecipeCrafter.MultiRecipeCrafterBuild) build).currentRecipe;
+            if(curRecipe == null) return;
+
+            ItemStack[] items = curRecipe.inputItems;
+
+            if(items == null && curRecipe.inputItem != null) {
+                items = new ItemStack[]{curRecipe.inputItem};
+            }
+
+            if (items != null) {
+                ItemStack[] finalItems = items;
+                table.table(c -> {
+                    int i = 0;
+                    for (var stack : finalItems) {
+                        if(stack != null && stack.item != null) {
+                            c.add(new ReqImage(StatValues.stack(stack.item, Math.round(stack.amount * multiplier.get(build))),
+                                    () -> build.items.has(stack.item, Math.round(stack.amount * multiplier.get(build))))).padRight(8);
+                            if (++i % 4 == 0) c.row();
+                        }
+                    }
+                }).left();
+            }
         }
+    }
+
+    @Override
+    public float efficiency(Building build){
+        if(build instanceof MultiRecipeCrafter.MultiRecipeCrafterBuild) {
+            Recipe curRecipe = ((MultiRecipeCrafter.MultiRecipeCrafterBuild) build).currentRecipe;
+            if(curRecipe == null) return 0f;
+
+            ItemStack[] items = curRecipe.inputItems;
+
+            if(items == null && curRecipe.inputItem != null) {
+                items = new ItemStack[]{curRecipe.inputItem};
+            }
+
+            LiquidStack[] liquids = curRecipe.inputLiquids;
+
+            if(liquids == null && curRecipe.inputLiquid != null) {
+                liquids = new LiquidStack[]{curRecipe.inputLiquid};
+            }
+
+            float firstCheck = 1f;
+            if (items != null) {
+                boolean hasAllItems = true;
+                for(var stack : items) {
+                    if(stack != null && stack.item != null) {
+                        if(!build.items.has(stack.item, Math.round(stack.amount * multiplier.get(build)))) {
+                            hasAllItems = false;
+                            break;
+                        }
+                    }
+                }
+                firstCheck = (build.consumeTriggerValid() || hasAllItems) ? 1f : 0f;
+            }
+
+            float mult = multiplier.get(build);
+            float ed = build.edelta() * build.efficiencyScale();
+            float min1 = 1f;
+            if (liquids != null) {
+                for (var stack : liquids) {
+                    if(stack != null && stack.liquid != null) {
+                        min1 = Math.min(build.liquids.get(stack.liquid) / (stack.amount * ed * mult), min1);
+                    }
+                }
+            }
+
+            float secCheck = 1f;
+            if (curRecipe.powerUse > 0 && build.power != null) secCheck = build.power.status;
+            float min2 = Math.min(firstCheck, secCheck);
+            return Math.min(min1, min2);
+        }
+        return 0f;
+    }
+
+    @Override
+    public void display(Stats stats){}
+
+
+    @Override
+    public boolean ignore(){
+        return false;
     }
 }

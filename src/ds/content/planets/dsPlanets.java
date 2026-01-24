@@ -22,6 +22,7 @@ import static ds.content.items.zItems.aluminium;
 public class dsPlanets {
     public static Planet z387;
     public static void loadContent(){
+        //"Vmtkb2JFbEZWbWhqYmxKdg=="
         z387 = new Planet("z387", Planets.sun, 2f, 3){{
             generator = new zGenerator();
             meshLoader = () -> new HexMesh(this, 6);
@@ -43,7 +44,7 @@ public class dsPlanets {
             clearSectorOnLose = true;
             ruleSetter = r -> {
                 r.lighting = true;
-                r.ambientLight = Color.valueOf("020308ec");
+                r.ambientLight = Color.valueOf("010205ec");
                 r.loadout = new Seq<>();
                 r.fire = false;
                 r.fog = false; //tru

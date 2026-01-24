@@ -3,6 +3,7 @@ package ds.world.blocks.distribution;
 import arc.Core;
 import arc.graphics.g2d.*;
 import arc.math.geom.Geometry;
+import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
@@ -50,6 +51,7 @@ public class ClosedConveyor extends Conveyor {
         public void unitOn(Unit unit) {
             //no
         }
+
         @Override
         public void onProximityUpdate(){
             super.onProximityUpdate();

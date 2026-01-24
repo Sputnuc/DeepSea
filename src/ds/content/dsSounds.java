@@ -13,13 +13,18 @@ public class dsSounds {
             shootSmallWeapon = new Sound(),
             shootTank = new Sound(),
             //Mech steps
-            dsMechStep = new Sound();
+            dsMechStep = new Sound(),
+            //Mics sounds
+            loopAngler = new Sound(),
+            loopAnglerAttack = new Sound();
 
     public static void load(){
         shootHarpoon = loadSound("harpoon-shoot");
         shootSmallWeapon = loadSound("shoot-small-weapons");
         shootTank = loadSound("shoot-tank-weapon");
         dsMechStep = loadSound("mech-step");
+        loopAngler = loadSound("loopAngler");
+        loopAnglerAttack  = loadSound("loopAnglerAttack");
     }
 
     //Just copy all this function

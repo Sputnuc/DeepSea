@@ -1,17 +1,19 @@
 package ds.content;
 
+import arc.graphics.Blending;
 import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.Rand;
 import arc.math.geom.Vec2;
+import arc.util.Tmp;
 import mindustry.entities.Effect;
 import mindustry.entities.effect.ParticleEffect;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
-import mindustry.graphics.Pal;
 
 import static arc.graphics.g2d.Draw.*;
 import static arc.graphics.g2d.Lines.*;
@@ -39,6 +41,13 @@ public class dsFx {
         color(Color.valueOf("e52020fe"), Color.valueOf("9e191900"), e.fin());
         randLenVectors(e.id, 9, 8f * e.fin(Interp.circleOut) * 4.25f, (x, y) -> {
             Fill.circle(e.x + x, e.y + y, e.fin(Interp.circleOut) * 5f + 0.75f);
+        });
+    }),
+    staticBlackSmoke = new Effect(60, e ->{
+        color(Color.valueOf("141414"), Color.valueOf("05040400"), e.fin());
+        Draw.z(90);
+        randLenVectors(e.id, 4, 40f * e.fin(Interp.circleOut) + 25f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fin(Interp.circleOut) * 6f + 4.75f);
         });
     }),
     torpedoTrail = new Effect(120, e -> {
@@ -143,4 +152,16 @@ public class dsFx {
         colorFrom = Color.white;
         colorTo = Color.valueOf("ffffff").a(0);
     }};
+
+    //FX Functions
+
+    public static Effect smoothColorCircle(Color out, float rad, float lifetime, Interp interpolation) {
+        return new Effect(lifetime, rad * 2, e -> {
+            Draw.blend(Blending.additive);
+            float radius = e.fin(interpolation) * rad;
+            Fill.light(e.x, e.y, circleVertices(radius), radius, Color.clear, Tmp.c1.set(out).a(e.fout(Interp.pow5Out)));
+            Drawf.light(e.x, e.y, radius * 1.3f, out, 0.7f * e.fout(0.23f));
+            Draw.blend();
+        }).layer(Layer.effect + 0.15f);
+    }
 }

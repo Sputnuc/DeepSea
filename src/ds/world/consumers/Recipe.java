@@ -5,6 +5,7 @@ import ds.content.dsFx;
 import mindustry.entities.Effect;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
+import mindustry.world.draw.DrawMulti;
 
 public class Recipe {
     //Consume
@@ -20,6 +21,7 @@ public class Recipe {
 
     public float powerUse = 0f;
     public float craftTime = 60f;
+    public float heatUse = 0f;
 
     //Output
     @Nullable
@@ -33,6 +35,8 @@ public class Recipe {
     public LiquidStack outputLiquid;
 
     public Effect craftEffect = dsFx.drillImpact;
+    @Nullable
+    public DrawMulti customDrawer = null;
 
     public Recipe(){}
 }

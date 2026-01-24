@@ -33,11 +33,16 @@ public class AdvancedLightWeapon extends Weapon {
     @Override
     public void update(Unit unit, WeaponMount mount){
         super.update(unit, mount);
-        drawLight(unit, mount);
+        if (Vars.state.rules.lighting) drawLight(unit, mount);
+    }
+
+    @Override
+    public void draw(Unit unit, WeaponMount mount){
+        super.draw(unit, mount);
+        if(Vars.state.isPaused()) drawLight(unit, mount);
     }
 
     public void drawLight(Unit unit , WeaponMount mount){
-        if (Vars.state.rules.lighting){
             float mountX = unit.x + Angles.trnsx(unit.rotation - 90, x, y);
             float mountY = unit.y + Angles.trnsy(unit.rotation - 90, x, y);
             float weaponRotation = unit.rotation - 90 + (rotate ? mount.rotation : baseRotation);
@@ -48,6 +53,5 @@ public class AdvancedLightWeapon extends Weapon {
             } else {
                 DrawDirLight.DrawLightBeamNonTileable(wX, wY, mount.rotation + unit.rotation(), lightLength, lightCone, rayWidth);
             }
-        }
     }
 }

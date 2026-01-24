@@ -5,7 +5,7 @@ import arc.graphics.Color;
 import mindustry.entities.bullet.BulletType;
 import mindustry.ui.Bar;
 
-public class dsHarpoonTurret extends dsFuelTurret {
+public class dsHarpoonTurret extends dsConsumeTurret {
     public dsHarpoonTurret(String name) {
         super(name);
     }
@@ -32,8 +32,8 @@ public class dsHarpoonTurret extends dsFuelTurret {
 
         @Override
         public BulletType useAmmo(){
-            consume();
             returnedBullet = false;
+            consume();
             return shootType;
         }
     }

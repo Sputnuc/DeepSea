@@ -10,6 +10,7 @@ import mindustry.world.blocks.environment.OreBlock;
 import static mindustry.Vars.tilesize;
 
 public class dsMath {
+    public static int[] singsZeroInclude = {-1, 0, 1};
     //for FX
     public static Vec2 RayCastSolid(float stx, float sty, float dir, int len, int stepS){
         Vec2 vec = new Vec2(Mathf.cosDeg(dir) * len + stx, Mathf.sinDeg(dir) * len + sty);

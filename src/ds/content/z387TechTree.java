@@ -38,9 +38,12 @@ public class z387TechTree {
                     });
                 });
             });
+            node(lightProjector);
             //Turrets
             node(cutoff, ItemStack.with(aluminium, 100, silver, 90),()->{
-                node(irritation, Seq.with(new Objectives.SectorComplete(zSectors.theBeginning)), ()->{});
+                node(irritation, Seq.with(new Objectives.SectorComplete(zSectors.theBeginning)), ()->{
+                    node(discharge);
+                });
             });
             //Defence
             node(aluminiumWall, ItemStack.with(aluminium, 10), ()->{
@@ -57,14 +60,20 @@ public class z387TechTree {
 
             //Production
             node(hydrogenSulfideCollector, ItemStack.with(aluminium, 80, silver, 60), ()->{
-                node(hydrogenSulfideDiffuser, ItemStack.with(aluminium, 180, silver, 90), ()->{});
+                node(hydrogenSulfideDiffuser, ItemStack.with(aluminium, 180, silver, 90), ()->{
+                    node(manganeseSynthesizer, ItemStack.with(aluminium, 420, silver, 390), Seq.with(new Objectives.Research(manganeseHydroxide)), ()->{});
+                });
             });
 
             //Drills
-            node(hydraulicDrill, ItemStack.with(aluminium, 20), ()->{});
+            node(hydraulicDrill, ItemStack.with(aluminium, 20), ()->{
+                node(hydraulicWallDrill, ItemStack.with(aluminium, 200, silver, 100), ()->{});
+            });
 
             //Power
-            node(powerTransmitter, ItemStack.with(aluminium, 90, silver, 20),() ->{});
+            node(powerTransmitter, ItemStack.with(aluminium, 90, silver, 20),() ->{
+                node(powerDistributor);
+            });
             node(hydroTurbineGenerator, ItemStack.with(aluminium, 120, silver, 90), ()->{});
         });
     }

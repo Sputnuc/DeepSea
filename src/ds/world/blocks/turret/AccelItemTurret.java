@@ -8,14 +8,13 @@ import ds.world.meta.dsStats;
 import mindustry.entities.bullet.BulletType;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
-import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.ConsumeLiquidFilter;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
 import static mindustry.Vars.tilesize;
 
-public class AccelItemTurret extends ItemTurret {
+public class AccelItemTurret extends dsItemTurret {
     public float speedUpPerShoot = 2;
     public float maxAccel = 0.5f;
     public float cooldownSpeed = 1;

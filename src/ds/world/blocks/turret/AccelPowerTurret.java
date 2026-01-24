@@ -9,15 +9,13 @@ import ds.world.meta.dsStats;
 import mindustry.entities.bullet.BulletType;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
-import mindustry.world.blocks.defense.turrets.ItemTurret;
-import mindustry.world.blocks.defense.turrets.PowerTurret;
 import mindustry.world.consumers.ConsumeLiquidFilter;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
 import static mindustry.Vars.tilesize;
 
-public class AccelPowerTurret extends PowerTurret {
+public class AccelPowerTurret extends dsPowerTurret {
     public float speedUpPerShoot = 2;
     public float maxAccel = 0.5f;
     public float cooldownSpeed = 1;

@@ -20,8 +20,8 @@ public class zItems {
             alwaysUnlocked = false;
         }};
         manganeseHydroxide = new Item("manganese-hydroxide", Color.valueOf("e3bad7")){{
-            cost = 1;
-            hardness = 3;
+            cost = 1.75f;
+            hardness = 4;
             alwaysUnlocked = false;
         }};
         manganese = new Item("manganese", Color.valueOf("cfa7af")){{
