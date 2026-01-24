@@ -29,6 +29,7 @@ import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.world.Block;
+import mindustry.world.blocks.defense.MendProjector;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.distribution.ItemBridge;
 import mindustry.world.blocks.distribution.Junction;
@@ -62,7 +63,7 @@ public class zBlocks {
             //Power
             powerTransmitter, powerDistributor, condensator, hydroTurbineGenerator, geothermalGenerator,
             //Effect
-            lightProjector,
+            lightProjector, repairModule,
             //Crafting
             hydrogenSulfideCollector, hydrogenSulfideDiffuser, testCrafter, manganeseSynthesizer,
             //Logistic
@@ -223,6 +224,19 @@ public class zBlocks {
             envEnabled |= Env.terrestrial | dsEnv.underwaterWarm;
             envDisabled = Env.none;
             squareSprite = false;
+        }};
+        repairModule = new MendProjector("repair-module"){{
+            requirements(Category.effect, with(aluminium, 55, silver, 45, manganese, 30));
+            consumePower(1);
+            consumeLiquid(hydrogen, 3/60f);
+            size = 2;
+            reload = 300;
+            range = 60;
+            healPercent = 15;
+            scaledHealth = 55;
+            phaseRangeBoost = 0;
+            phaseBoost = 0;
+            baseColor = phaseColor = Color.valueOf("d1ffff");
         }};
         lightProjector = new LightBlock("light-projector"){{
             requirements(Category.effect, BuildVisibility.lightingOnly, with(aluminium, 25, silver, 15));

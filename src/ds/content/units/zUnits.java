@@ -64,7 +64,7 @@ public class zUnits {
                 mirror = false;
                 reload = 1;
                 bullet = new BulletType(){{
-                    shootEffect = despawnEffect = hitEffect = none;
+                    shootEffect = despawnEffect = hitEffect  = smokeEffect = none;
                     instantDisappear = true;
                 }};
                 display = false;

@@ -39,6 +39,7 @@ public class z387TechTree {
                 });
             });
             node(lightProjector);
+            node(repairModule);
             //Turrets
             node(cutoff, ItemStack.with(aluminium, 100, silver, 90),()->{
                 node(irritation, Seq.with(new Objectives.SectorComplete(zSectors.theBeginning)), ()->{
@@ -73,8 +74,11 @@ public class z387TechTree {
             //Power
             node(powerTransmitter, ItemStack.with(aluminium, 90, silver, 20),() ->{
                 node(powerDistributor);
+                node(condensator);
             });
-            node(hydroTurbineGenerator, ItemStack.with(aluminium, 120, silver, 90), ()->{});
+            node(hydroTurbineGenerator, ItemStack.with(aluminium, 120, silver, 90), ()->{
+                node(geothermalGenerator);
+            });
         });
     }
 }
