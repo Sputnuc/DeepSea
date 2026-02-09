@@ -3,6 +3,7 @@ package ds.content.units;
 import arc.graphics.Color;
 import arc.math.Interp;
 import arc.math.geom.Rect;
+import arc.struct.Seq;
 import ds.content.dsFx;
 import ds.content.dsSounds;
 import ds.world.graphics.dsPal;
@@ -24,7 +25,8 @@ import mindustry.type.Weapon;
 import static mindustry.Vars.tilesize;
 import static mindustry.content.Fx.*;
 
-public class zUnits {
+public class piUnits {
+    public static Seq<UnitType> pi312units = new Seq<>();
     public static UnitType
             //Core units
             moment,
@@ -128,14 +130,13 @@ public class zUnits {
             hitSize = 8;
             stepSound = dsSounds.dsMechStep;
             weapons.add(new AdvancedLightWeapon("deepsea-condition-weapon"){{
-                x = -17 / 4f; y = 2;
+                x = -18 / 4f; y = 5 / 4f;
                 reload = 19;
                 rotate = false;
-                mirror = true;
                 top = false;
+                mirror = true;
                 lightCone = 15;
                 lightLength = 20 * tilesize;
-                layerOffset = -0.01f;
                 shootSound = dsSounds.shootSmallWeapon;
                 bullet = new BasicBulletType(3.5f, 20){{
                     height = 13;
@@ -195,6 +196,7 @@ public class zUnits {
         }};
         //End load
         loadFauna();
+        pi312units.addAll(moment, condition, complicity, note);
     }
     public static void loadFauna(){
         untitledFish = new FaunaUnitType("untitled-fish"){{
@@ -205,10 +207,12 @@ public class zUnits {
         }};
         angler = new EntityUnitType("angler"){{
             constructor = UnitEntity::create;
+            health = 4900;
             loopSound = dsSounds.loopAngler;
             attackSound = dsSounds.loopAnglerAttack;
             loopShakeIntensity = 2;
         }};
+
         annihilator = new UnitType("kill-everyone"){{
             constructor = UnitEntity::create;
             flying = true;

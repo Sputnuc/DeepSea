@@ -3,37 +3,34 @@ package ds.world.ai;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
-import arc.util.Log;
 import arc.util.Time;
 import arc.util.Tmp;
-import mindustry.entities.Units;
+import ds.world.blocks.effect.ArmoredLightBlock;
 import mindustry.entities.units.AIController;
 import mindustry.gen.Building;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
 import mindustry.world.blocks.power.LightBlock;
-
-import static mindustry.Vars.world;
+import mindustry.world.blocks.power.PowerGenerator;
 
 //Code is bad, ik. I'll remade this shit someday
 public class NodeAttackAi extends AIController {
 
-    public float destroyRadius = 32f;
-    public float targetReachedDistance = 8f;
-
-    private final Seq<Building> allLightBlocks = new Seq<>();
+    public float destroyRadius = 16f;
+    public float targetReachedDistance = 4f;
+    private final Seq<Building> allTargetBlocks = new Seq<>();
     private Seq<Building> currentPath = new Seq<>();
     private int currentTargetIndex = -1;
     private boolean needsPathUpdate = true;
     private float updateTimer = 0f;
-    private static final float UPDATE_INTERVAL = 30f;
+    private static final float interval = 30f;
     private final Vec2 targetPos = new Vec2();
 
     @Override
     public void init() {
         super.init();
-        findAllLightBlocks();
-        updateTimer = UPDATE_INTERVAL;
+        findTargetsPos();
+        updateTimer = interval;
     }
 
     @Override
@@ -44,12 +41,12 @@ public class NodeAttackAi extends AIController {
 
         updateTimer -= Time.delta;
         if (updateTimer <= 0) {
-            findAllLightBlocks();
+            findTargetsPos();
             needsPathUpdate = true;
-            updateTimer = UPDATE_INTERVAL;
+            updateTimer = interval;
         }
 
-        if (allLightBlocks.isEmpty()) {
+        if (allTargetBlocks.isEmpty()) {
             unit.moveAt(Vec2.ZERO);
             return;
         }
@@ -66,31 +63,31 @@ public class NodeAttackAi extends AIController {
         }
     }
 
-    private void findAllLightBlocks() {
-        allLightBlocks.clear();
+    private void findTargetsPos() {
+        allTargetBlocks.clear();
 
         for (Building build : Groups.build) {
-            if (isValidLightBlock(build)) {
-                allLightBlocks.add(build);
+            if (isTarget(build)) {
+                allTargetBlocks.add(build);
             }
         }
-        if(allLightBlocks.isEmpty()) unit.kill();
+        if(allTargetBlocks.isEmpty()) unit.kill();
     }
 
-    private boolean isValidLightBlock(Building build) {
+    private boolean isTarget(Building build) {
         return build != null &&
                 !build.dead() &&
-                build.block instanceof LightBlock &&
+                ((build.block instanceof LightBlock && !(build.block instanceof ArmoredLightBlock)) || build.block instanceof PowerGenerator) &&
                 build.team != unit.team;
     }
     private void buildOptimalPath() {
-        if (allLightBlocks.isEmpty()) {
+        if (allTargetBlocks.isEmpty()) {
             currentPath.clear();
             currentTargetIndex = -1;
             return;
         }
         currentPath.clear();
-        Seq<Building> unsorted = new Seq<>(allLightBlocks);
+        Seq<Building> unsorted = new Seq<>(allTargetBlocks);
         Seq<Building> sorted = new Seq<>();
         Building current = getNearestBuilding(unsorted, unit.x, unit.y);
 
@@ -148,31 +145,29 @@ public class NodeAttackAi extends AIController {
     }
 
     private void destroyNearbyLights(float x, float y) {
-        int destroyed = 0;
         float radiusSq = destroyRadius * destroyRadius;
 
         for (Building build : Groups.build) {
-            if (build == null || build.dead() || !(build.block instanceof LightBlock)) {
+            if (build == null || build.dead() || !isTarget(build)) {
                 continue;
             }
 
             float distSq = Mathf.dst2(x, y, build.x, build.y);
             if (distSq <= radiusSq) {
-                build.kill();
-                destroyed++;
+                build.damage(120);
             }
         }
     }
 
     private void removeDestroyedTargets() {
-        allLightBlocks.removeAll(b -> b == null || b.dead());
+        allTargetBlocks.removeAll(b -> b == null || b.dead());
         currentPath.removeAll(b -> b == null || b.dead());
     }
 
     @Override
     public void removed(Unit unit) {
         super.removed(unit);
-        allLightBlocks.clear();
+        allTargetBlocks.clear();
         currentPath.clear();
     }
 }

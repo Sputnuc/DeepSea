@@ -1,21 +1,26 @@
 package ds.content.planets;
 
 import arc.graphics.Color;
+import arc.struct.ObjectSet;
 import arc.struct.Seq;
-import ds.content.blocks.zBlocks;
+import ds.content.blocks.piBlocks;
+import ds.content.units.piUnits;
 import ds.world.meta.dsEnv;
+import mindustry.content.Items;
 import mindustry.content.Planets;
 import mindustry.game.Team;
 import mindustry.graphics.g3d.*;
+import mindustry.type.Item;
 import mindustry.type.Planet;
+import mindustry.type.UnitType;
 import mindustry.world.meta.Env;
 
 public class dsPlanets {
-    public static Planet z387;
+    public static Planet pi312;
     public static void loadContent(){
         //"Vmtkb2JFbEZWbWhqYmxKdg=="
-        z387 = new Planet("z387", Planets.sun, 2f, 3){{
-            generator = new zGenerator();
+        pi312 = new Planet("P-I-312", Planets.sun, 2f, 3){{
+            generator = new piGenerator();
             meshLoader = () -> new HexMesh(this, 6);
             cloudMeshLoader = () -> new MultiMesh(
                     new HexSkyMesh(this, 3, 0.13f, 0.11f, 5, Color.valueOf("c4ebed").a(0.75f), 2, 0.18f, 1.2f, 0.3f),
@@ -36,7 +41,6 @@ public class dsPlanets {
             ruleSetter = r -> {
                 r.lighting = true;
                 r.ambientLight = Color.valueOf("010205ec");
-                r.loadout = new Seq<>();
                 r.fire = false;
                 r.fog = false; //tru
                 r.defaultTeam = Team.sharded;
@@ -50,8 +54,22 @@ public class dsPlanets {
             atmosphereRadIn = 0.02f;
             atmosphereRadOut = 0.3f;
             alwaysUnlocked = true;
-            defaultCore = zBlocks.coreInfluence;
+            defaultCore = piBlocks.coreInfluence;
             defaultEnv = Env.terrestrial | dsEnv.underwaterWarm & ~(Env.groundOil | Env.scorching | Env.spores);
         }};
+
+        unitWhiteList(piUnits.pi312units, pi312);
+        addItemWhitelist(Seq.with(Items.graphite), pi312);
     }
+
+    protected static void unitWhiteList(Seq<UnitType>units, Planet planet){
+        for (UnitType u : units){
+            u.shownPlanets = ObjectSet.with(planet);
+        }
+    };
+    protected static void addItemWhitelist(Seq<Item> ite, Planet planet){
+        for (Item i : ite){
+            i.shownPlanets = ObjectSet.with(planet);
+        }
+    };
 }

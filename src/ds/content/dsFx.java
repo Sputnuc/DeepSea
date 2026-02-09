@@ -51,7 +51,7 @@ public class dsFx {
         });
     }),
     torpedoTrail = new Effect(120, e -> {
-        color(Color.valueOf("e0f4ff"), Color.valueOf("bfe0f200"), e.fin());
+        color(Color.valueOf("e0f4ff80"), Color.valueOf("bfe0f200"), e.fin());
         randLenVectors(e.id, 2, 10 * e.fin(), (x, y)->{
             Fill.circle(e.x + x, e.y + y, e.fin() * 0.75f + 1);
         });

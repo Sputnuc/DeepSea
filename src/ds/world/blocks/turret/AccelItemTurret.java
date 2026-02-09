@@ -18,6 +18,7 @@ public class AccelItemTurret extends dsItemTurret {
     public float speedUpPerShoot = 2;
     public float maxAccel = 0.5f;
     public float cooldownSpeed = 1;
+    public float cooldownInterval = 60f;
 
     public AccelItemTurret(String name){
         super(name);
@@ -47,17 +48,22 @@ public class AccelItemTurret extends dsItemTurret {
         protected float speedUp = 0;
         protected float coolantSpeedMultiplier;
         protected  boolean overheated = false;
+        protected float cdInt = cooldownInterval;
+
         @Override
         public void updateTile() {
             //cooldown progress
-            if (!isShooting() || !hasAmmo() || !isActive() || overheated){
-                if(speedUp > 0) {
+            boolean shPr = (!isShooting() || !hasAmmo() || !isActive() || overheated);
+            if (shPr & !(cdInt > 0)){
+                if(speedUp > 0 ) {
                     speedUp -= delta() * cooldownSpeed;
 
                 }else {
                     speedUp = 0;
-                };
-            }
+                }
+            } else if (shPr){
+                cdInt  -= delta();
+            } else cdInt = cooldownInterval;
             super.updateTile();
         }
 
@@ -92,7 +98,7 @@ public class AccelItemTurret extends dsItemTurret {
             //speedUp per shoot
             super.shoot(type);
             if (speedUp < maxAccel){
-                speedUp += speedUpPerShoot   * ammoReloadMultiplier() * edelta();
+                speedUp += speedUpPerShoot   * ammoReloadMultiplier() * delta();
                 speedUp += coolantSpeedMultiplier * delta();
                 if(speedUp>maxAccel) speedUp = maxAccel;
             }else {

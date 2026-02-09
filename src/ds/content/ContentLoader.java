@@ -2,25 +2,24 @@ package ds.content;
 
 import ds.content.blocks.dsBlocksLoader;
 import ds.content.items.dsItemLoader;
-import ds.content.liquids.zLiquids;
+import ds.content.liquids.piLiquids;
 import ds.content.planets.dsPlanets;
-import ds.content.planets.zSectors;
-import ds.content.units.zUnits;
+import ds.content.planets.piSectors;
+import ds.content.units.piUnits;
 
 public class ContentLoader {
     public static void load(){
         dsAttributes.load();
         SchematicsLoader.load();
         dsSounds.load();
-        dsMusicLoader.load();
         dsItemLoader.load();
-        zLiquids.load();
-        zUnits.loadUnits();
+        piLiquids.load();
+        piUnits.loadUnits();
         dsBlocksLoader.load();
 
         //end load
         dsPlanets.loadContent();
-        zSectors.load();
-        z387TechTree.load();
+        piSectors.load();
+        pi312TechTree.load();
     }
 }

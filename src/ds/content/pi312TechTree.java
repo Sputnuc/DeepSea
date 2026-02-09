@@ -1,21 +1,26 @@
 package ds.content;
 
 import arc.struct.Seq;
-import ds.content.planets.zSectors;
+import ds.content.planets.piSectors;
 import mindustry.game.Objectives;
 import mindustry.type.ItemStack;
 
-import static ds.content.blocks.zBlocks.*;
-import static ds.content.items.zItems.*;
-import static ds.content.liquids.zLiquids.*;
-import static ds.content.units.zUnits.*;
-import static ds.content.planets.dsPlanets.z387;
+import static ds.content.blocks.piBlocks.*;
+import static ds.content.items.piItems.*;
+import static ds.content.liquids.piLiquids.*;
+import static ds.content.planets.dsPlanets.*;
+import static ds.content.planets.piSectors.*;
 import static mindustry.content.Liquids.*;
 import static mindustry.content.TechTree.*;
 
-public class z387TechTree {
+public class pi312TechTree {
     public static void load(){
-        z387.techTree = nodeRoot("z387", coreInfluence, false, ()->{
+        pi312.techTree = nodeRoot("P-I-312", coreInfluence, false, ()->{
+            //Sectors
+            node(theBeginning, ()->{
+                node(canyon, Seq.with(new Objectives.SectorComplete(theBeginning)), ()->{});
+            });
+
             //Items
             nodeProduce(aluminium, ()->{
                 nodeProduce(silver, ()->{
@@ -29,7 +34,7 @@ public class z387TechTree {
                                 nodeProduce(magnesium, ()->{
                                     nodeProduce(lithium, ()->{
                                         nodeProduce(ironstone, ()->{
-                                            nodeProduce(ferrum, ()->{});
+                                            nodeProduce(steel, ()->{});
                                         });
                                     });
                                 });
@@ -38,11 +43,12 @@ public class z387TechTree {
                     });
                 });
             });
+            //Effect
             node(lightProjector);
             node(repairModule);
             //Turrets
             node(cutoff, ItemStack.with(aluminium, 100, silver, 90),()->{
-                node(irritation, Seq.with(new Objectives.SectorComplete(zSectors.theBeginning)), ()->{
+                node(irritation, Seq.with(new Objectives.SectorComplete(piSectors.theBeginning)), ()->{
                     node(discharge);
                 });
             });
@@ -56,7 +62,10 @@ public class z387TechTree {
                     node(isolatedJunction, ItemStack.with(aluminium, 100), ()->{});
                     node(isolatedBridge, ItemStack.with(aluminium, 120, silver, 90), ()->{});
                 });
-                node(pipe);
+                node(pipe, ()->{
+                    node(liquidDistributor);
+                    node(pipeBridge);
+                });
             });
 
             //Production
@@ -68,7 +77,7 @@ public class z387TechTree {
 
             //Drills
             node(hydraulicDrill, ItemStack.with(aluminium, 20), ()->{
-                node(hydraulicWallDrill, ItemStack.with(aluminium, 200, silver, 100), ()->{});
+                node(hydraulicWallDrill, ItemStack.with(aluminium, 200, silver, 100), Seq.with(new Objectives.OnSector(canyon)),()->{});
             });
 
             //Power
@@ -77,7 +86,7 @@ public class z387TechTree {
                 node(condensator);
             });
             node(hydroTurbineGenerator, ItemStack.with(aluminium, 120, silver, 90), ()->{
-                node(geothermalGenerator);
+                node(geothermalGenerator, ItemStack.with(aluminium, 500, silver, 400, manganese, 120), ()->{});
             });
         });
     }

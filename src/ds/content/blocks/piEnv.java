@@ -2,7 +2,7 @@ package ds.content.blocks;
 
 import arc.graphics.Color;
 import ds.content.dsFx;
-import ds.content.items.zItems;
+import ds.content.items.piItems;
 import ds.world.blocks.environment.EffectFloor;
 import ds.world.blocks.environment.GlowingSeaweed;
 import ds.world.blocks.environment.TiledFloor;
@@ -13,7 +13,7 @@ import mindustry.world.meta.Attribute;
 import static ds.content.dsAttributes.*;
 import static mindustry.content.Blocks.*;
 
-public class zEnv {
+public class piEnv {
     public static Block
             //Ores
             aluminiumOre, silverOre,
@@ -41,10 +41,10 @@ public class zEnv {
 
     public static void load(){
         //Ores
-        aluminiumOre = new OreBlock("ore-aluminium", zItems.aluminium){{
+        aluminiumOre = new OreBlock("ore-aluminium", piItems.aluminium){{
             variants = 3;
         }};
-        silverOre = new OreBlock("ore-silver", zItems.silver){{
+        silverOre = new OreBlock("ore-silver", piItems.silver){{
             variants = 3;
         }};
 
@@ -78,11 +78,11 @@ public class zEnv {
         }};
         sulfurFloor = new Floor("sulfur-floor"){{
             variants = 3;
-            itemDrop = zItems.sulfur;
+            itemDrop = piItems.sulfur;
         }};
         sulfurWall = new StaticWall("sulfur-wall"){{
             variants = 3;
-            itemDrop = zItems.sulfur;
+            itemDrop = piItems.sulfur;
         }};
 
         sulfurVent = new SteamVent("sulfur-vent"){{
@@ -124,7 +124,7 @@ public class zEnv {
         }};
         // Manganese hydroxide
         manganeseHydroxideCrystals = new StaticWall("manganese-hydroxide-crystals"){{
-            itemDrop = zItems.manganeseHydroxide;
+            itemDrop = piItems.manganeseHydroxide;
             variants = 3;
         }};
 

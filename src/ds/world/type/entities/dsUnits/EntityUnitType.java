@@ -27,8 +27,6 @@ import static mindustry.Vars.control;
 
 public class EntityUnitType extends dsUnitType {
 
-    public float searchRadius = 200f;
-    public float destroyRadius = 10f;
     public Sound loopSound;
     public Sound attackSound;
     public float loopSoundVolume = 0.3f;

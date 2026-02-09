@@ -3,7 +3,7 @@ package ds.content.liquids;
 import arc.graphics.Color;
 import mindustry.type.Liquid;
 
-public class zLiquids {
+public class piLiquids {
     public static Liquid hydrogenSulfide, sulfuricAcid;
     public static void load(){
         hydrogenSulfide = new Liquid("hydrogen-sulfide", Color.valueOf("d7dba9")){{

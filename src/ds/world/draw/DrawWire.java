@@ -1,9 +1,6 @@
 package ds.world.draw;
 
-import arc.Core;
-import arc.graphics.*;
 import arc.graphics.g2d.*;
-import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 
 //Draws line with coordinates

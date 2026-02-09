@@ -25,8 +25,6 @@ public class dsMusicLoader {
     public static Seq<Music> vanillaDarkMusic;
     public static Seq<Music> vanillaBossMusic;
 
-    public static boolean customMusic = true;
-
     public static void load(){
         dsAmbientM = loadMultiple(dsAmbientList, "ambient");
         dsDarkM = loadMultiple(dsDarkList, "dark");
@@ -54,19 +52,17 @@ public class dsMusicLoader {
     //call this function in the main class when the client loads. Like this -> Events.on(EventType.ClientLoadEvent.class, e -> dsMusicLoader.attach());
     public static void attach(){
         Events.on(EventType.WorldLoadEvent.class, e -> {
-            if (Vars.state.rules.planet.parent != null && Vars.state.rules.planet.parent.name.equals("deepsea-z387") && customMusic) {
+            if (Vars.state.rules.planet != null && Vars.state.rules.planet.name.equals("deepsea-P-I-312")) {
                 deepMusic();
             } else vanillaMusic();
         });
     }
 
     public static void deepMusic(){
-        Vars.control.sound.ambientMusic.addAll(dsAmbientM);
-        customMusic = true;
+        Vars.control.sound.ambientMusic = dsAmbientM;
     }
 
     public static void vanillaMusic(){
         Vars.control.sound.ambientMusic = vanillaAmbientMusic;
-        customMusic = false;
     }
 }

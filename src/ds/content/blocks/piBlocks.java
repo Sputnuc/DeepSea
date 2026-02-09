@@ -4,8 +4,7 @@ package ds.content.blocks;
 import arc.graphics.Color;
 import ds.content.dsFx;
 import ds.content.dsSounds;
-import ds.content.items.zItems;
-import ds.content.units.zUnits;
+import ds.content.units.piUnits;
 import ds.world.blocks.distribution.ClosedConveyor;
 import ds.world.blocks.power.TestThermalGenerator;
 import ds.world.blocks.production.WallDrill;
@@ -16,11 +15,10 @@ import ds.world.draw.drawers.DrawBetterRegion;
 import ds.world.graphics.dsPal;
 import ds.world.meta.dsEnv;
 import ds.world.type.entities.bullets.HarpoonBulletType;
+import ds.world.type.entities.bullets.PointLightningBulletType;
 import ds.world.type.entities.effect.RandRadialEffect;
 import mindustry.content.Fx;
 import mindustry.entities.bullet.BasicBulletType;
-import mindustry.entities.bullet.BulletType;
-import mindustry.entities.bullet.LightningBulletType;
 import mindustry.entities.part.RegionPart;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.gen.Sounds;
@@ -50,13 +48,13 @@ import mindustry.world.meta.Env;
 
 
 import static ds.content.dsAttributes.*;
-import static ds.content.items.zItems.*;
-import static ds.content.liquids.zLiquids.*;
+import static ds.content.items.piItems.*;
+import static ds.content.liquids.piLiquids.*;
 import static mindustry.Vars.tilesize;
 import static mindustry.content.Liquids.*;
 import static mindustry.type.ItemStack.with;
 
-public class zBlocks {
+public class piBlocks {
     public static Block
             //Production
             hydraulicDrill, hydraulicWallDrill,
@@ -67,7 +65,7 @@ public class zBlocks {
             //Crafting
             hydrogenSulfideCollector, hydrogenSulfideDiffuser, testCrafter, manganeseSynthesizer,
             //Logistic
-            isolatedConveyor, isolatedRouter, isolatedJunction, isolatedBridge, pipe, pipeRouter,
+            isolatedConveyor, isolatedRouter, isolatedJunction, isolatedBridge, pipe, liquidDistributor, pipeBridge, pipeJunction,
             //Cores
             coreInfluence, coreEnforcement, coreEminence,
             //Turrets
@@ -146,7 +144,7 @@ public class zBlocks {
                         trailEffect = dsFx.dsBulletSparkTrail;
                         ammoMultiplier = 1;
                     }},
-                    ferrum, new BasicBulletType(8,23){{
+                    steel, new BasicBulletType(8,23){{
                         reloadMultiplier = 0.75f;
                         pierce = true;
                         pierceCap = 3;
@@ -168,17 +166,20 @@ public class zBlocks {
         discharge = new AccelPowerTurret("discharge"){{
             shootY = 28/4f;
             health = 975;
+            predictTarget = false;
             requirements(Category.turret, with(aluminium, 95, silver, 75, manganese, 55));
             outlineColor = dsPal.dsTurretOutline;
             size = 3;
             range = 25 * tilesize;
+            cooldownInterval = 120;
             shootCone = 15;
             shootSound = Sounds.shootArc;
+            shootEffect = Fx.none;
             consumePower(360/60f);
             reload = 300;
             maxAccel = 40;
             shake = 1.65f;
-            speedUpPerShoot = 3f;
+            speedUpPerShoot = 6f;
             drawer = new DrawTurret("ds-turret-"){{
                 parts.add(
                     new RegionPart("-decal"){{
@@ -190,29 +191,16 @@ public class zBlocks {
                         under = false;
                 }});
             }};
-            shoot.shots = 4;
-            shoot.shotDelay = 0.6f;
 
-            shootType = new LightningBulletType(){{
-                shootEffect = Fx.none;
-                damage = 12;
-                lifetime = 25;
-                lightningDamage = 8;
-                lightningLength = 25;
-                lightningLengthRand = 5;
-                lightningColor = Color.valueOf("a1fff9");
-                lightningCone = 3;
-                lightningType = new BulletType(0.001f, 6){{
-                    hitSize = 15;
-                    lifetime = 5;
-                    hitEffect = despawnEffect = Fx.none;
-                }};
+            shootType = new PointLightningBulletType(20){{
+                despawnEffect = Fx.none;
+                hitEffect = Fx.hitEmpSpark;
             }};
         }};
     }
     public static void loadEffectBlocks(){
         coreInfluence = new CoreBlock("core-influence"){{
-            requirements(Category.effect, with(aluminium, 790, zItems.manganese, 680));
+            requirements(Category.effect, with(aluminium, 790, silver, 680));
             size = 3;
             isFirstTier = true;
             alwaysUnlocked = true;
@@ -220,7 +208,7 @@ public class zBlocks {
             itemCapacity = 5300;
             buildCostMultiplier = 3;
             unitCapModifier = 12;
-            unitType = zUnits.moment;
+            unitType = piUnits.moment;
             envEnabled |= Env.terrestrial | dsEnv.underwaterWarm;
             envDisabled = Env.none;
             squareSprite = false;
@@ -229,6 +217,7 @@ public class zBlocks {
             requirements(Category.effect, with(aluminium, 55, silver, 45, manganese, 30));
             consumePower(1);
             consumeLiquid(hydrogen, 3/60f);
+            researchCostMultiplier = 0.6f;
             size = 2;
             reload = 300;
             range = 60;
@@ -274,8 +263,25 @@ public class zBlocks {
         pipe = new ArmoredConduit("liquid-pipe"){{
             requirements(Category.liquid, with(silver, 2));
             liquidPressure = 1.025f;
-            liquidCapacity = 40;
+            liquidCapacity = 20;
         }};
+        pipeJunction = new LiquidJunction("pipe-junction"){{
+            requirements(Category.liquid, with(silver, 5));
+            liquidPressure = 1.025f;
+        }};
+        ((ArmoredConduit) pipe).junctionReplacement = pipeJunction;
+        liquidDistributor = new LiquidRouter("liquid-distributor"){{
+            requirements(Category.liquid, with(silver, 4));
+            liquidPressure = 1.025f;
+            liquidCapacity = 40f;
+        }};
+        pipeBridge = new LiquidBridge("pipe-bridge"){{
+            requirements(Category.liquid, with(silver, 9));
+            range = 5;
+            liquidPressure = 1.025f;
+            liquidCapacity = 60;
+        }};
+        ((ArmoredConduit) pipe).bridgeReplacement = pipeBridge;
     }
     public static void loadProductionBlocks(){
         hydraulicDrill = new BurstDrill("hydraulic-drill"){{
@@ -339,7 +345,7 @@ public class zBlocks {
             hasLiquids = true;
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(hydrogenSulfide), new DrawBlurSpin("-rotator", 6), new DrawDefault());
         }};
-        geothermalGenerator = new TestThermalGenerator("geothermal-generator"){{
+        geothermalGenerator = new ThermalGenerator("geothermal-generator"){{
             requirements(Category.power, with(aluminium, 100, silver, 95, manganese, 65));
             size = 4;
             attribute = Attribute.heat;
@@ -411,9 +417,9 @@ public class zBlocks {
             size = 4;
             consumePower(2);
             consumeLiquid(hydrogen, 9/60f);
-            consumeItems(with(manganeseHydroxide, 3, aluminium, 1));
+            consumeItems(with(manganeseHydroxide, 5, aluminium, 2));
             craftTime = 120;
-            outputItem = new ItemStack(manganese, 2);
+            outputItem = new ItemStack(manganese, 4);
             drawer = new DrawMulti(
                     new DrawRegion("-bottom2"),
                     new DrawLiquidTile(hydrogen),

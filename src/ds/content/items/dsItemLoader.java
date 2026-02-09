@@ -2,6 +2,6 @@ package ds.content.items;
 
 public class dsItemLoader {
     public static void load(){
-        zItems.load();
+        piItems.load();
     }
 }

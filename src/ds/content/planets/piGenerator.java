@@ -7,7 +7,7 @@ import arc.math.geom.Point2;
 import arc.math.geom.Vec3;
 import arc.util.Tmp;
 import arc.util.noise.Simplex;
-import ds.content.blocks.zEnv;
+import ds.content.blocks.piEnv;
 import mindustry.content.Blocks;
 import mindustry.game.Rules;
 import mindustry.game.Schematics;
@@ -16,14 +16,13 @@ import mindustry.type.Sector;
 import mindustry.world.Block;
 import mindustry.world.TileGen;
 
-import static ds.content.SchematicsLoader.baseCoreInfluence;
 import static mindustry.Vars.world;
 
-public class zGenerator extends PlanetGenerator {
+public class piGenerator extends PlanetGenerator {
     Color c1 = Color.valueOf("5057a6"), c2 = Color.valueOf("272766");
 
     Block[][] arr = {
-            {zEnv.seaweedFloor, zEnv.seaweedFloor, Blocks.darksand, Blocks.bluemat, Blocks.bluemat, Blocks.ferricStone, Blocks.dacite,}
+            {piEnv.seaweedFloor, piEnv.seaweedFloor, Blocks.darksand, Blocks.bluemat, Blocks.bluemat, Blocks.ferricStone, Blocks.dacite,}
     };
 
     {
@@ -55,8 +54,8 @@ public class zGenerator extends PlanetGenerator {
     public void genTile(Vec3 position, TileGen tile){
         tile.floor = getBlock(position);
 
-        if(tile.floor == zEnv.seaweedFloor && rand.chance(0.3)){
-            tile.block = zEnv.seaweed;
+        if(tile.floor == piEnv.seaweedFloor && rand.chance(0.3)){
+            tile.block = piEnv.seaweed;
         }
 
         if(tile.floor == Blocks.bluemat && rand.chance(0.03)){
