@@ -18,7 +18,9 @@ public class pi312TechTree {
         pi312.techTree = nodeRoot("P-I-312", coreInfluence, false, ()->{
             //Sectors
             node(theBeginning, ()->{
-                node(canyon, Seq.with(new Objectives.SectorComplete(theBeginning)), ()->{});
+                node(canyon, Seq.with(new Objectives.SectorComplete(theBeginning)), ()->{
+                    node(plate, Seq.with(new Objectives.SectorComplete(canyon)),()->{});
+                });
             });
 
             //Items
@@ -27,7 +29,9 @@ public class pi312TechTree {
                     nodeProduce(sulfur, ()->{
                         nodeProduce(hydrogenSulfide, ()->{
                             nodeProduce(hydrogen, ()->{});
-                            nodeProduce(sulfuricAcid, ()->{});
+                            nodeProduce(sulfuricAcid, ()->{
+                                nodeProduce(oxygen, ()->{});
+                            });
                         });
                         nodeProduce(manganeseHydroxide, ()->{
                             nodeProduce(manganese, ()->{
@@ -72,6 +76,7 @@ public class pi312TechTree {
             node(hydrogenSulfideCollector, ItemStack.with(aluminium, 80, silver, 60), ()->{
                 node(hydrogenSulfideDiffuser, ItemStack.with(aluminium, 180, silver, 90), ()->{
                     node(manganeseSynthesizer, ItemStack.with(aluminium, 420, silver, 390), Seq.with(new Objectives.Research(manganeseHydroxide)), ()->{});
+                    node(decompositionChamber);
                 });
             });
 

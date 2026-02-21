@@ -4,6 +4,7 @@ import arc.graphics.Color;
 import arc.struct.ObjectSet;
 import arc.struct.Seq;
 import ds.content.blocks.piBlocks;
+import ds.content.liquids.piLiquids;
 import ds.content.units.piUnits;
 import ds.world.meta.dsEnv;
 import mindustry.content.Items;
@@ -11,6 +12,7 @@ import mindustry.content.Planets;
 import mindustry.game.Team;
 import mindustry.graphics.g3d.*;
 import mindustry.type.Item;
+import mindustry.type.Liquid;
 import mindustry.type.Planet;
 import mindustry.type.UnitType;
 import mindustry.world.meta.Env;
@@ -60,6 +62,7 @@ public class dsPlanets {
 
         unitWhiteList(piUnits.pi312units, pi312);
         addItemWhitelist(Seq.with(Items.graphite), pi312);
+        addLiquidWhitelist(piLiquids.piLiquid, pi312);
     }
 
     protected static void unitWhiteList(Seq<UnitType>units, Planet planet){
@@ -69,7 +72,12 @@ public class dsPlanets {
     };
     protected static void addItemWhitelist(Seq<Item> ite, Planet planet){
         for (Item i : ite){
-            i.shownPlanets = ObjectSet.with(planet);
+            i.shownPlanets.add(planet);
         }
     };
+    protected static void addLiquidWhitelist(Seq<Liquid> liqst, Planet planet){
+        for (Liquid li : liqst){
+            li.shownPlanets.add(planet);
+        }
+    }
 }

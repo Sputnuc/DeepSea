@@ -45,7 +45,10 @@ public class piUnits {
     public static void loadUnits(){
         //Core units
         moment = new SubmarineUnitType("moment"){{
+            omniMovement = true;
+            strafePenalty = 0.45f;
             constructor = UnitEntity::create;
+            targetable = false;
             speed = 3;
             health = 75;
             buildRange = 20 * tilesize;

@@ -5,12 +5,14 @@ import arc.graphics.Color;
 import ds.content.dsFx;
 import ds.content.dsSounds;
 import ds.content.units.piUnits;
+import ds.world.blocks.crafting.MultiRecipeCrafter;
 import ds.world.blocks.distribution.ClosedConveyor;
 import ds.world.blocks.power.TestThermalGenerator;
 import ds.world.blocks.production.WallDrill;
 import ds.world.blocks.turret.AccelPowerTurret;
 import ds.world.blocks.turret.dsHarpoonTurret;
 import ds.world.blocks.turret.dsItemTurret;
+import ds.world.consumers.Recipe;
 import ds.world.draw.drawers.DrawBetterRegion;
 import ds.world.graphics.dsPal;
 import ds.world.meta.dsEnv;
@@ -43,6 +45,7 @@ import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.draw.*;
 import mindustry.world.meta.Attribute;
+import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.BuildVisibility;
 import mindustry.world.meta.Env;
 
@@ -51,8 +54,9 @@ import static ds.content.dsAttributes.*;
 import static ds.content.items.piItems.*;
 import static ds.content.liquids.piLiquids.*;
 import static mindustry.Vars.tilesize;
+import static mindustry.content.Items.*;
 import static mindustry.content.Liquids.*;
-import static mindustry.type.ItemStack.with;
+import static mindustry.type.ItemStack.*;
 
 public class piBlocks {
     public static Block
@@ -63,7 +67,7 @@ public class piBlocks {
             //Effect
             lightProjector, repairModule,
             //Crafting
-            hydrogenSulfideCollector, hydrogenSulfideDiffuser, testCrafter, manganeseSynthesizer,
+            hydrogenSulfideCollector, hydrogenSulfideDiffuser, manganeseSynthesizer, decompositionChamber, test,
             //Logistic
             isolatedConveyor, isolatedRouter, isolatedJunction, isolatedBridge, pipe, liquidDistributor, pipeBridge, pipeJunction,
             //Cores
@@ -90,6 +94,7 @@ public class piBlocks {
             reload = 300;
             range = 200;
             shake = 2;
+            envRequired = dsEnv.underwaterWarm;
             shootSound = dsSounds.shootHarpoon;
             consumeItem(sulfur, 3);
             shootCone = 1;
@@ -192,9 +197,11 @@ public class piBlocks {
                 }});
             }};
 
-            shootType = new PointLightningBulletType(20){{
+            shootType = new PointLightningBulletType(3.25f){{
+                pierceArmor = true;
                 despawnEffect = Fx.none;
-                hitEffect = Fx.hitEmpSpark;
+                hitColor = lightningColor;
+                hitEffect = Fx.colorSpark;
             }};
         }};
     }
@@ -433,6 +440,69 @@ public class piBlocks {
                         particleRad = 8;
                     }},
                     new DrawDefault()
+            );
+        }};
+        decompositionChamber = new AttributeCrafter("decomposition-chamber"){{
+            requirements(Category.crafting, with(aluminium, 95, silver, 75, graphite, 85));
+            size = 4;
+            craftTime = 60;
+            attribute = Attribute.heat;
+            baseEfficiency = 0;
+            boostScale = 1f/16f;
+            minEfficiency = 4f;
+            rotate = true;
+            invertFlip = true;
+            group = BlockGroup.liquids;
+            liquidCapacity = 90f;
+            consumePower(2f);
+            outputLiquids = LiquidStack.with(hydrogen, 18/60f, oxygen, 18/60f);
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom-1"),
+                    new DrawLiquidTile(hydrogen),
+                    new DrawRegion("-bottom-2"),
+                    new DrawLiquidTile(oxygen, 10),
+                    new DrawBubbles(Color.valueOf("ffffff")){{
+                        sides = 10;
+                        recurrence = 3f;
+                        spread = 6;
+                        radius = 1.5f;
+                        amount = 20;
+                    }},
+                    new DrawRegion(),
+                    new DrawGlowRegion("-glow"){{
+                        alpha = 0.6f;
+                        color = Color.valueOf("cce4ff");
+                        glowIntensity = 0.2f;
+                        glowScale = 4f;
+                    }},
+                    new DrawLiquidOutputs()
+            );
+            ambientSound = Sounds.loopElectricHum;
+            ambientSoundVolume = 0.12f;
+            regionRotated1 = 3;
+            liquidOutputDirections = new int[]{1, 3};
+            envRequired = dsEnv.underwaterWarm;
+        }};
+        test = new MultiRecipeCrafter("test"){{
+            requirements(Category.crafting, with());
+            buildVisibility = BuildVisibility.debugOnly;
+            size = 3;
+            addRecipes(
+                    new Recipe(){{
+                        inputLiquid = new LiquidStack(hydrogen, 0.1f);
+                        inputItem = new ItemStack(sulfur, 1);
+                        outputLiquid = new LiquidStack(hydrogenSulfide, 0.1f);
+                        craftTime = 30;
+                        powerUse = 1;
+                    }},
+                    new Recipe(){{
+                        inputLiquid = new LiquidStack(hydrogenSulfide, 0.1f);
+                        inputItem = new ItemStack(aluminium, 1);
+                        outputLiquid = new LiquidStack(hydrogenSulfide, 0.1f);
+                        outputItem = new ItemStack(sulfur, 1);
+                        craftTime = 30;
+                        powerUse = 1;
+                    }}
             );
         }};
     }
