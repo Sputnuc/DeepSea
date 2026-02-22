@@ -3,12 +3,9 @@ package ds.world.draw;
 import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
-import mindustry.Vars;
 import mindustry.graphics.Drawf;
-import mindustry.world.Tile;
 
 import static ds.utilities.dsMath.*;
-import static mindustry.Vars.tilesize;
 
 //Draws lights from cone
 //TODO Better organisation
@@ -57,19 +54,19 @@ public class DrawDirLight {
         for(int i = 0; i <= sideRays; i++){
             float angleOffset = i * angularStep;
             if(i == 0){
-                DrawGradientRayAdv(tx, ty, rayW, length, beamRotation, 1.0f);
+                DrawRayCastRay(tx, ty, rayW, length, beamRotation, 1.0f);
             } else {
                 float fadeFactor = 1.0f - (i / (float)sideRays) * 0.5f;
                 float rayDir1 = beamRotation - angleOffset;
                 float rayDir2 = beamRotation + angleOffset;
-                DrawGradientRayAdv(tx, ty, rayW, length, rayDir1, fadeFactor);
-                DrawGradientRayAdv(tx, ty, rayW, length, rayDir2, fadeFactor);
+                DrawRayCastRay(tx, ty, rayW, length, rayDir1, fadeFactor);
+                DrawRayCastRay(tx, ty, rayW, length, rayDir2, fadeFactor);
             }
         }
     }
 
 
-    public static void DrawGradientRayAdv(float x1, float y1, float stroke, float length, float rD, float intensity){
+    public static void DrawRayCastRay(float x1, float y1, float stroke, float length, float rD, float intensity){
         Vec2 endPoint = RayCastSolid(x1, y1, rD, (int)length, 2);
         int segments = 10;
         Vec2 dir = new Vec2(Mathf.cosDeg(rD), Mathf.sinDeg(rD)).nor();

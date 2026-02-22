@@ -2,17 +2,15 @@ package ds.content.blocks;
 
 
 import arc.graphics.Color;
+import arc.struct.Seq;
 import ds.content.dsFx;
 import ds.content.dsSounds;
 import ds.content.units.piUnits;
-import ds.world.blocks.crafting.MultiRecipeCrafter;
 import ds.world.blocks.distribution.ClosedConveyor;
-import ds.world.blocks.power.TestThermalGenerator;
 import ds.world.blocks.production.WallDrill;
 import ds.world.blocks.turret.AccelPowerTurret;
 import ds.world.blocks.turret.dsHarpoonTurret;
 import ds.world.blocks.turret.dsItemTurret;
-import ds.world.consumers.Recipe;
 import ds.world.draw.drawers.DrawBetterRegion;
 import ds.world.graphics.dsPal;
 import ds.world.meta.dsEnv;
@@ -40,9 +38,11 @@ import mindustry.world.blocks.power.LightBlock;
 import mindustry.world.blocks.power.PowerNode;
 import mindustry.world.blocks.power.ThermalGenerator;
 import mindustry.world.blocks.production.AttributeCrafter;
+import mindustry.world.blocks.production.BeamDrill;
 import mindustry.world.blocks.production.BurstDrill;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.blocks.storage.CoreBlock;
+import mindustry.world.blocks.units.UnitFactory;
 import mindustry.world.draw.*;
 import mindustry.world.meta.Attribute;
 import mindustry.world.meta.BlockGroup;
@@ -61,7 +61,7 @@ import static mindustry.type.ItemStack.*;
 public class piBlocks {
     public static Block
             //Production
-            hydraulicDrill, hydraulicWallDrill,
+            hydraulicDrill, hydraulicWallDrill, gasBore,
             //Power
             powerTransmitter, powerDistributor, condensator, hydroTurbineGenerator, geothermalGenerator,
             //Effect
@@ -75,7 +75,10 @@ public class piBlocks {
             //Turrets
             cutoff, irritation, discharge,
             //Defends
-            aluminiumWall, aluminiumWallLarge;
+            aluminiumWall, aluminiumWallLarge,
+            //UnitBlocks
+            shadeUnitFactory;
+
     public static void load(){
         loadLogisticBlocks();
         loadProductionBlocks();
@@ -84,6 +87,7 @@ public class piBlocks {
         loadEffectBlocks();
         loadTurrets();
         loadDefence();
+        loadUnitBlocks();
     }
     public static void loadTurrets(){
         cutoff = new dsHarpoonTurret("cutoff"){{
@@ -310,6 +314,17 @@ public class piBlocks {
             drillEffectChance = 0.01f;
             drillEffect = Fx.mineWallSmall;
         }};
+        gasBore  = new BeamDrill("gas-bore"){{
+            requirements(Category.production, with(aluminium, 75, silver, 65, graphite, 70));
+            size = 3;
+            range = 3;
+            drillTime = 120;
+            liquidCapacity = 30;
+            optionalBoostIntensity = 1;
+            consumeLiquid(oxygen, 3/60f);
+            consumeLiquid(hydrogen, 6/60f);
+            tier = 5;
+        }};
     }
     public static void loadPowerBlocks(){
         powerTransmitter = new PowerNode("power-transmitter"){{
@@ -483,26 +498,17 @@ public class piBlocks {
             liquidOutputDirections = new int[]{1, 3};
             envRequired = dsEnv.underwaterWarm;
         }};
-        test = new MultiRecipeCrafter("test"){{
-            requirements(Category.crafting, with());
-            buildVisibility = BuildVisibility.debugOnly;
+    }
+    public static void loadUnitBlocks(){
+        shadeUnitFactory = new UnitFactory("shade-unit-factory"){{
+            requirements(Category.units, with(aluminium, 95, silver, 75, manganeseHydroxide, 55));
             size = 3;
-            addRecipes(
-                    new Recipe(){{
-                        inputLiquid = new LiquidStack(hydrogen, 0.1f);
-                        inputItem = new ItemStack(sulfur, 1);
-                        outputLiquid = new LiquidStack(hydrogenSulfide, 0.1f);
-                        craftTime = 30;
-                        powerUse = 1;
-                    }},
-                    new Recipe(){{
-                        inputLiquid = new LiquidStack(hydrogenSulfide, 0.1f);
-                        inputItem = new ItemStack(aluminium, 1);
-                        outputLiquid = new LiquidStack(hydrogenSulfide, 0.1f);
-                        outputItem = new ItemStack(sulfur, 1);
-                        craftTime = 30;
-                        powerUse = 1;
-                    }}
+            consumePower(2.5f);
+            consumeLiquid(oxygen, 0.5f);
+            plans = Seq.with(
+                    new UnitPlan(piUnits.condition, 60f * 25, with(silver, 30, graphite, 15)),
+                    new UnitPlan(piUnits.note, 60f * 40, with(silver, 55, graphite, 30, steel, 20)),
+                    new UnitPlan(piUnits.complicity, 60f * 25, with(aluminium, 25, manganeseHydroxide, 20))
             );
         }};
     }
