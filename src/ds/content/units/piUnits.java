@@ -10,10 +10,7 @@ import ds.world.graphics.dsPal;
 import ds.world.type.entities.dsUnits.*;
 import ds.world.type.entities.weapons.AdvancedLightWeapon;
 import mindustry.content.Fx;
-import mindustry.entities.bullet.BasicBulletType;
-import mindustry.entities.bullet.BulletType;
-import mindustry.entities.bullet.ExplosionBulletType;
-import mindustry.entities.bullet.PointBulletType;
+import mindustry.entities.bullet.*;
 import mindustry.entities.effect.MultiEffect;
 import mindustry.entities.effect.ParticleEffect;
 import mindustry.entities.effect.WaveEffect;
@@ -48,29 +45,35 @@ public class piUnits {
             omniMovement = true;
             strafePenalty = 0.45f;
             constructor = UnitEntity::create;
-            targetable = false;
+            targetable = true;
             speed = 3;
-            health = 75;
+            health = 275;
             buildRange = 20 * tilesize;
-            buildSpeed = 2.75f;
-            mineSpeed = 7.5f;
+            buildSpeed = 4.75f;
+            mineSpeed = 9.5f;
             mineFloor = true;
             mineWalls = true;
             mineTier = 3;
             weapons.add(new AdvancedLightWeapon(){{
-                x = 0;
+                x = 2;
                 y = 1;
-                shootCone = 0;
+                shootCone = 15;
                 lightCone = 35;
                 lightLength = 22 * tilesize;
                 lightTileable = false;
-                shootSound = Sounds.none;
+                shootSound = Sounds.shootAlpha;
                 rotate = false;
-                mirror = false;
-                reload = 1;
-                bullet = new BulletType(){{
-                    shootEffect = despawnEffect = hitEffect  = smokeEffect = none;
-                    instantDisappear = true;
+                mirror = true;
+                reload = 6;
+                bullet = new LaserBoltBulletType(4, 15){{
+                    width = 1;
+                    height = 9;
+                    backColor = dsPal.dsBulletFront;
+                    frontColor = Color.white;
+                    despawnEffect = hitEffect = dsFx.dsBulletHit;
+                    shootEffect = dsFx.dsShoot;
+                    smokeEffect = none;
+                    lifetime = 44;
                 }};
                 display = false;
                 noAttack = true;
@@ -80,8 +83,8 @@ public class piUnits {
         //Assault Submarines
         complicity = new SubmarineUnitType("complicity"){{
             constructor = UnitEntity::create;
-            speed = 2.85f;
-            health = 175;
+            speed = 2.15f;
+            health = 115;
             armor = 1;
             hitSize = 8;
             circleTarget = true;
@@ -210,10 +213,11 @@ public class piUnits {
         }};
         angler = new EntityUnitType("angler"){{
             constructor = UnitEntity::create;
-            health = 4900;
+            health = 2900;
             loopSound = dsSounds.loopAngler;
             attackSound = dsSounds.loopAnglerAttack;
             loopShakeIntensity = 2;
+            hitSize = 24;
         }};
 
         annihilator = new UnitType("kill-everyone"){{

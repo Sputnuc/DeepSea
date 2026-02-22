@@ -501,14 +501,14 @@ public class piBlocks {
     }
     public static void loadUnitBlocks(){
         shadeUnitFactory = new UnitFactory("shade-unit-factory"){{
-            requirements(Category.units, with(aluminium, 95, silver, 75, manganeseHydroxide, 55));
+            requirements(Category.units, with(aluminium, 95, silver, 75, manganese, 55));
             size = 3;
             consumePower(2.5f);
             consumeLiquid(oxygen, 0.5f);
             plans = Seq.with(
                     new UnitPlan(piUnits.condition, 60f * 25, with(silver, 30, graphite, 15)),
                     new UnitPlan(piUnits.note, 60f * 40, with(silver, 55, graphite, 30, steel, 20)),
-                    new UnitPlan(piUnits.complicity, 60f * 25, with(aluminium, 25, manganeseHydroxide, 20))
+                    new UnitPlan(piUnits.complicity, 60f * 25, with(aluminium, 25, manganese, 20))
             );
         }};
     }
