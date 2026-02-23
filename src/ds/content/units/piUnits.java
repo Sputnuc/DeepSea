@@ -64,10 +64,10 @@ public class piUnits {
                 shootSound = Sounds.shootAlpha;
                 rotate = false;
                 mirror = true;
-                reload = 6;
+                reload = 12;
                 bullet = new LaserBoltBulletType(4, 15){{
                     width = 1;
-                    height = 9;
+                    height = 8;
                     backColor = dsPal.dsBulletFront;
                     frontColor = Color.white;
                     despawnEffect = hitEffect = dsFx.dsBulletHit;
