@@ -13,6 +13,7 @@ public class ContentLoader {
         SchematicsLoader.load();
         dsSounds.load();
         dsItemLoader.load();
+
         piLiquids.load();
         piUnits.loadUnits();
         dsBlocksLoader.load();

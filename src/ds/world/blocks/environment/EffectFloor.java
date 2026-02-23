@@ -11,8 +11,6 @@ import mindustry.world.blocks.environment.Floor;
 public class EffectFloor extends Floor {
     public EffectFloor(String name) {
         super(name);
-        drawEdgeOut = false;
-        drawEdgeIn = false;
         tileEffect = dsFx.geotermalBubbles;
     }
     public Effect tileEffect;

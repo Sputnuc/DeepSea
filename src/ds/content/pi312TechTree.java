@@ -10,6 +10,7 @@ import static ds.content.items.piItems.*;
 import static ds.content.liquids.piLiquids.*;
 import static ds.content.planets.dsPlanets.*;
 import static ds.content.planets.piSectors.*;
+import static ds.content.units.piUnits.*;
 import static mindustry.content.Liquids.*;
 import static mindustry.content.TechTree.*;
 
@@ -18,7 +19,9 @@ public class pi312TechTree {
         pi312.techTree = nodeRoot("P-I-312", coreInfluence, false, ()->{
             //Sectors
             node(theBeginning, ()->{
-                node(canyon, Seq.with(new Objectives.SectorComplete(theBeginning)), ()->{});
+                node(canyon, Seq.with(new Objectives.SectorComplete(theBeginning)), ()->{
+                    node(plate, Seq.with(new Objectives.SectorComplete(canyon)),()->{});
+                });
             });
 
             //Items
@@ -27,7 +30,9 @@ public class pi312TechTree {
                     nodeProduce(sulfur, ()->{
                         nodeProduce(hydrogenSulfide, ()->{
                             nodeProduce(hydrogen, ()->{});
-                            nodeProduce(sulfuricAcid, ()->{});
+                            nodeProduce(sulfuricAcid, ()->{
+                                nodeProduce(oxygen, ()->{});
+                            });
                         });
                         nodeProduce(manganeseHydroxide, ()->{
                             nodeProduce(manganese, ()->{
@@ -42,6 +47,13 @@ public class pi312TechTree {
                         });
                     });
                 });
+            });
+            //Unit blocks
+            node(shadeUnitFactory, Seq.with(new Objectives.SectorComplete(plate)), ()->{
+                //Units
+                node(condition);
+                node(note);
+                node(complicity);
             });
             //Effect
             node(lightProjector);
@@ -72,12 +84,15 @@ public class pi312TechTree {
             node(hydrogenSulfideCollector, ItemStack.with(aluminium, 80, silver, 60), ()->{
                 node(hydrogenSulfideDiffuser, ItemStack.with(aluminium, 180, silver, 90), ()->{
                     node(manganeseSynthesizer, ItemStack.with(aluminium, 420, silver, 390), Seq.with(new Objectives.Research(manganeseHydroxide)), ()->{});
+                    node(decompositionChamber, Seq.with(new Objectives.SectorComplete(plate)), ()->{});
                 });
             });
 
             //Drills
             node(hydraulicDrill, ItemStack.with(aluminium, 20), ()->{
-                node(hydraulicWallDrill, ItemStack.with(aluminium, 200, silver, 100), Seq.with(new Objectives.OnSector(canyon)),()->{});
+                node(hydraulicWallDrill, ItemStack.with(aluminium, 200, silver, 100), Seq.with(new Objectives.OnSector(canyon)),()->{
+                    node(gasBore, Seq.with(new Objectives.SectorComplete(plate)), ()->{});
+                });
             });
 
             //Power

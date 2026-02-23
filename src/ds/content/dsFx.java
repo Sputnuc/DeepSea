@@ -33,7 +33,7 @@ public class dsFx {
     }),
     dsMoveEffect = new Effect(45, e -> {
         color(Color.valueOf("e0f4ff"), Color.valueOf("bfe0f200"), e.fin());
-        randLenVectors(e.id, 3, 10 * e.fin(), (x, y)->{
+        randLenVectors(e.id, 1, 10 * e.fin(), (x, y)->{
             Fill.circle(e.x + x, e.y + y, e.fin() * 0.75f + 1);
         });
     }),

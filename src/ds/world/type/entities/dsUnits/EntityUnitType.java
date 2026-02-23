@@ -40,9 +40,6 @@ public class EntityUnitType extends dsUnitType {
         flying = true;
         playerControllable = false;
         speed = 6;
-        killable = true;
-        isEnemy = false;
-        targetable = false;
         health = 9999999;
         omniMovement = true;
         strafePenalty = 1;

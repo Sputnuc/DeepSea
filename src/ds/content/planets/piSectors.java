@@ -5,7 +5,7 @@ import mindustry.type.SectorPreset;
 import static ds.content.planets.dsPlanets.*;
 
 public class piSectors {
-    public static SectorPreset theBeginning, canyon;
+    public static SectorPreset theBeginning, canyon, plate;
     public static void load(){
         theBeginning = new SectorPreset("the-beginning", pi312, 10){{
             alwaysUnlocked = true;
@@ -15,8 +15,13 @@ public class piSectors {
             showSectorLandInfo = true;
         }};
         canyon = new SectorPreset("canyon", pi312, 16){{
-            difficulty = 1;
-            captureWave = 15;
+            difficulty = 2;
+            captureWave = 10;
+        }};
+
+        plate = new SectorPreset("plate", pi312, 21){{
+            difficulty = 3;
+            captureWave = 10;
         }};
     }
 }

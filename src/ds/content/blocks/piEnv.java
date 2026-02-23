@@ -21,7 +21,7 @@ public class piEnv {
             limestoneFloor, limestoneWall,
 
             //Manganese biome
-            manganeseHydroxideCrystals,
+            manganeseHydroxideFloor,    manganeseHydroxideCrystals,
 
             // Quartz biome
             quartzFloor, quartzSlabs, quartsCrystalWall, quartsWall,
@@ -110,6 +110,7 @@ public class piEnv {
         geothermalFloor = new EffectFloor("geothermal-floor"){{
             variants = 4;
             emitLight = true;
+            blendGroup = basalt;
             lightRadius = 40f;
             lightColor = hotrock.lightColor;
             attributes.set(Attribute.heat, 1.5f);
@@ -123,6 +124,9 @@ public class piEnv {
             variants = 3;
         }};
         // Manganese hydroxide
+        manganeseHydroxideFloor = new Floor("manganese-hydroxide-floor"){{
+            variants = 5;
+        }};
         manganeseHydroxideCrystals = new StaticWall("manganese-hydroxide-crystals"){{
             itemDrop = piItems.manganeseHydroxide;
             variants = 3;

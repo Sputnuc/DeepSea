@@ -3,6 +3,7 @@ package ds.utilities;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import mindustry.Vars;
+import mindustry.content.Blocks;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.OreBlock;
@@ -25,7 +26,7 @@ public class dsMath {
             int tileX = (int)(x / tilesize);
             int tileY = (int)(y / tilesize);
             Tile tile = Vars.world.tile(tileX, tileY);
-            if(tile != null && tile.solid()){
+            if(tile != null && (tile.solid() && tile.floor() != Blocks.empty.asFloor())){
                 vec = new Vec2(x, y);
                 return vec;
             }
