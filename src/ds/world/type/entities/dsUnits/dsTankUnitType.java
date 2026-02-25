@@ -10,6 +10,5 @@ public class dsTankUnitType extends TankUnitType {
         super(name);
         outlineColor = dsPal.dsUnitOutline;
         constructor = TankUnit::create;
-        envRequired = dsEnv.underwaterWarm;
     }
 }
