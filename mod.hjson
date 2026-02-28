@@ -1,6 +1,6 @@
 name: "deepsea"
 main: "ds.DeepSea"
-version: 0.1.1
+version: 0.2
 minGameVersion: 154.3
 
 displayName: "Project: [#324ba6[]]Deep [#5aa9d6[]]Sea[white[]] [accent[]](Alpha)[white[]]"
