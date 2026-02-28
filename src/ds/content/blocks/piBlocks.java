@@ -2,6 +2,8 @@ package ds.content.blocks;
 
 
 import arc.graphics.Color;
+import arc.math.Interp;
+import arc.math.Mathf;
 import arc.struct.Seq;
 import ds.content.dsFx;
 import ds.content.dsSounds;
@@ -19,6 +21,7 @@ import ds.world.type.entities.bullets.PointLightningBulletType;
 import ds.world.type.entities.effect.RandRadialEffect;
 import mindustry.content.Fx;
 import mindustry.entities.bullet.BasicBulletType;
+import mindustry.entities.effect.MultiEffect;
 import mindustry.entities.part.RegionPart;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.gen.Sounds;
@@ -61,15 +64,17 @@ import static mindustry.type.ItemStack.*;
 public class piBlocks {
     public static Block
             //Production
-            hydraulicDrill, hydraulicWallDrill, gasBore,
+            hydraulicDrill, hydraulicWallDrill, gasBore, detonateDrill,
             //Power
             powerTransmitter, powerDistributor, condensator, hydroTurbineGenerator, geothermalGenerator,
             //Effect
             lightProjector, repairModule,
             //Crafting
-            hydrogenSulfideCollector, hydrogenSulfideDiffuser, manganeseSynthesizer, decompositionChamber, test,
+            hydrogenSulfideCollector, hydrogenSulfideDiffuser, manganeseSynthesizer, decompositionChamber, steelKiln,
             //Logistic
             isolatedConveyor, isolatedRouter, isolatedJunction, isolatedBridge, pipe, liquidDistributor, pipeBridge, pipeJunction,
+            //Storage
+            pressuredLiquidContainer,
             //Cores
             coreInfluence, coreEnforcement, coreEminence,
             //Turrets
@@ -105,6 +110,7 @@ public class piBlocks {
             drawer = new DrawTurret("ds-turret-");
             shootY = 2;
             shootType = new HarpoonBulletType(16, 45){{
+                buildingDamageMultiplier = 0.3f;
                 lifetime = 45;
                 pierceDrag = 0.25f;
                 shootEffect = dsFx.dsInclinedWave;
@@ -132,7 +138,7 @@ public class piBlocks {
             velocityRnd = 0.1f;
             shootSound = Sounds.shootDiffuse;
             consumePower(30/60f);
-            range = 15 * tilesize;
+            range = 17 * tilesize;
             reload = 30;
             targetAir = false;
             drawer = new DrawTurret("ds-turret-");
@@ -141,7 +147,7 @@ public class piBlocks {
                     silver, new BasicBulletType(8,15){{
                         pierce = true;
                         pierceCap = 2;
-                        lifetime = 15;
+                        lifetime = 17;
                         trailLength = 4;
                         trailWidth = 0.6f;
                         width = 5;
@@ -157,7 +163,7 @@ public class piBlocks {
                         reloadMultiplier = 0.75f;
                         pierce = true;
                         pierceCap = 3;
-                        lifetime = 20;
+                        lifetime = 22;
                         rangeChange = 5 * tilesize;
                         trailLength = 4;
                         trailWidth = 0.6f;
@@ -201,11 +207,12 @@ public class piBlocks {
                 }});
             }};
 
-            shootType = new PointLightningBulletType(3.25f){{
+            shootType = new PointLightningBulletType(6.5f){{
                 pierceArmor = true;
                 despawnEffect = Fx.none;
                 hitColor = lightningColor;
                 hitEffect = Fx.colorSpark;
+                buildingDamageMultiplier = 0.1f;
             }};
         }};
     }
@@ -218,7 +225,7 @@ public class piBlocks {
             health = 2100;
             itemCapacity = 5300;
             buildCostMultiplier = 3;
-            unitCapModifier = 12;
+            unitCapModifier = 18;
             unitType = piUnits.moment;
             envEnabled |= Env.terrestrial | dsEnv.underwaterWarm;
             envDisabled = Env.none;
@@ -291,8 +298,15 @@ public class piBlocks {
             range = 5;
             liquidPressure = 1.025f;
             liquidCapacity = 60;
+            hasPower = false;
         }};
         ((ArmoredConduit) pipe).bridgeReplacement = pipeBridge;
+        pressuredLiquidContainer = new LiquidRouter("pressured-liquid-container"){{
+            requirements(Category.liquid, with(aluminium, 40, silver, 50));
+            liquidPressure = 1.025f;
+            liquidCapacity = 1900f;
+            size = 2;
+        }};
     }
     public static void loadProductionBlocks(){
         hydraulicDrill = new BurstDrill("hydraulic-drill"){{
@@ -315,7 +329,7 @@ public class piBlocks {
             drillEffect = Fx.mineWallSmall;
         }};
         gasBore  = new BeamDrill("gas-bore"){{
-            requirements(Category.production, with(aluminium, 75, silver, 65, graphite, 70));
+            requirements(Category.production, with(aluminium, 75, silver, 65, graphite, 70, manganese, 25));
             size = 3;
             range = 3;
             drillTime = 120;
@@ -324,6 +338,29 @@ public class piBlocks {
             consumeLiquid(oxygen, 3/60f);
             consumeLiquid(hydrogen, 6/60f);
             tier = 5;
+        }};
+        detonateDrill = new BurstDrill("detonate-drill"){{
+            requirements(Category.production, with(aluminium, 85, silver, 55, graphite, 45, steel, 70));
+            size = 4;
+            arrows = 1;
+            itemCapacity = 70;
+            glowColor = Color.valueOf("c9f3ff").a(0.75f);
+            arrowColor = Color.valueOf("c9f3ff");
+            drillTime = 120;
+            liquidBoostIntensity = 1;
+            arrowOffset = 2f;
+            arrowSpacing = 5f;
+            tier = 6;
+            consumePower(3);
+            consumeLiquid(oxygen, 0.2f);
+            consumeLiquid(hydrogen, 0.4f);
+            shake = 4;
+            drillSoundVolume = 1.4f;
+            drillEffect = new MultiEffect(
+                    dsFx.drillDetonateEffectTri,
+                    dsFx.drillDetonateEffectWave,
+                    dsFx.smoothColorCircle(Color.valueOf("fcffeb"), 30, 40, Interp.pow2Out)
+            );
         }};
     }
     public static void loadPowerBlocks(){
@@ -498,13 +535,36 @@ public class piBlocks {
             liquidOutputDirections = new int[]{1, 3};
             envRequired = dsEnv.underwaterWarm;
         }};
+        steelKiln = new GenericCrafter("steel-kiln"){{
+            requirements(Category.crafting, with(aluminium, 125, silver, 75, graphite, 85, manganese, 35));
+            size = 4;
+            liquidCapacity = 50;
+            consumePower(2);
+            consumeItems(ItemStack.with(ironstone, 2, graphite, 1));
+            consumeLiquid(oxygen, 0.1f);
+            outputItem = new ItemStack(steel, 1);
+            craftTime = 120;
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"),
+                    new DrawLiquidTile(oxygen),
+                    new DrawArcSmelt(){{
+                        flameRad = 2;
+                        particleRad = 5;
+                        midColor = Color.valueOf("fffce5");
+                        flameColor = Color.valueOf("f2daaa");
+                        flameRadiusMag = 2f;
+                        flameRadiusScl = 2.6f;
+                    }},
+                    new DrawDefault()
+            );
+        }};
     }
     public static void loadUnitBlocks(){
         shadeUnitFactory = new UnitFactory("shade-unit-factory"){{
             requirements(Category.units, with(aluminium, 95, silver, 75, manganese, 55));
             size = 3;
             consumePower(2.5f);
-            consumeLiquid(oxygen, 0.5f);
+            consumeLiquid(oxygen, 0.2f);
             plans = Seq.with(
                     new UnitPlan(piUnits.condition, 60f * 25, with(silver, 30, graphite, 15)),
                     new UnitPlan(piUnits.note, 60f * 40, with(silver, 55, graphite, 30, steel, 20)),

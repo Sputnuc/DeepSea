@@ -20,7 +20,9 @@ public class pi312TechTree {
             //Sectors
             node(theBeginning, ()->{
                 node(canyon, Seq.with(new Objectives.SectorComplete(theBeginning)), ()->{
-                    node(plate, Seq.with(new Objectives.SectorComplete(canyon)),()->{});
+                    node(plate, Seq.with(new Objectives.SectorComplete(canyon)),()->{
+                        node(outpost, Seq.with(new Objectives.SectorComplete(plate)), ()->{});
+                    });
                 });
             });
 
@@ -83,7 +85,9 @@ public class pi312TechTree {
             //Production
             node(hydrogenSulfideCollector, ItemStack.with(aluminium, 80, silver, 60), ()->{
                 node(hydrogenSulfideDiffuser, ItemStack.with(aluminium, 180, silver, 90), ()->{
-                    node(manganeseSynthesizer, ItemStack.with(aluminium, 420, silver, 390), Seq.with(new Objectives.Research(manganeseHydroxide)), ()->{});
+                    node(manganeseSynthesizer, ItemStack.with(aluminium, 420, silver, 390), Seq.with(new Objectives.Research(manganeseHydroxide)), ()->{
+                        node(steelKiln, Seq.with(new Objectives.SectorComplete(outpost)), ()->{});
+                    });
                     node(decompositionChamber, Seq.with(new Objectives.SectorComplete(plate)), ()->{});
                 });
             });
@@ -93,6 +97,7 @@ public class pi312TechTree {
                 node(hydraulicWallDrill, ItemStack.with(aluminium, 200, silver, 100), Seq.with(new Objectives.OnSector(canyon)),()->{
                     node(gasBore, Seq.with(new Objectives.SectorComplete(plate)), ()->{});
                 });
+                node(detonateDrill);
             });
 
             //Power

@@ -151,7 +151,26 @@ public class dsFx {
         sizeFrom = 1; sizeTo = 0.35f;
         colorFrom = Color.white;
         colorTo = Color.valueOf("ffffff").a(0);
-    }};
+    }},
+
+    drillDetonateEffectTri = new Effect(70, e ->{
+        color(Color.valueOf("fcffeb"), Color.valueOf("d1c497"), e.fin());
+        for(int sign : Mathf.signs){
+            float cOut = e.fout(Interp.circleOut);
+            Drawf.tri(e.x, e.y, 12 * cOut, 30 * e.fin(Interp.bounceOut), 90 + 90 * sign);
+            Drawf.light(e.x, e.y, 30 * cOut, Color.valueOf("fcffeb"), 0.4f * cOut + 0.15f);
+        }
+    }),
+    drillDetonateEffectWave = new Effect(40, e ->{
+        color(Color.valueOf("fcffeb"), Color.valueOf("d1c497"), e.fin());
+
+        stroke(e.fout(Interp.circleOut) * 1.85f);
+        randLenVectors(e.id + 1, 12, 1f + 33f * e.fin(Interp.pow2Out), (x, y) -> {
+            lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 1f + e.fout() * 7f);
+        });
+        stroke(e.fout(Interp.circleOut));
+        Lines.circle(e.x, e.y, e.fin(Interp.pow2Out) * 29f + 1);
+    });
 
     //FX Functions
 

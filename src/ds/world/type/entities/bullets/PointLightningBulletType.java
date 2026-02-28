@@ -10,6 +10,7 @@ import ds.world.draw.DrawCurveLightning;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.core.World;
+import mindustry.entities.Lightning;
 import mindustry.entities.Units;
 import mindustry.entities.bullet.BulletType;
 import mindustry.game.Team;
@@ -29,11 +30,11 @@ public class PointLightningBulletType extends BulletType {
 
     public float segLen = 6;
     public Color lightningColor;
-    public float trailSpacing = 10f;
 
     public int lightningNum = 3; // количество ветвей молнии
     public float lightningWidth = 2.5f;
     public boolean createSubBolts = true; // создавать дополнительные молнии
+    public int subBoltAmount = 3;
     public float subBoltDamage = 0f; // урон дополнительных молний
     public int subBoltLength = 10; // длина дополнительных молний
     public float hitChance = 1.0f; // шанс попадания
@@ -143,7 +144,7 @@ public class PointLightningBulletType extends BulletType {
 
     private void createSubLightnings(Bullet b, float x, float y, float rotation) {
         // Создаем дополнительные молнии от точки попадания
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < subBoltAmount; i++) {
             mindustry.entities.Lightning.create(b.team, lightningColor,
                     subBoltDamage <= 0f ? damage : subBoltDamage,
                     x, y, Mathf.random(360f), subBoltLength);

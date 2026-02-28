@@ -1,22 +1,25 @@
 package ds.world.type.entities.bullets;
 
 import arc.Core;
+import arc.Events;
 import arc.graphics.Color;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.Angles;
 import arc.util.Time;
+import arc.util.Tmp;
 import ds.world.blocks.turret.dsHarpoonTurret;
 import ds.world.draw.DrawWire;
 import ds.world.type.entities.comp.HarpoonBulletComp;
 import mindustry.content.Fx;
 import mindustry.entities.bullet.BasicBulletType;
+import mindustry.game.EventType;
 import mindustry.gen.*;
 import mindustry.graphics.Layer;
 import mindustry.world.blocks.defense.turrets.Turret;
 
 public class HarpoonBulletType extends BasicBulletType {
-
+    static final EventType.UnitDamageEvent bulletDamageEvent = new EventType.UnitDamageEvent();
     public Color wireColor = Color.brown;
     public float wireStroke = 1f;
     public float returnSpeed = 2;
@@ -178,19 +181,25 @@ public class HarpoonBulletType extends BasicBulletType {
     }
 
     @Override
-    public void hitEntity(Bullet b, Hitboxc entity, float health){
-        HarpoonBulletComp hdata = (HarpoonBulletComp)b.data;
-        if(!hdata.BulletReturn) {
-            super.hitEntity(b, entity, health);
-        }
-    }
-
-    @Override
     public void hit(Bullet b, float x, float y) {
         HarpoonBulletComp hdata = (HarpoonBulletComp)b.data;
         if(!hdata.BulletReturn) {
             b.vel().scl(pierceDrag);
             super.hit(b, x, y);
         }
+    }
+
+    @Override
+    public void hitEntity(Bullet b, Hitboxc entity, float health) {
+        HarpoonBulletComp hdata = (HarpoonBulletComp) b.data;
+        if (!hdata.BulletReturn) {
+            super.hitEntity(b, entity, health);
+        }
+    }
+
+    @Override
+    public void hitTile(Bullet b, Building build, float x, float y, float initialHealth, boolean direct){
+        ((dsHarpoonTurret.HarpoonTurretBuild) b.owner).bulletBroken();
+        super.hitTile(b, build, x, y, initialHealth, direct);
     }
 }

@@ -9,6 +9,8 @@ import ds.content.dsSounds;
 import ds.world.graphics.dsPal;
 import ds.world.type.entities.dsUnits.*;
 import ds.world.type.entities.weapons.AdvancedLightWeapon;
+import ds.world.type.entities.weapons.AntiTorpedoSystemWeapon;
+import ds.world.type.entities.weapons.dsWeapon;
 import mindustry.content.Fx;
 import mindustry.entities.bullet.*;
 import mindustry.entities.effect.MultiEffect;
@@ -23,13 +25,14 @@ import static mindustry.Vars.tilesize;
 import static mindustry.content.Fx.*;
 
 public class piUnits {
+    public static float[] tierMultipliers = {1, 3f, 8f,16, 26};
     public static Seq<UnitType> pi312units = new Seq<>();
     public static UnitType
             //Core units
             moment,
             //Assault units
                 //Mech
-            condition,
+            condition, oversight,
                 //Tank
             note,
                 //Submarines
@@ -49,8 +52,8 @@ public class piUnits {
             speed = 3;
             health = 275;
             buildRange = 20 * tilesize;
-            buildSpeed = 4.75f;
-            mineSpeed = 9.5f;
+            buildSpeed = 2.75f;
+            mineSpeed = 6.25f;
             mineFloor = true;
             mineWalls = true;
             mineTier = 3;
@@ -68,6 +71,7 @@ public class piUnits {
                 bullet = new LaserBoltBulletType(4, 15){{
                     width = 1;
                     height = 8;
+                    buildingDamageMultiplier = 0.01f;
                     backColor = dsPal.dsBulletFront;
                     frontColor = Color.white;
                     despawnEffect = hitEffect = dsFx.dsBulletHit;
@@ -75,9 +79,6 @@ public class piUnits {
                     smokeEffect = none;
                     lifetime = 44;
                 }};
-                display = false;
-                noAttack = true;
-                predictTarget = false;
             }});
         }};
         //Assault Submarines
@@ -114,7 +115,7 @@ public class piUnits {
                         homingDelay = 10f;
                         missileAccelTime = 0;
                         rotateSpeed = 0.25f;
-                        weapons.add(new Weapon(){{
+                        weapons.add(new dsWeapon(){{
                             shootCone = 360f;
                             mirror = false;
                             reload = 1f;
@@ -122,6 +123,7 @@ public class piUnits {
                             shootSound = Sounds.none;
                             bullet = new ExplosionBulletType(25,3.5f * tilesize){{
                                 despawnEffect = Fx.massiveExplosion;
+                                damage = 0;
                             }};
                         }});
                     }};
@@ -160,10 +162,52 @@ public class piUnits {
                 }};
             }});
         }};
+        oversight = new dsMechUnitType("oversight"){{
+            speed = 0.31f;
+            health = 195 * tierMultipliers[1];
+            armor = 3 * tierMultipliers[1];
+            hitSize = 13;
+            stepSound = dsSounds.dsMechStep;
+            stepSoundPitch = 0.7f;
+            stepSoundVolume = 1.25f;
+            weapons.add(
+                    new AdvancedLightWeapon("deepsea-oversight-weapon"){{
+                        x = -7.875f; y = 0;
+                        mirror = true;
+                        rotate = false;
+                        top = false;
+                        reload = 45;
+                        shake = 3.5f;
+                        recoil = 2.1f;
+                        shootSound = Sounds.shootDiffuse;
+                        shootSoundVolume = 0.6f;
+                        lightLength = 15 * tilesize;
+                        lightCone = 35f;
+                        shootY = 6;
+                        inaccuracy = 15;
+                        shoot.shots = 9;
+                        velocityRnd = 0.25f;
+                        bullet = new BasicBulletType(8, 14){{
+                            pierce = true;
+                            pierceCap = 2;
+                            lifetime = 15;
+                            trailLength = 6;
+                            trailWidth = 0.6f;
+                            width = 4;
+                            height = 14;
+                            frontColor = hitColor = Color.valueOf("7cbcf7");
+                            backColor = trailColor = Color.valueOf("6783e5");
+                            hitEffect = despawnEffect = Fx.hitBulletColor;
+                            trailInterval = 2;
+                            trailEffect = dsFx.dsBulletSparkTrail;
+                        }};
+                    }}
+            );
+        }};
         //Tanks
         note = new dsTankUnitType("note"){{
             speed = 0.29f;
-            health = 450;
+            health = 350;
             armor = 6;
             hitSize = 8;
             treadRects = new Rect[] {

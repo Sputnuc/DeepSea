@@ -7,4 +7,5 @@ import mindustry.gen.*;
 public abstract class HarpoonBulletComp {
     public float BulletReturnData;
     public boolean BulletReturn;
+    public float initDamage;
 }

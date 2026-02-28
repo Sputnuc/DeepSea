@@ -34,6 +34,8 @@ public class piEnv {
 
             // Deep sandstone
             deepSandstone, deepSandstoneWall,
+            // Ironstone
+            ironstoneFloor, ironstoneWall,
 
             // Nature
             // some sea bushes
@@ -51,9 +53,11 @@ public class piEnv {
         //Other
         limestoneFloor = new Floor("limestone-floor"){{
             variants = 4;
+            mapColor = Color.valueOf("74675a");
         }};
         limestoneWall = new StaticWall("limestone-wall"){{
             variants = 3;
+            mapColor = Color.valueOf("ada8a1");
         }};
 
         // Quartz
@@ -113,23 +117,36 @@ public class piEnv {
             blendGroup = basalt;
             lightRadius = 40f;
             lightColor = hotrock.lightColor;
+            mapColor = hotrock.mapColor;
             attributes.set(Attribute.heat, 1.5f);
             effectChance = 0.04f;
         }};
         // Sandstone
         deepSandstone = new Floor("deep-sandstone"){{
-            variants = 4;
+            variants = 3;
+            mapColor = Color.valueOf("5a4a3a");
         }};
         deepSandstoneWall = new StaticWall("deep-sandstone-wall"){{
             variants = 3;
+            mapColor = Color.valueOf("736251");
         }};
         // Manganese hydroxide
         manganeseHydroxideFloor = new Floor("manganese-hydroxide-floor"){{
-            variants = 5;
+            variants = 3;
+            itemDrop = piItems.manganeseHydroxide;
         }};
         manganeseHydroxideCrystals = new StaticWall("manganese-hydroxide-crystals"){{
             itemDrop = piItems.manganeseHydroxide;
             variants = 3;
+        }};
+        // Ironstone
+        ironstoneFloor = new Floor("ironstone-floor"){{
+            itemDrop = piItems.ironstone;
+            variants = 7;
+        }};
+        ironstoneWall = new StaticWall("ironstone-wall"){{
+            itemDrop = piItems.ironstone;
+            variants = 2;
         }};
 
         //Nature
@@ -140,7 +157,7 @@ public class piEnv {
             lightRadius = 40f;
         }};
         seaweedWall = new StaticWall("seaweed-wall"){{
-            variants = 4;
+            variants = 3;
             emitLight = true;
             lightRadius = 40f;
             lightColor = Color.valueOf("a8ffd5").a(0.09f);

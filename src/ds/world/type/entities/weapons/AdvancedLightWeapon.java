@@ -17,7 +17,7 @@ import ds.world.draw.*;
 import static ds.world.draw.DrawDirLight.*;
 import static mindustry.Vars.tilesize;
 
-public class AdvancedLightWeapon extends Weapon {
+public class AdvancedLightWeapon extends dsWeapon {
     public float lightLength = 180;
     public float rayWidth = 10;
     public float lightCone = 90;

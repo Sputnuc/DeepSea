@@ -17,14 +17,11 @@ public class DeepSea extends Mod{
         dsEnvRenderers.init();
     }
 
-    /*
-    TO DO - Write music for mod
     @Override
     public void init() {
         if (!Vars.headless && Vars.ui != null) {
-            Events.on(EventType.MusicRegisterEvent.class, e -> dsMusicLoader.load());
-            Events.on(EventType.ClientLoadEvent.class, e -> dsMusicLoader.attach());
+            //Events.on(EventType.MusicRegisterEvent.class, e -> dsMusicLoader.load());
+            //Events.on(EventType.ClientLoadEvent.class, e -> dsMusicLoader.attach());
         }
     }
-     */
 }

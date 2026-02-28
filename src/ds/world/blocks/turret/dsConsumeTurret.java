@@ -3,6 +3,7 @@ package ds.world.blocks.turret;
 import arc.Core;
 import arc.graphics.Color;
 import arc.struct.ObjectMap;
+import ds.world.meta.dsStatValues;
 import mindustry.entities.bullet.BulletType;
 import mindustry.ui.Bar;
 import mindustry.world.meta.Stat;
@@ -18,7 +19,8 @@ public class dsConsumeTurret extends dsTurret{
     @Override
     public void setStats(){
         super.setStats();
-        stats.add(Stat.ammo, StatValues.ammo(ObjectMap.of(this, shootType)));
+        stats.add(Stat.ammo, dsStatValues.ammo(ObjectMap.of(this, shootType)));
+        stats.remove(Stat.maxEfficiency);
     }
 
     public class  FuelTurretBuild extends TurretBuild{

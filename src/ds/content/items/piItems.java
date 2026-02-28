@@ -5,19 +5,28 @@ import arc.struct.Seq;
 import mindustry.type.Item;
 
 public class piItems {
-    public static Item aluminium, silver, manganeseHydroxide, manganese, sulfur, ironstone, steel, magnesium, lithium, potassium;
+    public static Item aluminium;
+    public static Item silver;
+    public static Item manganeseHydroxide;
+    public static Item manganese;
+    public static Item sulfur;
+    public static Item ironstone;
+    public static Item steel;
+    public static Item magnesium;
+    public static Item lithium;
+    public static Item potassium;
     public static Seq<Item> piItems = new Seq<>();
     public static void load(){
         aluminium = new Item("aluminium"){{
             color = Color.valueOf("d7c0e0");
-            cost = 1.15f;
+            cost = 0.75f;
             hardness = 3;
             alwaysUnlocked = true;
             piItems.add(this);
         }};
         silver = new Item("silver"){{
             color = Color.valueOf("edfdff");
-            cost = 1.45f;
+            cost = 1.15f;
             hardness = 4;
             alwaysUnlocked = true;
             piItems.add(this);
@@ -44,13 +53,13 @@ public class piItems {
         }};
         ironstone = new Item("ironstone", Color.valueOf("c79484")){{
             cost = 2;
-            hardness = 3;
+            hardness = 4;
             alwaysUnlocked = false;
             piItems.add(this);
         }};
         steel = new Item("steel", Color.valueOf("ab7272")){{
-            cost = 2.2f;
-            hardness = 4;
+            cost = 2.5f;
+            hardness = 5;
             alwaysUnlocked = false;
             piItems.add(this);
         }};

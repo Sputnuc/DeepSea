@@ -17,6 +17,7 @@ public class dsSounds {
             //Mics sounds
             loopAngler = new Sound(),
             loopAnglerAttack = new Sound();
+            //Blocks
 
     public static void load(){
         shootHarpoon = loadSound("harpoon-shoot");
