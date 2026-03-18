@@ -38,8 +38,9 @@ public class PiEnv {
             ironstoneFloor, ironstoneWall,
 
             // Nature
+            deadYellowCoralFloor,
             // some sea bushes
-            seaweedFloor, seaweedWall, seaweed;
+            seaweedFloor, seaweedWall, seaweed, deadYellowcoral, deadYellowcoralAlt, fernAlphared, fernYellow;
 
     public static void load(){
         //Ores
@@ -167,6 +168,27 @@ public class PiEnv {
             variants = 2;
             lightRadius = 9;
             seaweedFloor.asFloor().decoration = this;
+        }};
+        deadYellowCoralFloor = new Floor("dead-yellow-coral-floor"){{variants = 5;}};
+        deadYellowcoral = new SeaBush("dead-yellowcoral"){{
+            lobesMin = 2; lobesMax = 3;
+            magMin = 2f; magMax = 8f;
+            origin = 0.3f;
+            spread = 40f;
+            sclMin = 60f; sclMax = 100f;
+        }};
+        deadYellowcoralAlt = new SeaBush("dead-yellowcoral-alt"){{
+            lobesMin = 2; lobesMax = 3;
+            magMin = 1.5f; magMax = 5f;
+            origin = 0.2f;
+            spread = 40f;
+            sclMin = 40f; sclMax = 80f;
+        }};
+        fernAlphared = new TreeBlock("fern-alphared"){{
+            variants = 4;
+        }};
+        fernYellow = new TreeBlock("dead-yellowcoral-alt"){{
+            variants = 4;
         }};
     }
 }
