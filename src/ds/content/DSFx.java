@@ -31,6 +31,14 @@ public class DSFx {
         float eY = Mathf.sinDeg(e.rotation) * foffset;
         Lines.ellipse(e.x + eX, e.y + eY, 0.45f * e.fin()+ 0.45f, 2.5f, 8, e.rotation);
     }),
+    dsColorSparkSmall = new Effect(15f, e -> {
+        color(Color.white, e.color, e.fin());
+        stroke(e.fout() * 1.1f + 0.5f);
+
+        randLenVectors(e.id, 2, 14f * e.fin(), e.rotation, 0f, (x, y) -> {
+            lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fslope() * 5f + 0.5f);
+        });
+    }),
     dsMoveEffect = new Effect(45, e -> {
         color(Color.valueOf("e0f4ff"), Color.valueOf("bfe0f200"), e.fin());
         randLenVectors(e.id, 2, 30 * e.fin(),  e.rotation - 180,  85,(x, y)->{

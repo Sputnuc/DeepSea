@@ -16,6 +16,9 @@ public class DeepSea extends Mod{
         DSMusicLoader.load();
         ContentLoader.load();
         DSEnvRenderers.init();
+        Events.on(EventType.ClientLoadEvent.class, e -> {
+            IconLoader.loadIcons();
+        });
     }
 
     @Override

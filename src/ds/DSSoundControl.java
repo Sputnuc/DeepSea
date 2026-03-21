@@ -42,12 +42,9 @@ public class DSSoundControl extends SoundControl {
         dsCalmM = DSMusicLoader.dsCalmM;
 
         //Both music arrays
-        ambientM = modAmbientMusic;
-        ambientM.addAll(dsAmbientM);
-        darkM = modDarkMusic;
-        darkM.addAll(dsDarkM);
-        bossM = modBossMusic;
-        bossM.addAll(dsBossM);
+        ambientM = new Seq<>(modAmbientMusic).addAll(dsAmbientM);
+        darkM  = new Seq<>(modDarkMusic).addAll(dsDarkM);
+        bossM  = new Seq<>(modBossMusic).addAll(dsBossM);
     }
 
     @Override
@@ -130,6 +127,14 @@ public class DSSoundControl extends SoundControl {
 
         updateLoops();
     }
+    protected boolean isCalmNow(){
+        if(!state.rules.waveTimer || state.rules.infiniteResources) return true;
+        if(state.isCampaign() & state.getSector() != null){
+            return state.getSector().isCaptured();
+        }
+        return  false;
+    }
+
     @Override
     public void playRandom(){
         if(!DSMusicLoader.isDeepSeaMusic()){
@@ -141,20 +146,12 @@ public class DSSoundControl extends SoundControl {
                 playOnce(modAmbientMusic.random(lastRandomPlayed));
             }
         } else {
-            boolean calm = false;
-            if(state.isCampaign()){
-                if(state.getSector() != null){
-                    if(state.getSector().isCaptured()) calm = true;
-                }
-            }
-            if(state.rules.infiniteResources || !state.rules.waveTimer) calm = true;
-
             if(DSMusicLoader.bothMusic()){
                 if (state.boss() != null) {
                     playOnce(bossM.random(lastRandomPlayed));
                 } else if (isDark()) {
                     playOnce(darkM.random(lastRandomPlayed));
-                } else if(!calm){
+                } else if(!isCalmNow()){
                     playOnce(ambientM.random(lastRandomPlayed));
                 } else {
                     playOnce(dsCalmM.random(lastRandomPlayed));
@@ -164,7 +161,7 @@ public class DSSoundControl extends SoundControl {
                     playOnce(dsBossM.random(lastRandomPlayed));
                 } else if (isDark()) {
                     playOnce(dsDarkM.random(lastRandomPlayed));
-                } else if (!calm){
+                } else if (!isCalmNow()){
                     playOnce(dsAmbientM.random(lastRandomPlayed));
                 } else {
                     playOnce(dsCalmM.random(lastRandomPlayed));

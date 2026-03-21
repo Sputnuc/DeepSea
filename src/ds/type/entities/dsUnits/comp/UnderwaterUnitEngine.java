@@ -4,6 +4,7 @@ import arc.math.Angles;
 import arc.math.Mathf;
 import arc.util.Time;
 import ds.content.DSFx;
+import mindustry.Vars;
 import mindustry.entities.Effect;
 import mindustry.gen.Unit;
 import mindustry.type.UnitType;
@@ -47,7 +48,7 @@ public class UnderwaterUnitEngine extends UnitType.UnitEngine{
     @Override
     public void draw(Unit unit){
         float eff = calcUnitSpeedEff(unit);
-        if(eff > 0.001f){
+        if(eff > 0.001f && !Vars.state.isPaused()){
             timer += Time.delta * eff;
             if(timer > engineEffectInterval){
                 if(Mathf.chance(engineEffectChance)) {

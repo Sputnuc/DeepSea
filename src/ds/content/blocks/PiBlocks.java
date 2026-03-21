@@ -11,6 +11,7 @@ import ds.content.units.PiUnits;
 import ds.world.blocks.crafting.DynamicCrafter;
 import ds.world.blocks.distribution.ClosedConveyor;
 import ds.world.blocks.production.WallDrill;
+import ds.world.blocks.turret.AccelItemTurret;
 import ds.world.blocks.turret.AccelPowerTurret;
 import ds.world.blocks.turret.DSHarpoonTurret;
 import ds.world.blocks.turret.DSItemTurret;
@@ -29,7 +30,9 @@ import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.bullet.ExplosionBulletType;
 import mindustry.entities.effect.MultiEffect;
+import mindustry.entities.effect.ParticleEffect;
 import mindustry.entities.part.RegionPart;
+import mindustry.entities.pattern.ShootBarrel;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Layer;
@@ -84,7 +87,7 @@ public class PiBlocks {
             //Cores
             coreInfluence, coreEnforcement, coreEminence,
             //Turrets
-            cutoff, irritation, discharge, hydroid,
+            cutoff, irritation, discharge, hydroid, execution,
             //Defends
             aluminiumWall, aluminiumWallLarge,
             //UnitBlocks
@@ -221,6 +224,101 @@ public class PiBlocks {
                 buildingDamageMultiplier = 0.1f;
             }};
         }};
+
+        execution = new AccelItemTurret("execution"){{
+            requirements(Category.turret, with(aluminium, 125, silver, 35, graphite, 50, steel, 35));
+            size = 3;
+            outlineColor = DSPal.dsTurretOutline;
+            scaledHealth = 100;
+            rotateSpeed = 4.35f;
+            targetInterval = 0.5f;
+            newTargetInterval = 1;
+            shootCone = 13;
+            inaccuracy = 5;
+            reload = 150;
+            maxAccel = 50;
+            shake = 1.25f;
+            speedUpPerShoot = 10;
+            recoil = 3;
+            recoilTime = 10;
+            cooldownSpeed = 1f;
+            targetGround = false;
+            consumeLiquid(hydrogen, 0.25f);
+            consumePower(1f);
+            shootSound = Sounds.shootDisperse;
+            range = 30 * tilesize;
+            drawer = new DrawTurret("ds-turret-");
+            shoot = new ShootBarrel(){{
+                barrels = new float[]{
+                        2f, 0, 0,
+                        -2f, 0, 0,
+                        6.5f, -1.5f, 0,
+                        -6.5f, -1.5f, 0
+                };
+            }};
+            ammo(
+                    aluminium, new BasicBulletType(8,19f){{
+                        pierce = true;
+                        pierceCap = 3;
+                        lifetime = 30;
+                        ammoMultiplier = 3;
+                        frontColor = hitColor = Color.valueOf("f5d9ff");
+                        backColor = trailColor = Color.valueOf("cea4de");
+                        trailEffect = DSFx.dsColorSparkSmall;
+                        trailInterval = 1;
+                        trailRotation = true;
+                        trailLength = 8;
+                        trailWidth = 0.75f;
+                        height = 17;
+                        width = 5;
+                        shootEffect = Fx.shootSmallColor;
+                        hitEffect = Fx.hitBulletColor;
+                        despawnEffect = Fx.hitBulletColor;
+                        collidesGround = false;
+                    }},
+                    silver, new BasicBulletType(12,15.25f){{
+                        pierce = true;
+                        pierceCap = 2;
+                        lifetime = 24;
+                        ammoMultiplier = 2;
+                        rangeChange = 48;
+                        reloadMultiplier = 2f;
+                        frontColor = hitColor = Color.valueOf("edfdff");
+                        backColor = trailColor = Color.valueOf("bce3e8");
+                        trailEffect = DSFx.dsColorSparkSmall;
+                        trailInterval = 1;
+                        trailRotation = true;
+                        trailLength = 8;
+                        trailWidth = 0.75f;
+                        height = 17;
+                        width = 5;
+                        shootEffect = Fx.shootSmallColor;
+                        hitEffect = Fx.hitBulletColor;
+                        despawnEffect = Fx.hitBulletColor;
+                        collidesGround = false;
+                    }},
+                    steel, new BasicBulletType(4,27){{
+                        lifetime = 60;
+                        ammoMultiplier = 4;
+                        frontColor = hitColor = Color.valueOf("ab7272");
+                        backColor = trailColor = Color.valueOf("824d4d");
+                        trailEffect = DSFx.dsColorSparkSmall;
+                        trailInterval = 2;
+                        trailRotation = true;
+                        reloadMultiplier = 0.25f;
+                        trailLength = 8;
+                        trailWidth = 0.75f;
+                        height = 17;
+                        width = 5;
+                        shootEffect = Fx.shootSmallColor;
+                        hitEffect = Fx.hitBulletColor;
+                        despawnEffect = Fx.hitBulletColor;
+                        status = DSStatusEffects.waterLeak;
+                        statusDuration = 60;
+                    }}
+            );
+        }};
+
         hydroid = new DSItemTurret("hydroid"){{
             requirements(Category.turret, with(aluminium, 95, silver, 65, manganese, 95, steel, 20));
             size = 3;
@@ -412,7 +510,7 @@ public class PiBlocks {
         }};
         hydraulicWallDrill = new WallDrill("hydraulic-wall-drill"){{
             requirements(Category.production, with(aluminium, 50, silver, 24));
-            drillTime = 300;
+            drillTime = 240;
             liquidBoostIntensity = 1;
             size = 3;
             tier = 4;

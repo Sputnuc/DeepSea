@@ -3,6 +3,7 @@ package ds.draw;
 import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
+import ds.DSSetting;
 import mindustry.graphics.Drawf;
 
 import static ds.utilities.DSMath.*;
@@ -14,7 +15,7 @@ public class DrawDirLight {
 
     public static void DrawLightBeamNonTileable(float tx, float ty, float beamRotation, float length, float cone, float rayW){
         float sideCone = cone / 2;
-        float minAngleBetweenRays = 2.0f * (float)Math.toDegrees(Math.atan(rayW / (2 * length)));
+        float minAngleBetweenRays = 2.0f * (float)Math.toDegrees(Math.atan(rayW / (2 * length))) / DSSetting.rayAmountMultiplier;
         int sideRays = Math.max(1, (int)Math.ceil(sideCone / minAngleBetweenRays));
         float angularStep = sideCone / sideRays;
         for(int i = 0; i <= sideRays; i++){
@@ -48,7 +49,7 @@ public class DrawDirLight {
 
     public static void DrawLightBeam(float tx, float ty, float beamRotation, float length, float cone, float rayW){
         float sideCone = cone / 2;
-        float minAngleBetweenRays = 2.0f * (float)Math.toDegrees(Math.atan(rayW / (2 * length)));
+        float minAngleBetweenRays = 2.0f * (float)Math.toDegrees(Math.atan(rayW / (2 * length))) / DSSetting.rayAmountMultiplier;
         int sideRays = Math.max(1, (int)Math.ceil(sideCone / minAngleBetweenRays));
         float angularStep = sideCone / sideRays;
         for(int i = 0; i <= sideRays; i++){

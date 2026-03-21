@@ -53,7 +53,7 @@ public class PiItems {
         }};
         ironstone = new Item("ironstone", Color.valueOf("c79484")){{
             cost = 2;
-            hardness = 4;
+            hardness = 5;
             alwaysUnlocked = false;
             piItems.add(this);
         }};

@@ -275,7 +275,7 @@ public class PiUnits {
             tankMoveSound = Sounds.tankMoveSmall;
             weapons.add(new AdvancedLightWeapon("deepsea-note-weapon"){{
                 x = 0;
-                y = 0;
+                y = -1;
                 mirror = false;
                 rotate = true;
                 rotateSpeed = 1.9f;
