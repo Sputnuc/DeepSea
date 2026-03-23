@@ -133,6 +133,7 @@ public class PiUnits {
                             shootOnDeath = true;
                             shootSound = Sounds.none;
                             bullet = new ExplosionBulletType(25,3.5f * tilesize){{
+                                buildingDamageMultiplier = 0.8f;
                                 despawnEffect = Fx.massiveExplosion;
                                 damage = 0;
                             }};
@@ -177,6 +178,7 @@ public class PiUnits {
                             shootOnDeath = true;
                             shootSound = Sounds.none;
                             bullet = new ExplosionBulletType(46,4.5f * tilesize){{
+                                buildingDamageMultiplier = 0.8f;
                                 despawnEffect = Fx.massiveExplosion;
                                 status = DSStatusEffects.waterLeak;
                                 statusDuration = 300;

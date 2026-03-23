@@ -53,11 +53,22 @@ public class Pi312TechTree {
             //Unit blocks
             node(shadeUnitFactory, Seq.with(new Objectives.SectorComplete(plate)), ()->{
                 //Units
-                node(condition);
-                node(note);
-                node(complicity);
+                node(condition, ()->{
+                    node(oversight, Seq.with(new Objectives.Research(shadeUnitReconstructor)), ()->{});
+                });
+                node(note, ()->{
+                    node(sound, Seq.with(new Objectives.Research(shadeUnitReconstructor)), ()->{});
+                });
+                node(complicity, ()->{
+                    node(consequences, Seq.with(new Objectives.Research(shadeUnitReconstructor)), ()->{});
+                });
+
+                node(shadeUnitReconstructor, ()->{});
             });
             //Effect
+            node(pressuredContainer, ()->{
+                node(pressuredUnloader);
+            });
             node(lightProjector);
             node(repairModule);
             //Turrets

@@ -53,6 +53,8 @@ import mindustry.world.blocks.production.BeamDrill;
 import mindustry.world.blocks.production.BurstDrill;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.blocks.storage.CoreBlock;
+import mindustry.world.blocks.storage.StorageBlock;
+import mindustry.world.blocks.storage.Unloader;
 import mindustry.world.blocks.units.Reconstructor;
 import mindustry.world.blocks.units.UnitFactory;
 import mindustry.world.consumers.ConsumeItemFlammable;
@@ -84,7 +86,7 @@ public class PiBlocks {
             //Logistic
             isolatedConveyor, isolatedRouter, isolatedJunction, isolatedSorter, isolatedInvertedSorter, isolatedOverflowGate, isolatedUnderflowGate, isolatedBridge, pipe, liquidDistributor, pipeBridge, pipeJunction,
             //Storage
-            pressuredLiquidContainer,
+            pressuredLiquidContainer, pressuredContainer, pressuredUnloader,
             //Cores
             coreInfluence, coreEnforcement, coreEminence,
             //Turrets
@@ -258,7 +260,7 @@ public class PiBlocks {
                 };
             }};
             ammo(
-                    aluminium, new BasicBulletType(8,24f){{
+                    aluminium, new BasicBulletType(8,28f){{
                         pierce = true;
                         pierceCap = 3;
                         lifetime = 30;
@@ -277,7 +279,7 @@ public class PiBlocks {
                         despawnEffect = Fx.hitBulletColor;
                         collidesGround = false;
                     }},
-                    silver, new BasicBulletType(12,19){{
+                    silver, new BasicBulletType(12,21){{
                         pierce = true;
                         pierceCap = 2;
                         lifetime = 24;
@@ -298,7 +300,7 @@ public class PiBlocks {
                         despawnEffect = Fx.hitBulletColor;
                         collidesGround = false;
                     }},
-                    steel, new BasicBulletType(4,32){{
+                    steel, new BasicBulletType(4,38){{
                         lifetime = 60;
                         ammoMultiplier = 4;
                         frontColor = hitColor = Color.valueOf("ab7272");
@@ -357,7 +359,7 @@ public class PiBlocks {
                 );
             }};
             ammo(
-                    silver, new BulletType(){{
+                    steel, new BulletType(){{
                         keepVelocity = false;
                         instantDisappear = true;
                         ammoMultiplier = 1;
@@ -377,7 +379,8 @@ public class PiBlocks {
                                 reload = 1f;
                                 shootOnDeath = true;
                                 shootSound = Sounds.none;
-                                bullet = new ExplosionBulletType(95,5.5f * tilesize){{
+                                bullet = new ExplosionBulletType(120,5.5f * tilesize){{
+                                    buildingDamageMultiplier = 0.15f;
                                     status = DSStatusEffects.waterLeak;
                                     statusDuration = 600;
                                     despawnEffect = new MultiEffect(
@@ -407,6 +410,16 @@ public class PiBlocks {
             envDisabled = Env.none;
             squareSprite = false;
         }};
+        pressuredContainer = new StorageBlock("pressured-container"){{
+            requirements(Category.effect, with(aluminium, 120, silver, 65, steel, 65));
+            size = 2;
+            itemCapacity = 800;
+        }};
+        pressuredUnloader = new Unloader("pressured-unloader"){{
+            requirements(Category.distribution, with(aluminium, 20, manganese, 15));
+            size = 1;
+            speed = 4.8f;
+        }};
         repairModule = new MendProjector("repair-module"){{
             requirements(Category.effect, with(aluminium, 55, silver, 45, manganese, 30));
             consumePower(1);
@@ -414,7 +427,7 @@ public class PiBlocks {
             researchCostMultiplier = 0.6f;
             size = 2;
             reload = 300;
-            range = 60;
+            range = 120;
             healPercent = 15;
             scaledHealth = 55;
             phaseRangeBoost = 0;
