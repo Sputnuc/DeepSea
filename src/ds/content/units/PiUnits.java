@@ -96,11 +96,11 @@ public class PiUnits {
         complicity = new SubmarineUnitType("complicity"){{
             setEngine(0, -5, 180, false);
             constructor = UnitEntity::create;
-            speed = 2.15f;
+            speed = 1.8f;
             health = 115;
             armor = 1;
+            omniMovement = true;
             hitSize = 8;
-            circleTarget = true;
             moveSound = Sounds.none;
             weapons.add(new AdvancedLightWeapon(){{
                 x = 18/4f; y = 1;
@@ -121,7 +121,7 @@ public class PiUnits {
                     speed = 0.01f;
                     spawnUnit = new TorpedoUnitType("basic-torpedo"){{
                         speed = 3.5f;
-                        lifetime = 90;
+                        lifetime = 40;
                         rotateSpeed = 1.75f;
                         maxRange = 4;
                         deathSound = Sounds.explosionPlasmaSmall;
@@ -132,8 +132,8 @@ public class PiUnits {
                             reload = 1f;
                             shootOnDeath = true;
                             shootSound = Sounds.none;
-                            bullet = new ExplosionBulletType(25,3.5f * tilesize){{
-                                buildingDamageMultiplier = 0.8f;
+                            bullet = new ExplosionBulletType(31,3.5f * tilesize){{
+                                buildingDamageMultiplier = 0.75f;
                                 despawnEffect = Fx.massiveExplosion;
                                 damage = 0;
                             }};
@@ -177,8 +177,8 @@ public class PiUnits {
                             reload = 1f;
                             shootOnDeath = true;
                             shootSound = Sounds.none;
-                            bullet = new ExplosionBulletType(46,4.5f * tilesize){{
-                                buildingDamageMultiplier = 0.8f;
+                            bullet = new ExplosionBulletType(49,4.5f * tilesize){{
+                                buildingDamageMultiplier = 0.75f;
                                 despawnEffect = Fx.massiveExplosion;
                                 status = DSStatusEffects.waterLeak;
                                 statusDuration = 300;
@@ -207,7 +207,7 @@ public class PiUnits {
                 lightLength = 20 * tilesize;
                 shootSound = DSSounds.shootSmallWeapon;
                 shootSoundVolume = 0.45f;
-                bullet = new BasicBulletType(3.5f, 20){{
+                bullet = new BasicBulletType(3.5f, 22){{
                     height = 13;
                     width = 10;
                     lightOpacity = 0.75f;
@@ -248,7 +248,7 @@ public class PiUnits {
                         inaccuracy = 10;
                         shoot.shots = 9;
                         velocityRnd = 0.25f;
-                        bullet = new BasicBulletType(8, 19){{
+                        bullet = new BasicBulletType(8, 21){{
                             pierce = true;
                             pierceCap = 2;
                             lifetime = 15;
@@ -268,7 +268,7 @@ public class PiUnits {
         //Tanks
         note = new DSTankUnitType("note"){{
             speed = 0.29f;
-            health = 350;
+            health = 380;
             armor = 6;
             hitSize = 8;
             treadRects = new Rect[] {
@@ -287,7 +287,7 @@ public class PiUnits {
                 lightLength = 25 * tilesize;
                 shake = 1;
                 shootSound = Sounds.shootStell;
-                bullet = new BasicBulletType(8f, 42){{
+                bullet = new BasicBulletType(8f, 40){{
                     height = 13;
                     width = 9;
                     sprite = "missile-large";
@@ -309,7 +309,7 @@ public class PiUnits {
         }};
         sound = new DSTankUnitType("sound"){{
             speed = 0.26f;
-            health = 795;
+            health = 895;
             armor = 8 * tierMultipliers[1];
             hitSize = 14;
             treadRects = new Rect[] {

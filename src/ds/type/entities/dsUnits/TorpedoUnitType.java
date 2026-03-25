@@ -1,6 +1,7 @@
 package ds.type.entities.dsUnits;
 
 import ds.content.DSFx;
+import ds.type.entities.dsUnits.comp.UnderwaterUnitEngine;
 import ds.world.meta.DSEnv;
 import mindustry.entities.abilities.MoveEffectAbility;
 import mindustry.gen.Sounds;
@@ -18,9 +19,8 @@ public class TorpedoUnitType extends MissileUnitType {
         engineOffset = 0;
         loopSound = Sounds.none;
         outlineColor = Pal.darkOutline;
-        abilities.add(new MoveEffectAbility(){{
-            effect = DSFx.torpedoTrail;
-            minVelocity = 0.05f;
+        engines.add(new UnderwaterUnitEngine(0, -4, 180){{
+            engineEffectChance = 0.45f;
         }});
     }
 }
