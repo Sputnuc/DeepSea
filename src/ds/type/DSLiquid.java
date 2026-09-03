@@ -15,7 +15,7 @@ public class DSLiquid extends Liquid {
         super(name);
     }
 
-    //If yes it can be use in exothermic reactor.
+    //If true it can be use in exothermic reactors.
     public boolean exothermic = false;
     public float reactivity = 0f;
 

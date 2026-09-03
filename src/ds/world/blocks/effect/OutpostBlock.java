@@ -97,6 +97,7 @@ public class OutpostBlock extends StorageBlock {
                 incinerateEffect(this, source);
             }
         }
+
         @Override
         public byte version(){
             return 1;

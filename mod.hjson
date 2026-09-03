@@ -1,7 +1,7 @@
 name: "deepsea"
 main: "ds.DeepSea"
 version: 0.2.1
-minGameVersion: 154.3
+minGameVersion: 159
 
 displayName: "Project: [#324ba6[]]Deep [#5aa9d6[]]Sea[white[]] [accent[]](Alpha)[white[]]"
 description: "The mod is about planet P-I-312 and more. Some fishes and underwater campaign \nSpecial thanks to: \n- [#5865f2[]]@meepoffaith[white[]] for the pseudo-3D drawing code. \n\n[gray[]]Fish: (*=)<[]"

@@ -1,17 +1,22 @@
 package ds.type.entities.weapons;
 
 import arc.math.Angles;
+import arc.struct.Seq;
 import mindustry.Vars;
 import mindustry.entities.units.WeaponMount;
+import mindustry.game.FogControl;
+import mindustry.gen.FogEvent;
 import mindustry.gen.Unit;
 import ds.draw.*;
+import mindustry.world.Block;
 
 public class AdvancedLightWeapon extends DSWeapon {
     public float lightLength = 180;
     public float rayWidth = 10;
     public float lightCone = 90;
-    public boolean canShoot;
+    public boolean dispelsFog = true;
     public boolean lightTileable = true;
+
     public AdvancedLightWeapon(String name){
         super(name);
     }
@@ -42,5 +47,6 @@ public class AdvancedLightWeapon extends DSWeapon {
             } else {
                 DrawDirLight.DrawLightBeamNonTileable(wX, wY, mount.rotation + unit.rotation(), lightLength, lightCone, rayWidth);
             }
+
     }
 }

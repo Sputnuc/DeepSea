@@ -5,7 +5,10 @@ import arc.graphics.Color;
 import arc.math.Angles;
 import arc.util.Time;
 import ds.content.DSFx;
+import ds.draw.DrawDirLight;
+import mindustry.Vars;
 import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Bullet;
 import mindustry.ui.Bar;
 
 public class DSHarpoonTurret extends DSConsumeTurret {
@@ -28,6 +31,7 @@ public class DSHarpoonTurret extends DSConsumeTurret {
         protected boolean returnedBullet = true;
         protected boolean broken = false;
         protected float timer = 0;
+
         public void bulletReturned(){
             returnedBullet = true;
         }
@@ -55,6 +59,17 @@ public class DSHarpoonTurret extends DSConsumeTurret {
                     timer = 0;
                     broken = false;
                 }
+            }
+            if(!Vars.state.isPaused() && canConsume() && emitDirectLight){
+                DrawDirLight.DrawLightBeamNonTileable(x, y, rotation, lightLength, lightCone, 10);
+            }
+        }
+
+        @Override
+        public void draw(){
+            super.draw();
+            if(Vars.state.isPaused() && canConsume() && emitDirectLight){
+                DrawDirLight.DrawLightBeamNonTileable(x, y, rotation, lightLength, lightCone, 10);
             }
         }
 

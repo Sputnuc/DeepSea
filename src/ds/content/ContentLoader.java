@@ -6,9 +6,13 @@ import ds.content.liquids.PiLiquids;
 import ds.content.planets.DSPlanets;
 import ds.content.planets.PiSectors;
 import ds.content.units.PiUnits;
+import ds.type.entities.Cable;
+import ds.world.global.*;
 
 public class ContentLoader {
     public static void load(){
+        DSWorldProcessor.addProcess(new CableProcess("Cable processor"));
+
         DSStatusEffects.load();
         DSAttributes.load();
         SchematicsLoader.load();
@@ -22,6 +26,6 @@ public class ContentLoader {
         //end load
         DSPlanets.loadContent();
         PiSectors.load();
-        Pi312TechTree.load();
+        DSTechTree.load();
     }
 }

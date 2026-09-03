@@ -11,10 +11,15 @@ import arc.struct.Seq;
 import ds.content.DSFx;
 import ds.content.DSSounds;
 import ds.content.DSStatusEffects;
+import ds.content.items.PiItems;
+import ds.type.entities.bullets.EmptyBulletType;
+import ds.type.entities.weapons.AntiTorpedoesWeapon;
 import ds.world.graphics.DSPal;
 import ds.type.entities.dsUnits.*;
 import ds.type.entities.weapons.AdvancedLightWeapon;
 import ds.type.entities.weapons.DSWeapon;
+import mindustry.ai.UnitCommand;
+import mindustry.ai.types.MinerAI;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.bullet.*;
@@ -37,49 +42,51 @@ public class PiUnits {
     public static float[] tierMultipliers = {1, 2f, 4f, 8f, 20f};
     public static Seq<UnitType> pi312units = new Seq<>();
     public static UnitType
+            //Support units
+            sprig,
             //Core units
             moment,
-            //Assault units
-                //Mech
-            condition, oversight,
-                //Tank
-            note, sound,
-                //Submarines
-            complicity, consequences,
-            //fauna
 
+            //Assault units
+                //Mechs
+            condition, oversight, control, oppression, suppression,
+                //Tanks
+            note, sound, chord, melody, composition,
+                //Submarines
+            complicity, consequences, correlation, culmination, cessation,
+
+    //fauna
             untitledFish, angler,
-            //DONT ASK
+            //DO NOT ASK
             annihilator;
     public static void loadUnits(){
         //Core units
         moment = new SubmarineUnitType("moment"){{
-            setEngine(0, -5, 180, false);
+            setUndEngines(0, -5, 180, false);
             omniMovement = true;
             strafePenalty = 0.45f;
             constructor = UnitEntity::create;
-            targetable = true;
-            speed = 3;
-            health = 275;
+            speed = 4.5f;
+            health = 125;
             buildRange = 20 * tilesize;
             buildSpeed = 2.75f;
             mineSpeed = 6.25f;
             mineFloor = true;
             mineWalls = true;
             drawCell = false;
-            mineTier = 3;
+            mineTier = 4;
             weapons.add(new AdvancedLightWeapon(){{
                 x = 2;
                 y = 1;
                 shootCone = 15;
-                lightCone = 35;
-                lightLength = 22 * tilesize;
+                lightCone = 45;
+                lightLength = 28 * tilesize;
                 lightTileable = false;
                 shootSound = Sounds.shootAlpha;
                 rotate = false;
                 mirror = true;
                 reload = 12;
-                bullet = new LaserBoltBulletType(4, 15){{
+                bullet = new LaserBoltBulletType(4, 12){{
                     width = 1;
                     height = 8;
                     buildingDamageMultiplier = 0.01f;
@@ -92,38 +99,67 @@ public class PiUnits {
                 }};
             }});
         }};
+        //Support submarines
+        sprig = new SubmarineUnitType("sprig"){{
+            setUndEngines(0, -3, 180, false);
+            constructor = UnitEntity::create;
+            mineItems = Seq.with(PiItems.aluminium, PiItems.silver);
+            defaultCommand = UnitCommand.mineCommand;
+            aiController = MinerAI::new;
+            speed = 1.2f;
+            health = 60;
+            hitSize = 6;
+            isEnemy = false;
+            mineTier = 4;
+            mineSpeed = 1.5f;
+            mineFloor = true;
+            mineWalls = true;
+            canAttack = false;
+            weapons.add(new AdvancedLightWeapon(){{
+                y = 1;
+                shootCone = 0;
+                lightCone = 35;
+                lightLength = 17 * tilesize;
+                lightTileable = false;
+                rotate = false;
+                mirror = false;
+                reload = 0;
+                bullet = new BulletType(0, 0){{
+                    instantDisappear = true;
+                    hitEffect = shootEffect = despawnEffect = smokeEffect = none;
+                }};
+            }});
+        }};
         //Assault Submarines
         complicity = new SubmarineUnitType("complicity"){{
-            setEngine(0, -5, 180, false);
+            setUndEngines(0, -5, 180, false);
             constructor = UnitEntity::create;
-            speed = 1.8f;
-            health = 115;
-            armor = 1;
+            rotateSpeed = 1.85f;
+            speed = 2.65f;
+            health = 95;
             omniMovement = true;
             hitSize = 8;
             moveSound = Sounds.none;
             weapons.add(new AdvancedLightWeapon(){{
                 x = 18/4f; y = 1;
                 mirror = true;
-                lightCone = 80;
-                lightLength = 16*tilesize;
+                lightCone = 30;
+                lightLength = 30 * tilesize;
                 shootSound = Sounds.shootRetusa;
                 lightTileable = false;
                 reload = 120;
                 rotate = false;
                 shootCone = 40;
                 inaccuracy = 7;
-                shoot.shots = 2;
-                shoot.shotDelay = 10;
-                bullet = new BulletType(){{
+                bullet = new EmptyBulletType(){{
                     instantDisappear = true;
                     keepVelocity = false;
-                    speed = 0.01f;
+                    speed = 0.001f;
                     spawnUnit = new TorpedoUnitType("basic-torpedo"){{
-                        speed = 3.5f;
-                        lifetime = 40;
+                        speed = 4f;
+                        lifetime = 58;
                         rotateSpeed = 1.75f;
-                        maxRange = 4;
+                        maxRange = 5;
                         deathSound = Sounds.explosionPlasmaSmall;
                         deathSoundVolume = 0.65f;
                         weapons.add(new DSWeapon(){{
@@ -143,32 +179,34 @@ public class PiUnits {
             }});
         }};
         consequences = new SubmarineUnitType("consequences"){{
-            setEngine(18/4f, -26/4f, 180, true);
+            setUndEngines(18/4f, -26/4f, 180, true);
             speed = 1.85f;
-            health = 495;
-            armor = 1 * tierMultipliers[1];
+            rotateSpeed = 1.5f;
+            health = 395;
             hitSize = 14;
             constructor = UnitEntity::create;
             omniMovement = true;
             strafePenalty = 0.25f;
             weapons.add(new AdvancedLightWeapon(){{
                 x = 24/4f; y = 1;
+                shootY = 5;
                 mirror = true;
                 lightCone = 32;
                 lightLength = 30*tilesize;
                 shootSound = Sounds.shootRetusa;
                 lightTileable = false;
-                reload = 60;
+                reload = 30;
                 rotate = false;
-                shootCone = 2;
-                bullet = new BulletType(){{
+                baseRotation = -9f;
+                shootCone = 13;
+                bullet = new EmptyBulletType(){{
                     instantDisappear = true;
                     keepVelocity = false;
                     speed = 0.01f;
                     spawnUnit = new TorpedoUnitType("consequences-torpedo"){{
-                        speed = 5.5f;
-                        rotateSpeed = 1.5f;
-                        lifetime = 50;
+                        speed = 5f;
+                        rotateSpeed = 2.25f;
+                        lifetime = 48;
                         maxRange = 6f;
                         deathSound = Sounds.explosionPlasmaSmall;
                         weapons.add(new DSWeapon(){{
@@ -192,8 +230,8 @@ public class PiUnits {
         //Mech
         condition = new DSMechUnitType("condition"){{
             speed = 0.38f;
-            health = 195;
-            armor = 3;
+            health = 180;
+            armor = 2;
             hitSize = 8;
             stepSound = DSSounds.dsMechStep;
             stepSoundVolume *= 0.23f;
@@ -203,30 +241,33 @@ public class PiUnits {
                 rotate = false;
                 top = false;
                 mirror = true;
-                lightCone = 15;
-                lightLength = 20 * tilesize;
+                lightCone = 25;
+                lightLength = 26 * tilesize;
                 shootSound = DSSounds.shootSmallWeapon;
-                shootSoundVolume = 0.45f;
-                bullet = new BasicBulletType(3.5f, 22){{
+                shootSoundVolume = 0.35f;
+                shake = 1.5f;
+                bullet = new BasicBulletType(8f, 22){{
                     height = 13;
                     width = 10;
                     lightOpacity = 0.75f;
                     lightRadius = 5f;
-                    trailInterval = 3;
+                    trailInterval = 0.85f;
+                    hitShake = 3;
+                    despawnShake = 1.75f;
                     trailEffect = DSFx.dsBulletTrail;
                     shootEffect = DSFx.dsShoot;
                     lightColor = Color.valueOf("bfe8ff");
                     frontColor = hitColor = DSPal.dsBulletFront;
                     backColor = DSPal.dsBulletBack;
-                    lifetime = 45;
+                    lifetime = 22;
                     hitEffect = despawnEffect = DSFx.dsBulletHit;
                 }};
             }});
         }};
         oversight = new DSMechUnitType("oversight"){{
             speed = 0.34f;
-            health = 685;
-            armor = 3 * tierMultipliers[1];
+            health = 580;
+            armor = 2 * tierMultipliers[1];
             hitSize = 13;
             stepSound = DSSounds.dsMechStep;
             stepSoundPitch = 0.7f;
@@ -237,7 +278,7 @@ public class PiUnits {
                         mirror = true;
                         rotate = false;
                         top = false;
-                        reload = 45;
+                        reload = 35;
                         shake = 3.5f;
                         recoil = 2.1f;
                         shootSound = Sounds.shootDiffuse;
@@ -248,10 +289,12 @@ public class PiUnits {
                         inaccuracy = 10;
                         shoot.shots = 9;
                         velocityRnd = 0.25f;
-                        bullet = new BasicBulletType(8, 21){{
+                        bullet = new BasicBulletType(12, 24.5f){{
+                            recoil = 0.03f;
                             pierce = true;
                             pierceCap = 2;
-                            lifetime = 15;
+                            pierceBuilding = true;
+                            lifetime = 10;
                             trailLength = 6;
                             trailWidth = 0.6f;
                             width = 4;
@@ -265,11 +308,165 @@ public class PiUnits {
                     }}
             );
         }};
+        oppression = new DSMechUnitType("oppression"){{
+            speed = 0.35f;
+            health = 11000;
+            rotateSpeed *= 0.35f;
+            armor = 2 * tierMultipliers[3];
+            hitSize = 26;
+            stepSound = DSSounds.dsMechStep;
+            stepSoundPitch = 0.5f;
+            mechLegColor = Color.valueOf("131623");
+            stepSoundVolume *= 0.7f;
+            weapons.add(
+                    new AdvancedLightWeapon("deepsea-oppression-weapon"){{
+                        x = 16.75f; y = 0;
+                        mirror = true;
+                        rotate = true;
+                        rotateSpeed = 0.85f;
+                        rotationLimit = 15f;
+                        shootCone = 25f;
+                        top = false;
+                        reload = 30;
+                        shake = 5.5f;
+                        recoil = 4.1f;
+                        shootSound = DSSounds.shootMediumTank;
+                        shootSoundVolume = 1f;
+                        lightLength = 36 * tilesize;
+                        lightCone = 35f;
+                        shootY = 11;
+                        inaccuracy = 2;
+                        bullet = new BasicBulletType(20, 195){{
+                            splashDamage = 56;
+                            splashDamageRadius = 20;
+                            recoil = 0.4f;
+                            sprite = "missile-large";
+                            pierce = true;
+                            pierceBuilding = true;
+                            pierceDamageFactor = 0.25f;
+                            lifetime = 14;
+                            trailLength = 8;
+                            trailWidth = 1f;
+                            width = 10;
+                            height = 25;
+                            shootEffect = DSFx.dsShootTank;
+                            smokeEffect = new ParticleEffect(){{
+                                line = true;
+                                cone = 15;
+                                length = 40;
+                                lifetime = 20;
+                                interp = Interp.pow5Out;
+                                sizeInterp = Interp.linear;
+                                colorFrom = colorTo = Color.valueOf("7cbcf7");
+                                lenFrom = 6;
+                                lenTo = 0;
+                                strokeTo = 0.85f;
+                                strokeFrom = 1f;
+                            }};
+                            frontColor = hitColor = Color.valueOf("7cbcf7");
+                            backColor = trailColor = Color.valueOf("6783e5");
+                            hitEffect = new MultiEffect(
+                                    new Effect(10 ,e->{
+                                        color(Color.valueOf("7cbcf7"));
+                                        for(int i = 0; i < 3; i++){
+                                            Drawf.tri(e.x, e.y, e.fout() * 3 + 1, e.fin() * 44 + 2, e.rotation + Mathf.randomSeedRange(e.id + i, 90));
+                                            Drawf.tri(e.x, e.y, e.fout() * 3 + 1, e.fout() * 17, e.rotation + Mathf.randomSeedRange(e.id + i, 90) + 180);
+                                        }
+                                    }),
+                                    DSFx.dsBulletHit
+                            );
+                            trailEffect = DSFx.dsFastSparkTrail;
+                            trailInterval = 0.5f;
+                            trailRotation = true;
+                            despawnEffect = new MultiEffect(
+                                    new WaveEffect(){{
+                                        lifetime = 8;
+                                        sizeFrom = 3;
+                                        sizeTo = 14;
+                                        strokeFrom = 2;
+                                        strokeTo = 0;
+                                        colorFrom = colorTo = Color.valueOf("7cbcf7");
+                                    }},
+
+                                    new ParticleEffect(){{
+                                        cone = 46;
+                                        length = -50;
+                                        lifetime = 10;
+                                        particles = 9;
+                                        line = true;
+                                        lenFrom = 6;
+                                        lenTo = 0;
+                                        interp = Interp.pow5Out;
+                                        sizeInterp = Interp.linear;
+                                        strokeFrom = 1.75f;
+                                        strokeTo = 1;
+                                        colorFrom = colorTo = Color.valueOf("7cbcf7");
+                                    }}
+                            );
+                        }};
+                    }},
+                    new AntiTorpedoesWeapon("deepsea-oppression-ats"){{
+                        x = 8; y = -3;
+                        alternate = false;
+                        baseRotation = -45f;
+                        mirror = true;
+                        rotate = true;
+                        rotateSpeed = 5;
+                        reload = 3;
+                        inaccuracy = 3.75f;
+                        shootCone = 0.85f;
+                        recoil = 1;
+                        shake = 1;
+                        shootSound = Sounds.shootBreach;
+                        shootSoundVolume *= 0.65f;
+                        bullet = new RailBulletType(){{
+                            collidesGround = false;
+                            length = 17 * tilesize;
+                            damage = 40;
+                            hitColor = DSPal.dsBulletFront;
+                            hitEffect = Fx.hitBulletColor;
+                            despawnEffect = none;
+                            pierceDamageFactor = 0.2f;
+                            endEffect = new Effect(14f, e -> {
+                                color(e.color);
+                                Drawf.tri(e.x, e.y, e.fout() * 3, 3 + 12 * e.fin(), e.rotation);
+                            });
+
+                            shootEffect = new Effect(10, e ->{
+                                color(e.color);
+                                Drawf.tri(e.x, e.y, 1.25f+  1.25f * e.fout(Interp.circleOut), 20f * e.fout(), e.rotation);
+                                color(e.color);
+                                for(int sign : Mathf.signs){
+                                    Drawf.tri(e.x, e.y, 0.85f + e.fout(), 9f * e.fout(), e.rotation + sign * 140 + (e.fout() * 20 * sign));
+                                }
+                            });
+                            smokeEffect = none;
+                            lineEffect = new Effect(20, e->{
+                                if(!(e.data instanceof Vec2 v)) return;
+                                color(e.color);
+                                stroke(e.fout() * 0.8f + 0.4f);
+                                Fx.rand.setSeed(e.id);
+                                for(int i = 0; i < 9; i++){
+                                    Fx.v.trns(e.rotation, Fx.rand.random(10f, v.dst(e.x, e.y) - 10f));
+                                    Lines.lineAngleCenter(e.x + Fx.v.x, e.y + Fx.v.y, e.rotation + e.finpow(), e.foutpowdown() * 20f * Fx.rand.random(0.5f, 1f) + 0.3f);
+
+                                    e.scaled(14f, b -> {
+                                        stroke(b.fout() * 1.1f);
+                                        color(e.color);
+                                        Lines.line(e.x, e.y, v.x, v.y);
+                                        Drawf.light(e.x, e.y, v.x, v.y, b.fout(Interp.circleOut) * 2 + 1.15f, e.color, b.fout());
+                                    });
+                                }
+                            });
+                        }};
+                    }}
+            );
+        }};
         //Tanks
         note = new DSTankUnitType("note"){{
-            speed = 0.29f;
-            health = 380;
-            armor = 6;
+            speed = 0.2f;
+            health = 280;
+            armor = 3;
             hitSize = 8;
             treadRects = new Rect[] {
                     new Rect(-22f, -24f, 11, 50)
@@ -281,36 +478,38 @@ public class PiUnits {
                 y = -1;
                 mirror = false;
                 rotate = true;
-                rotateSpeed = 1.9f;
+                rotateSpeed = 1.35f;
                 reload = 90;
                 lightCone = 30;
-                lightLength = 25 * tilesize;
-                shake = 1;
+                lightLength = 30 * tilesize;
                 shootSound = Sounds.shootStell;
-                bullet = new BasicBulletType(8f, 40){{
+                shake = 3.25f;
+                bullet = new BasicBulletType(16f, 40){{
                     height = 13;
                     width = 9;
                     sprite = "missile-large";
                     lightOpacity = 0.85f;
                     lightRadius = 9f;
-                    trailInterval = 2;
+                    trailInterval = 0.5f;
                     trailEffect = DSFx.dsBulletTrail;
                     shootEffect = DSFx.dsShootBig;
                     lightColor = Color.valueOf("bfe8ff");
                     frontColor = hitColor = DSPal.dsBulletFront;
                     backColor = DSPal.dsBulletBack;
                     trailColor = DSPal.dsBulletBack;
+                    hitShake = 3;
+                    despawnShake = 2.35f;
                     trailLength = 5;
                     trailWidth = 0.75f;
-                    lifetime = 25;
+                    lifetime = 13;
                     hitEffect = despawnEffect = DSFx.dsBulletHit;
                 }};
             }});
         }};
         sound = new DSTankUnitType("sound"){{
-            speed = 0.26f;
-            health = 895;
-            armor = 8 * tierMultipliers[1];
+            speed = 0.18f;
+            health = 600;
+            armor = 3 * tierMultipliers[1];
             hitSize = 14;
             treadRects = new Rect[] {
                     new Rect(-26f, -31f, 11, 66)
@@ -321,13 +520,14 @@ public class PiUnits {
             weapons.add(
                     new DSWeapon("deepsea-sound-light-weapon"){{
                         x = -30 / 4f; y = -20 / 4f;
+                        rotateSpeed = 3.5f;
                         rotate = true;
                         mirror = true;
                         reload = 25;
                         shootSound = Sounds.shootLocus;
                         bullet = new RailBulletType(){{
                             length = 17 * tilesize;
-                            damage = 17;
+                            damage = 36;
                             hitColor = DSPal.dsBulletFront;
                             hitEffect = Fx.hitBulletColor;
                             despawnEffect = none;
@@ -335,20 +535,24 @@ public class PiUnits {
                             endEffect = new Effect(14f, e -> {
                                 color(e.color);
                                 for(int sign : Mathf.signs) {
-                                    Drawf.tri(e.x, e.y, e.fout() * 1.12f, 5f + 9 * e.fin(), e.rotation + 15 * sign);
+                                    Drawf.tri(e.x, e.y, e.fout() * 2, 5f + 9 * e.fin(), e.rotation + 45 * sign);
                                 }
+                                Drawf.tri(e.x, e.y, e.fout() * 3, 3 + 12 * e.fin(), e.rotation);
+                                Drawf.tri(e.x, e.y, e.fout() * 3, 2 + 5 * e.fout(), e.rotation + 180);
                             });
+
                             shootEffect = new Effect(10, e ->{
                                 color(e.color);
                                 Drawf.tri(e.x, e.y, 1.25f+  1.25f * e.fout(Interp.circleOut), 20f * e.fout(), e.rotation);
                                 color(e.color);
                                 for(int sign : Mathf.signs){
-                                    Drawf.tri(e.x, e.y, 0.85f +  1.25f * e.fout(), 18f * e.fout(), e.rotation + sign * 90f);
+                                    Drawf.tri(e.x, e.y, 0.85f +  1.25f * e.fout(), 14f * e.fout(), e.rotation + sign * 90f);
+                                    Drawf.tri(e.x, e.y, 0.85f + e.fout(), 9f * e.fout(), e.rotation + sign * 140 + (e.fout() * 20 * sign));
                                 }
                             });
+                            smokeEffect = none;
                             lineEffect = new Effect(20, e->{
                                 if(!(e.data instanceof Vec2 v)) return;
-
                                 color(e.color);
                                 stroke(e.fout() * 0.8f + 0.4f);
                                 Fx.rand.setSeed(e.id);
@@ -360,6 +564,7 @@ public class PiUnits {
                                         stroke(b.fout() * 1.1f);
                                         color(e.color);
                                         Lines.line(e.x, e.y, v.x, v.y);
+                                        Drawf.light(e.x, e.y, v.x, v.y, b.fout(Interp.circleOut) * 2 + 1.15f, e.color, b.fout());
                                     });
                                 }
                             });
@@ -369,16 +574,16 @@ public class PiUnits {
                         x = 0; y = 0;
                         mirror = false;
                         rotate = true;
-                        rotateSpeed = 1.6f;
-                        reload = 180;
+                        rotateSpeed = 1.25f;
+                        reload = 150;
                         lightCone = 35;
                         lightLength = 28 * tilesize;
                         recoil = 3;
                         shootSound = DSSounds.shootMediumTank;
                         shootY = 30 / 4f;
                         shake = 4;
-                        bullet = new BasicBulletType(9, 96){{
-                            lifetime = 28 * tilesize / 9f;
+                        bullet = new BasicBulletType(16, 130){{
+                            lifetime = 28 * tilesize / 16f;
                             width = 8;
                             height = 16;
                             sprite = "missile-large";
@@ -390,6 +595,7 @@ public class PiUnits {
                             pierce = true;
                             pierceBuilding = true;
                             pierceDamageFactor = 0.4f;
+                            trailRotation = true;
                             despawnEffect = new MultiEffect(
                                     DSFx.dsBulletHit,
                                     hitSquaresColor,
@@ -411,22 +617,7 @@ public class PiUnits {
                             });
                             hitShake = 3;
                             despawnShake = 3;
-                            trailEffect = new ParticleEffect(){{
-                                trailRotation = true;
-                                cone = 12.5f;
-                                length = -16;
-                                lifetime = 15;
-                                particles = 3;
-                                line = true;
-                                lenFrom = 3;
-                                lenTo = 5.85f;
-                                interp = Interp.linear;
-                                sizeInterp = Interp.circleOut;
-                                strokeFrom = 1.75f;
-                                strokeTo = 0;
-                                colorFrom = DSPal.dsBulletFront;
-                                colorTo = DSPal.dsBulletBack;
-                            }};
+                            trailEffect = DSFx.dsFastSparkTrail;
                             trailLength = 8;
                             trailWidth = 1.55f;
                             lightOpacity = 1.95f;

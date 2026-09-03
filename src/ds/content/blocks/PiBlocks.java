@@ -7,34 +7,28 @@ import arc.struct.Seq;
 import ds.content.DSFx;
 import ds.content.DSSounds;
 import ds.content.DSStatusEffects;
+import ds.content.items.PiItems;
 import ds.content.units.PiUnits;
-import ds.world.blocks.crafting.DynamicCrafter;
-import ds.world.blocks.distribution.ClosedConveyor;
-import ds.world.blocks.power.AdvancedThermalGenerator;
-import ds.world.blocks.production.WallDrill;
-import ds.world.blocks.turret.AccelItemTurret;
-import ds.world.blocks.turret.AccelPowerTurret;
-import ds.world.blocks.turret.DSHarpoonTurret;
-import ds.world.blocks.turret.DSItemTurret;
-import ds.world.consumers.RecipeIO;
-import ds.draw.drawers.DrawBetterRegion;
+import ds.world.blocks.crafting.*;
+import ds.world.blocks.distribution.*;
+import ds.world.blocks.power.*;
+import ds.world.blocks.production.*;
+import ds.world.blocks.turret.*;
+import ds.world.modules.RecipeIO;
+import ds.draw.drawers.*;
 import ds.world.graphics.DSPal;
 import ds.world.meta.DSEnv;
-import ds.type.entities.bullets.HarpoonBulletType;
-import ds.type.entities.bullets.PointLightningBulletType;
-import ds.type.entities.dsUnits.TorpedoUnitType;
+import ds.type.entities.bullets.*;
+import ds.type.entities.dsUnits.*;
 import ds.type.entities.effect.RandRadialEffect;
 import ds.type.entities.weapons.DSWeapon;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.UnitSorts;
-import mindustry.entities.bullet.BasicBulletType;
-import mindustry.entities.bullet.BulletType;
-import mindustry.entities.bullet.ExplosionBulletType;
-import mindustry.entities.effect.MultiEffect;
-import mindustry.entities.effect.ParticleEffect;
-import mindustry.entities.part.RegionPart;
-import mindustry.entities.pattern.ShootBarrel;
-import mindustry.entities.pattern.ShootSpread;
+import mindustry.entities.bullet.*;
+import mindustry.entities.effect.*;
+import mindustry.entities.part.*;
+import mindustry.entities.pattern.*;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
@@ -43,26 +37,17 @@ import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.type.UnitType;
 import mindustry.world.Block;
-import mindustry.world.blocks.defense.MendProjector;
-import mindustry.world.blocks.defense.Wall;
+import mindustry.world.blocks.defense.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.liquid.*;
+import mindustry.world.blocks.logic.LogicBlock;
 import mindustry.world.blocks.power.*;
-import mindustry.world.blocks.production.AttributeCrafter;
-import mindustry.world.blocks.production.BeamDrill;
-import mindustry.world.blocks.production.BurstDrill;
-import mindustry.world.blocks.production.GenericCrafter;
-import mindustry.world.blocks.storage.CoreBlock;
-import mindustry.world.blocks.storage.StorageBlock;
-import mindustry.world.blocks.storage.Unloader;
-import mindustry.world.blocks.units.Reconstructor;
-import mindustry.world.blocks.units.UnitFactory;
-import mindustry.world.consumers.ConsumeItemFlammable;
+import mindustry.world.blocks.production.*;
+import mindustry.world.blocks.storage.*;
+import mindustry.world.blocks.units.*;
+import mindustry.world.consumers.*;
 import mindustry.world.draw.*;
-import mindustry.world.meta.Attribute;
-import mindustry.world.meta.BlockGroup;
-import mindustry.world.meta.BuildVisibility;
-import mindustry.world.meta.Env;
+import mindustry.world.meta.*;
 
 
 import static ds.content.DSAttributes.*;
@@ -78,7 +63,7 @@ public class PiBlocks {
             //Production
             hydraulicDrill, hydraulicWallDrill, gasBore, detonateDrill,
             //Power
-            powerTransmitter, powerDistributor, condensator, hydroTurbineGenerator, geothermalGenerator, fuelGenerator,
+            powerTransmitter, powerDistributor, condensator, fuelGenerator, hydroTurbineGenerator, geothermalGenerator,
             //Effect
             lightProjector, repairModule,
             //Crafting
@@ -90,11 +75,13 @@ public class PiBlocks {
             //Cores
             coreInfluence, coreEnforcement, coreEminence,
             //Turrets
-            cutoff, irritation, discharge, hydroid, execution,
+            cutoff, irritation, discharge, hydroid, execution, termination,
             //Defends
-            aluminiumWall, aluminiumWallLarge,
+            aluminiumWall, aluminiumWallLarge, steelWall, steelWallLarge,
             //UnitBlocks
-            shadeUnitFactory, shadeUnitReconstructor;
+            deepUnitFactory, deepUnitReconstructor,
+            //Logic
+            logicalExecutor;
 
     public static void load(){
         loadLogisticBlocks();
@@ -105,14 +92,20 @@ public class PiBlocks {
         loadTurrets();
         loadDefence();
         loadUnitBlocks();
+        logicalExecutor = new LogicBlock("logicalExecutor"){{
+            requirements(Category.logic, with(aluminium, 15, silver, 20, manganese, 10));
+            instructionsPerTick = 60;
+            consumePower(0.1f);
+        }};
     }
     public static void loadTurrets(){
         cutoff = new DSHarpoonTurret("cutoff"){{
-            scaledHealth = 60;
+            emitDirectLight = false;
+            scaledHealth = 90;
             requirements(Category.turret, with(aluminium, 75, silver, 45));
             outlineColor = DSPal.dsTurretOutline;
             size = 2;
-            reload = 300;
+            reload = 120;
             range = 200;
             shake = 2;
             envRequired = DSEnv.underwaterWarm;
@@ -120,8 +113,11 @@ public class PiBlocks {
             consumeItem(sulfur, 3);
             shootCone = 1;
             drawer = new DrawTurret("ds-turret-");
-            shootY = 2;
-            shootType = new HarpoonBulletType(16, 45){{
+            shootY = 3.75f;
+            shootType = new HarpoonBulletType(16, 30){{
+                knockback = 2.3f;
+                status = DSStatusEffects.waterLeak;
+                statusDuration = 180;
                 buildingDamageMultiplier = 0.3f;
                 lifetime = 45;
                 pierceDrag = 0.25f;
@@ -130,14 +126,15 @@ public class PiBlocks {
                 drag = 0.08f;
                 frontColor = Color.valueOf("d4d4d4");
                 backColor = Color.valueOf("929aa8");
-                wireStroke = 3.75f;
+                wireStroke = 1.75f;
                 width = 10;
                 height = 25;
                 returnSpeed = 3;
             }};
         }};
         irritation = new DSItemTurret("irritation"){{
-            scaledHealth = 80;
+            lightCone = 45;
+            scaledHealth = 90;
             requirements(Category.turret, with(aluminium, 75, silver, 45));
             outlineColor = DSPal.dsTurretOutline;
             size = 2;
@@ -151,10 +148,10 @@ public class PiBlocks {
             shootSound = Sounds.shootDiffuse;
             consumePower(30/60f);
             range = 17 * tilesize;
-            reload = 30;
+            reload = 50;
+            shake = 2.75f;
             targetAir = false;
             drawer = new DrawTurret("ds-turret-");
-            ammoUseEffect = Fx.casing2Double;
             ammo(
                     silver, new BasicBulletType(8,15){{
                         pierce = true;
@@ -171,26 +168,49 @@ public class PiBlocks {
                         trailEffect = DSFx.dsBulletSparkTrail;
                         ammoMultiplier = 1;
                     }},
-                    steel, new BasicBulletType(8,23){{
+                    steel, new BasicBulletType(8,25){{
+                        shootPattern = new ShootPattern(){{
+                            shots = 1;
+                        }};
                         reloadMultiplier = 0.75f;
                         pierce = true;
                         pierceCap = 3;
-                        lifetime = 22;
+                        lifetime = 8;
                         rangeChange = 5 * tilesize;
-                        trailLength = 4;
-                        trailWidth = 0.6f;
-                        width = 5.75f;
-                        height = 13;
+                        trailLength = 6;
+                        trailWidth = 3;
+                        width = 15;
+                        height = 18;
                         frontColor = hitColor = Color.valueOf("ffc7bf");
                         backColor = trailColor = Color.valueOf("d98e84");
                         hitEffect = despawnEffect = Fx.hitBulletColor;
                         trailInterval = 2;
                         trailEffect = DSFx.dsBulletSparkTrail;
-                        ammoMultiplier = 2;
+                        ammoMultiplier = 1;
+                        fragVelocityMin = 0.9f;
+                        fragVelocityMax = 1;
+                        fragSpread = 2.25f;
+                        fragRandomSpread = 1.5f;
+                        fragBullets = 10;
+                        pierceFragCap = 2;
+                        fragBullet = new BasicBulletType(11.2f, 19){{
+                            lifetime = 10;
+                            rangeChange = 5 * tilesize;
+                            trailLength = 4;
+                            trailWidth = 0.6f;
+                            width = 5;
+                            height = 12;
+                            frontColor = hitColor = Color.valueOf("ffc7bf");
+                            backColor = trailColor = Color.valueOf("d98e84");
+                            hitEffect = despawnEffect = Fx.hitBulletColor;
+                            trailInterval = 2;
+                            trailEffect = DSFx.dsBulletSparkTrail;
+                        }};
                     }}
             );
         }};
         discharge = new AccelPowerTurret("discharge"){{
+            envDisabled = DSEnv.underwaterWarm;
             shootY = 28/4f;
             scaledHealth = 90;
             predictTarget = false;
@@ -230,7 +250,8 @@ public class PiBlocks {
         }};
 
         execution = new AccelItemTurret("execution"){{
-            requirements(Category.turret, with(aluminium, 125, silver, 35, graphite, 50, steel, 35));
+            lightCone = 45;
+            requirements(Category.turret, with(aluminium, 125, silver, 35, graphite, 50, manganese, 35));
             size = 3;
             outlineColor = DSPal.dsTurretOutline;
             scaledHealth = 100;
@@ -243,28 +264,44 @@ public class PiBlocks {
             maxAccel = 50;
             shake = 1.25f;
             speedUpPerShoot = 10;
-            recoil = 3;
-            recoilTime = 10;
+            recoil = 0.35f;
+            recoilTime = 20f;
+            recoils = 4;
             cooldownSpeed = 1f;
             targetGround = false;
             consumeLiquid(hydrogen, 0.25f);
             consumePower(1f);
             shootSound = Sounds.shootDisperse;
             range = 30 * tilesize;
-            drawer = new DrawTurret("ds-turret-");
+            drawer = new DrawTurret("ds-turret-"){{
+                for(int i = 0; i < 4; i++){
+                    int f = i;
+                    parts.add(
+                            new RegionPart("-barrel-"+ (f + 1) ){{
+                                progress = PartProgress.recoil.curve(Interp.pow2In);
+                                recoilIndex = f;
+                                under = true;
+                                moveY = -4;
+                                if(f > 1) {
+                                    moveRot = (f == 2 ? -3.5f : 3.5f);
+                                }
+                            }}
+                    );
+                }
+            }};
             shoot = new ShootBarrel(){{
                 barrels = new float[]{
                         2f, 0, 0,
                         -2f, 0, 0,
-                        6.5f, -1.5f, 0,
-                        -6.5f, -1.5f, 0
+                        6.5f, -3f, 0,
+                        -6.5f, -3f, 0
                 };
             }};
             ammo(
-                    aluminium, new BasicBulletType(8,28f){{
+                    aluminium, new BasicBulletType(10,28f){{
                         pierce = true;
                         pierceCap = 3;
-                        lifetime = 30;
+                        lifetime = 24;
                         ammoMultiplier = 3;
                         frontColor = hitColor = Color.valueOf("f5d9ff");
                         backColor = trailColor = Color.valueOf("cea4de");
@@ -301,8 +338,8 @@ public class PiBlocks {
                         despawnEffect = Fx.hitBulletColor;
                         collidesGround = false;
                     }},
-                    steel, new BasicBulletType(4,38){{
-                        lifetime = 60;
+                    steel, new BasicBulletType(6,38){{
+                        lifetime = 40;
                         ammoMultiplier = 4;
                         frontColor = hitColor = Color.valueOf("ab7272");
                         backColor = trailColor = Color.valueOf("824d4d");
@@ -319,18 +356,20 @@ public class PiBlocks {
                         despawnEffect = Fx.hitBulletColor;
                         status = DSStatusEffects.waterLeak;
                         statusDuration = 60;
+                        collidesGround = false;
                     }}
             );
         }};
 
         hydroid = new DSItemTurret("hydroid"){{
+            lightCone = 15;
             requirements(Category.turret, with(aluminium, 95, silver, 65, manganese, 95, steel, 20));
             size = 3;
             outlineColor = DSPal.dsTurretOutline;
             scaledHealth = 110;
             rotateSpeed = 1.1f;
             shootCone = 1;
-            reload = 300;
+            reload = 480;
             targetUnderBlocks = false;
             shootY = -1;
             consumeLiquid(oxygen, 15/60f);
@@ -342,11 +381,11 @@ public class PiBlocks {
             shootSoundVolume = 1.45f;
             range = 400;
             shootWarmupSpeed = 0.06f;
-            ammoPerShot = 10;
-            maxAmmo = 30;
+            ammoPerShot = 15;
+            maxAmmo = 45;
             drawer = new DrawTurret("ds-turret-"){{
-                parts.add(
-                        new RegionPart("-draw-torpedo"){{
+                setAmmoParts(
+                        PiItems.aluminium, Seq.with(new RegionPart("-draw-torpedo-aluminium"){{
                             progress = PartProgress.reload.curve(Interp.pow2In);
                             colorTo = new Color(1f, 1f, 1f, 0f);
                             color = Color.white;
@@ -356,18 +395,29 @@ public class PiBlocks {
                             under = true;
                             layerOffset = -0.01f;
                             moves.add(new PartMove(PartProgress.warmup.inv(), 0f, -2, 0f));
-                        }}
+                        }}),
+                        PiItems.steel, Seq.with(new RegionPart("-draw-torpedo-steel"){{
+                            progress = PartProgress.reload.curve(Interp.pow2In);
+                            colorTo = new Color(1f, 1f, 1f, 0f);
+                            color = Color.white;
+                            mixColorTo = Pal.accent;
+                            mixColor = new Color(1f, 1f, 1f, 0f);
+                            outline = false;
+                            under = true;
+                            layerOffset = -0.01f;
+                            moves.add(new PartMove(PartProgress.warmup.inv(), 0f, -2, 0f));
+                        }})
                 );
             }};
             ammo(
                     steel, new BulletType(){{
                         keepVelocity = false;
                         instantDisappear = true;
-                        ammoMultiplier = 1;
+                        ammoMultiplier = 2;
                         speed = 0.01f;
                         spawnUnit = new TorpedoUnitType("hydroid-torpedo"){{
                             speed = 5;
-                            rotateSpeed = 1;
+                            rotateSpeed = 0.75f;
                             deathSound = Sounds.explosionPlasmaSmall;
                             lifetime = 110;
                             health = 60;
@@ -380,7 +430,7 @@ public class PiBlocks {
                                 reload = 1f;
                                 shootOnDeath = true;
                                 shootSound = Sounds.none;
-                                bullet = new ExplosionBulletType(120,5.5f * tilesize){{
+                                bullet = new ExplosionBulletType(195,5.5f * tilesize){{
                                     buildingDamageMultiplier = 0.15f;
                                     status = DSStatusEffects.waterLeak;
                                     statusDuration = 600;
@@ -392,6 +442,113 @@ public class PiBlocks {
                                 }};
                             }});
                         }};
+                    }},
+                    aluminium, new BulletType(){{
+                        keepVelocity = false;
+                        instantDisappear = true;
+                        ammoMultiplier = 1;
+                        speed = 0.01f;
+                        reloadMultiplier = 1.25f;
+                        spawnUnit = new TorpedoUnitType("hydroid-torpedo-aluminium"){{
+                            speed = 8;
+                            rotateSpeed = 1.35f;
+                            deathSound = Sounds.explosionPlasmaSmall;
+                            lifetime = 58;
+                            health = 130;
+                            missileAccelTime = 15f;
+                            maxRange = 10;
+                            deathSoundVolume = 1.05f;
+                            weapons.add(new DSWeapon(){{
+                                shootCone = 360f;
+                                mirror = false;
+                                reload = 1f;
+                                shootOnDeath = true;
+                                shootSound = Sounds.none;
+                                bullet = new ExplosionBulletType(310,2.15f * tilesize){{
+                                    reloadMultiplier = 1.25f;
+                                    buildingDamageMultiplier = 0.15f;
+                                    status = DSStatusEffects.waterLeak;
+                                    statusDuration = 120;
+                                    despawnEffect = new MultiEffect(
+                                            Fx.massiveExplosion,
+                                            DSFx.smoothColorCircle(aluminium.color, 2.15f* tilesize, 45, Interp.circleOut)
+                                    );
+                                    damage = 0;
+                                }};
+                            }});
+                        }};
+                    }}
+            );
+        }};
+        termination = new DSItemTurret("termination"){{
+            lightCone = 45;
+            lightLength = 200;
+            requirements(Category.turret, with(aluminium, 210, silver, 135, magnesium, 40, molybdenum, 130));
+            size = 4;
+            outlineColor = DSPal.dsTurretOutline;
+            targetBlocks = false;
+            shootCone = 1;
+            range = 600;
+            unitSort = UnitSorts.strongest;
+            ammoPerShot = 10;
+            maxAmmo = ammoPerShot * 3;
+            shake = 7.5f;
+            reload = 600;
+            scaledHealth = 170;
+            rotateSpeed = 1f;
+            shootSound = Sounds.shootTank;
+            targetAir = false;
+            recoil = 1;
+            shootY = 14f;
+            consumePower(2.5f);
+            consumeLiquid(oxygen, 0.5f);
+            drawer = new DrawTurret("ds-turret-"){{
+                parts.add(new RegionPart("-barrel"){{
+                    progress = PartProgress.recoil.curve(Interp.pow2In).blend(PartProgress.warmup, 0.4f);
+                    moveY = -4;
+                    mirror = false;
+                }},
+                new RegionPart("-side"){{
+                    progress = PartProgress.recoil.curve(Interp.pow2In).blend(PartProgress.warmup, 0.5f);
+                    mirror = true;
+                    under = true;
+                    moveRot = -35;
+                }}
+                );
+            }};
+            ammo(
+                    steel, new AdvArtilleryBulletType(){{
+                        speed = 4;
+                        damage = 790;
+                        sprite = "shell";
+                        hitSize = 8;
+                        hitEffect = new MultiEffect(DSFx.dsMassiveExplosion, DSFx.dsMassiveDeepSmoke, DSFx.dsMassiveSparkSpikes);
+                        shrinkY = 0.5f;
+                        trajectoryZ = 110;
+                        angleFactor = 20f;
+                        lifetime = 150;
+                        height =  24;
+                        width = 15;
+                        ammoMultiplier = 1;
+                        splashDamageRadius  = 70;
+                        splashDamage = 370;
+                        scaledSplashDamage = true;
+                        despawnEffect = Fx.none;
+                        backColor = hitColor = trailColor = Color.valueOf("e8aa9b");
+                        frontColor = Color.valueOf("f7eeed");
+                        trailRotation = true;
+                        trailEffect = DSFx.dsColorSparkTrail;
+                        trailInterval = 1;
+                        trailLength = 30;
+                        trailWidth = 2.35f;
+                        trailSinScl = 2.5f;
+                        trailSinMag = 0.5f;
+                        hitShake = 19f;
+                        shootEffect = Fx.shootTitan;
+                        smokeEffect = Fx.shootSmokeTitan;
+                        buildingDamageMultiplier = 0.15f;
+                        hitSound = Sounds.explosionMissile;
+                        hitSoundPitch *= 0.85f;
                     }}
             );
         }};
@@ -422,10 +579,10 @@ public class PiBlocks {
             speed = 4.8f;
         }};
         repairModule = new MendProjector("repair-module"){{
-            requirements(Category.effect, with(aluminium, 55, silver, 45, manganese, 30));
+            requirements(Category.effect, with(aluminium, 55, silver, 45, graphite, 30));
             consumePower(1);
-            consumeLiquid(hydrogen, 3/60f);
-            researchCostMultiplier = 0.6f;
+            consumeLiquid(hydrogen, 1/60f);
+            researchCostMultiplier = 0.5f;
             size = 2;
             reload = 300;
             range = 120;
@@ -438,9 +595,9 @@ public class PiBlocks {
         lightProjector = new LightBlock("light-projector"){{
             requirements(Category.effect, BuildVisibility.lightingOnly, with(aluminium, 25, silver, 15));
             size = 2;
-            brightness = 0.875f;
-            radius = 25 * tilesize;
-            consumePower(0.5f);
+            brightness = 0.575f;
+            radius = 15 * tilesize;
+            consumePower(0.25f);
         }};
     }
     public static void loadLogisticBlocks(){
@@ -545,7 +702,7 @@ public class PiBlocks {
             tier = 5;
         }};
         detonateDrill = new BurstDrill("detonate-drill"){{
-            requirements(Category.production, with(aluminium, 85, silver, 55, graphite, 45, steel, 70));
+            requirements(Category.production, with(aluminium, 85, silver, 55, graphite, 45, manganese, 50, steel, 70));
             size = 4;
             arrows = 1;
             itemCapacity = 70;
@@ -575,12 +732,12 @@ public class PiBlocks {
             laserColor1 = Color.valueOf("ffdede");
             laserColor2 = Color.valueOf("e56e6e");
             laserScale = 0.75f;
-            maxNodes = 3;
+            maxNodes = 2;
             laserRange = 15;
             underBullets = true;
         }};
         powerDistributor = new PowerNode("power-distributor"){{
-            requirements(Category.power, with(aluminium, 6, silver, 4, manganese, 2));
+            requirements(Category.power, with(aluminium, 6, silver, 4, graphite, 2));
             size = 1;
             laserColor1 = Color.valueOf("ffdede");
             laserColor2 = Color.valueOf("e56e6e");
@@ -590,14 +747,24 @@ public class PiBlocks {
             underBullets = true;
         }};
         condensator = new Battery("condensator"){{
-            requirements(Category.power, with(aluminium, 45, silver, 25, manganese, 35));
+            requirements(Category.power, with(aluminium, 45, silver, 25, graphite, 35));
             size = 2;
             fullLightColor = Color.valueOf("bed5f7");
             consumePowerBuffered(7800f);
             baseExplosiveness = 3.5f;
         }};
+        fuelGenerator = new ConsumeGenerator("fuel-generator"){{
+            requirements(Category.power, with(aluminium, 65, silver, 95));
+            size = 2;
+            powerProduction = 0.75f;
+            itemDuration = 120;
+            consume(new ConsumeItemFlammable(0.45f));
+            drawer = new DrawMulti(new DrawDefault(), new DrawWarmupRegion(){{
+                color = Color.valueOf("ebfaff");
+            }});
+        }};
         hydroTurbineGenerator = new ThermalGenerator("hydro-turbine-generator"){{
-            requirements(Category.power, with(aluminium, 95, silver, 85));
+            requirements(Category.power, with(aluminium, 95, silver, 85, graphite, 35));
             displayEfficiencyScale = 1f / 9f;
             minEfficiency = 9f - 0.0001f;
             displayEfficiency = false;
@@ -610,7 +777,7 @@ public class PiBlocks {
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(hydrogenSulfide), new DrawBlurSpin("-rotator", 6), new DrawDefault());
         }};
         geothermalGenerator = new AdvancedThermalGenerator("geothermal-generator"){{
-            requirements(Category.power, with(aluminium, 100, silver, 95, manganese, 65));
+            requirements(Category.power, with(aluminium, 100, silver, 95, manganese, 65, steel, 50, lithium, 15));
             size = 4;
             attribute = Attribute.heat;
             powerProduction = 5/16f;
@@ -650,19 +817,10 @@ public class PiBlocks {
                     new DrawDefault()
             );
         }};
-        fuelGenerator = new ConsumeGenerator("fuel-generator"){{
-            requirements(Category.power, with(aluminium, 65, silver, 95, graphite, 50));
-            size = 4;
-            powerProduction = 3;
-            consume(new ConsumeItemFlammable(0.45f));
-            drawer = new DrawMulti(new DrawDefault(), new DrawWarmupRegion(){{
-                color = Color.valueOf("ebfaff");
-            }});
-        }};
     }
     public static void loadCraftBlocks(){
         hydrogenSulfideCollector = new AttributeCrafter("hydrogen-sulfide-collector"){{
-            requirements(Category.production, with(aluminium, 65, silver, 25));
+            requirements(Category.production, with(aluminium, 65, silver, 25, graphite, 10));
             liquidCapacity = 60;
             attribute = sulfuric;
             boostScale = 1f/9f;
@@ -674,19 +832,19 @@ public class PiBlocks {
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(hydrogenSulfide), new DrawBlurSpin("-rotator", 12), new DrawDefault());
         }};
         hydrogenSulfideDiffuser = new GenericCrafter("hydrogen-sulfide-diffuser"){{
-            requirements(Category.crafting, with(aluminium, 85, silver, 55));
+            requirements(Category.crafting, with(aluminium, 85, silver, 55, graphite, 20));
             liquidCapacity = 60;
             size = 3;
             consumeLiquid(hydrogenSulfide, 12/60f);
             consumePower(1);
-            craftTime = 60;
+            craftTime = 20;
             outputItem = new ItemStack(sulfur, 1);
             outputLiquid = new LiquidStack(hydrogen, 9/60f);
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(hydrogenSulfide), new DrawLiquidTile(hydrogen),new DrawDefault());
             ignoreLiquidFullness = true;
         }};
         manganeseSynthesizer = new GenericCrafter("manganese-synthesizer"){{
-            requirements(Category.crafting, with(aluminium, 125, silver, 95));
+            requirements(Category.crafting, with(aluminium, 125, silver, 95, graphite, 30));
             size = 4;
             consumePower(2);
             consumeLiquid(hydrogen, 9/60f);
@@ -709,7 +867,7 @@ public class PiBlocks {
             );
         }};
         decompositionChamber = new AttributeCrafter("decomposition-chamber"){{
-            requirements(Category.crafting, with(aluminium, 95, silver, 75, graphite, 85));
+            requirements(Category.crafting, with(aluminium, 95, silver, 75, manganese, 85));
             size = 4;
             craftTime = 60;
             attribute = Attribute.heat;
@@ -774,34 +932,38 @@ public class PiBlocks {
                     new DrawDefault()
             );
         }};
-        chemicalPlant = new DynamicCrafter("chemical-plant"){{
+        chemicalPlant = new MultiRecipeCrafter("chemical-plant"){{
             requirements(Category.crafting, with(aluminium, 175, silver, 125, manganese, 85, steel, 120));
+            recipesUniqueDrawers = true;
             alwaysUnlocked = true;
-            size = 4;
+            size = 5;
             buildVisibility = BuildVisibility.sandboxOnly;
-            itemCapacity = 30;
-            liquidCapacity = 120;
+            itemCapacity = 50;
+            liquidCapacity = 220;
             addRecipes(
                     new RecipeIO(){{
-                        liquidOut = LiquidStack.with(sulfuricAcid, 0.1f);
-                        liquidIn = LiquidStack.with(hydrogenSulfide, 0.1f, oxygen, 0.4f);
-                        input = ItemStack.with(sulfur, 2);
+                        liquidInput = LiquidStack.with(hydrogenSulfide, 0.2, hydrogen, 0.1, oxygen, 0.25);
+                        liquidOutput = LiquidStack.with(sulfuricAcid, 0.25);
+                        craftTime = 60;
+                        uniqueDrawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(sulfuricAcid), new DrawDefault(), new DrawGlowRegion("-glow"){{
+                            color = Color.valueOf("bae6ff");
+                        }});
+                        powerUse = 1;
                     }},
                     new RecipeIO(){{
-                        input = ItemStack.with(manganeseHydroxide, 8, aluminium, 3, sulfur, 1);
-                        liquidIn = LiquidStack.with(hydrogen, 0.25f);
-                        output = ItemStack.with(manganese, 7);
-                        recipeTime = 120f;
+                        itemInput = ItemStack.with(aluminium, 10, potassium, 5);
+                        liquidInput = LiquidStack.with(hydrogen, 0.25);
+                        itemOutput = ItemStack.with(sapphire, 2);
+                        craftTime = 300;
                     }}
             );
-            consumePower(4);
-            drawer = new DrawMulti(new DrawDefault(), new DrawGlowRegion("-glow"){{
+            drawer = new DrawMulti(new DrawRegion("-bottom"),new DrawDefault(), new DrawGlowRegion("-glow"){{
                 color = Color.valueOf("bae6ff");
             }});
         }};
     }
     public static void loadUnitBlocks(){
-        shadeUnitFactory = new UnitFactory("shade-unit-factory"){{
+        deepUnitFactory = new UnitFactory("deep-unit-factory"){{
             requirements(Category.units, with(aluminium, 95, silver, 75, manganese, 55));
             size = 3;
             consumePower(2.5f);
@@ -812,7 +974,7 @@ public class PiBlocks {
                     new UnitPlan(PiUnits.complicity, 60f * 25, with(aluminium, 25, manganese, 20))
             );
         }};
-        shadeUnitReconstructor = new Reconstructor("shade-unit-reconstructor"){{
+        deepUnitReconstructor = new Reconstructor("deep-unit-reconstructor"){{
             requirements(Category.units, with(aluminium, 125, silver, 95, manganese, 75, steel, 55));
             size = 3;
             consumePower(3);
@@ -827,17 +989,31 @@ public class PiBlocks {
         }};
     }
     public static void loadDefence(){
-        float dswallHealthMultiplier = 45;
+        float dsWallHealthMultiplier = 150;
         aluminiumWall = new Wall("aluminium-wall"){{
             size = 1;
-            health = (int) (dswallHealthMultiplier * this.size * this.size * 10);
+            health = 300;
             requirements(Category.defense, with(aluminium, 6 * this.size * this.size));
         }};
         aluminiumWallLarge = new Wall("aluminium-wall-large"){{
             researchCostMultiplier = 0.5f;
             size = 2;
-            health = (int) (dswallHealthMultiplier * this.size * this.size * 10);
+            health = 1200;
             requirements(Category.defense, with(aluminium, 6 * this.size * this.size));
+        }};
+        steelWall = new Wall("steel-wall"){{
+            researchCostMultiplier = 0.65f;
+            size = 1;
+            health = 500;
+            armor = 2;
+            requirements(Category.defense, with(steel, 8 * this.size * this.size));
+        }};
+        steelWallLarge = new Wall("steel-wall-large"){{
+            researchCostMultiplier = 0.65f;
+            size = 2;
+            health = 2000;
+            armor = 2;
+            requirements(Category.defense, with(steel, 8 * this.size * this.size));
         }};
     }
 }

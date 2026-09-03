@@ -19,7 +19,7 @@ public class DSConsumeTurret extends DSTurret {
         stats.remove(Stat.maxEfficiency);
     }
 
-    public class  FuelTurretBuild extends TurretBuild{
+    public class  FuelTurretBuild extends DSTurretBuild{
         @Override
         public BulletType useAmmo(){
             consume();

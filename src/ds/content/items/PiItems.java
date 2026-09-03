@@ -12,9 +12,11 @@ public class PiItems {
     public static Item sulfur;
     public static Item ironstone;
     public static Item steel;
+    public static Item molybdenum;
     public static Item magnesium;
     public static Item lithium;
     public static Item potassium;
+    public static Item sapphire;
     public static Seq<Item> piItems = new Seq<>();
     public static void load(){
         aluminium = new Item("aluminium"){{
@@ -70,6 +72,20 @@ public class PiItems {
             alwaysUnlocked = false;
             piItems.add(this);
         }};
+        potassium = new Item("potassium", Color.valueOf("e8bdc5")){{
+            cost = 1.45f;
+            hardness = 3;
+            explosiveness = 0.95f;
+            flammability = 0.75f;
+            alwaysUnlocked = false;
+            piItems.add(this);
+        }};
+        molybdenum = new Item("molybdenum", Color.valueOf("c0bdff")){{
+            cost = 2f;
+            hardness = 5;
+            alwaysUnlocked = false;
+            piItems.add(this);
+        }};
         lithium = new Item("lithium", Color.valueOf("ebc4bc")){{
             cost = 1.25f;
             hardness = 3;
@@ -78,11 +94,9 @@ public class PiItems {
             alwaysUnlocked = false;
             piItems.add(this);
         }};
-        potassium = new Item("potassium", Color.valueOf("e8bdc5")){{
-            cost = 1.45f;
-            hardness = 3;
-            explosiveness = 0.95f;
-            flammability = 0.75f;
+        sapphire = new Item("sapphire"){{
+            cost = 2;
+            hardness = 6;
             alwaysUnlocked = false;
             piItems.add(this);
         }};

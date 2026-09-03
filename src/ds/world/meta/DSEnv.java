@@ -6,5 +6,6 @@ import mindustry.world.meta.Env;
 public class DSEnv extends Env {
     public static final int
     /* Underwater but for my mod. A bit different color. */
-    underwaterWarm = 1 << 14;
+    underwaterWarm = 1 << 8;
+
 }

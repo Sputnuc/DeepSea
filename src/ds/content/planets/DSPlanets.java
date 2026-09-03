@@ -21,7 +21,7 @@ public class DSPlanets {
     public static Planet pi312;
     public static void loadContent(){
         //"Vmtkb2JFbEZWbWhqYmxKdg=="
-        pi312 = new Planet("P-I-312", Planets.sun, 2f, 3){{
+        pi312 = new Planet("obj-312", Planets.sun, 2f, 3){{
             generator = new PiGenerator();
             meshLoader = () -> new HexMesh(this, 6);
             cloudMeshLoader = () -> new MultiMesh(
@@ -62,7 +62,7 @@ public class DSPlanets {
 
         unitWhiteList(PiUnits.pi312units, pi312);
         addItemWhitelist(Seq.with(Items.graphite), pi312);
-        addLiquidWhitelist(PiLiquids.piLiquid, pi312);
+        addLiquidWhitelist(PiLiquids.piLiquids, pi312);
     }
 
     protected static void unitWhiteList(Seq<UnitType>units, Planet planet){
