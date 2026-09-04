@@ -15,9 +15,13 @@ import mindustry.world.meta.StatUnit;
 import static mindustry.Vars.tilesize;
 
 public class AccelItemTurret extends DSItemTurret {
+
     public float speedUpPerShoot = 2;
+    //0.5f = 150%, 0.6f = 160% etc.
     public float maxAccel = 0.5f;
+
     public float cooldownSpeed = 1;
+
     public float cooldownInterval = 60f;
 
     public AccelItemTurret(String name){
@@ -44,7 +48,7 @@ public class AccelItemTurret extends DSItemTurret {
         stats.add(DSStats.acTurrReloadEnd, (reload / (maxAccel + 1.0f)) / 60f, StatUnit.seconds);
     }
 
-    public  class AccelItemTurretBuild extends ItemTurretBuild {
+    public  class AccelItemTurretBuild extends DSItemTurretBuild {
         protected float speedUp = 0;
         protected float coolantSpeedMultiplier;
         protected  boolean overheated = false;
@@ -97,13 +101,8 @@ public class AccelItemTurret extends DSItemTurret {
         public void shoot(BulletType type){
             //speedUp per shoot
             super.shoot(type);
-            if (speedUp < maxAccel){
-                speedUp += speedUpPerShoot   * ammoReloadMultiplier() * delta();
-                speedUp += coolantSpeedMultiplier * delta();
-                if(speedUp>maxAccel) speedUp = maxAccel;
-            }else {
-                speedUp = maxAccel;
-            }
+                speedUp = Math.min(speedUp + speedUpPerShoot * ammoReloadMultiplier() * delta(), maxAccel);
+                speedUp = Math.min(speedUp + coolantSpeedMultiplier * delta(), maxAccel);
         }
         @Override
         public void write(Writes write){

@@ -64,9 +64,7 @@ public class DSMusicLoader {
     public static void attach() {
         Events.on(EventType.WorldLoadEvent.class, e -> {
             if (Vars.state.rules.planet != null && Vars.state.rules.planet == DSPlanets.pi312) {
-                if(!DSSetting.getOnlyModMus()) {
-                    vannilaMusic = true;
-                } else vannilaMusic = false;
+                vannilaMusic = !DSSetting.getOnlyModMus();
                 deepSeaMusic = true;
             } else {
                 vannilaMusic = true;

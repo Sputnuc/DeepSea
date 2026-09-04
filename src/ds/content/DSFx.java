@@ -11,6 +11,7 @@ import arc.math.Rand;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Tmp;
+import ds.world.graphics.DSPal;
 import mindustry.entities.Effect;
 import mindustry.entities.effect.ParticleEffect;
 import mindustry.graphics.Drawf;
@@ -33,7 +34,7 @@ public class DSFx {
         Lines.ellipse(e.x + eX, e.y + eY, 0.45f * e.fin()+ 0.45f, 2.5f, 8, e.rotation);
     }),
     dsColorSparkSmall = new Effect(15f, e -> {
-        color(Color.white, e.color, e.fin());
+        color(e.color);
         stroke(e.fout() * 1.1f + 0.5f);
 
         randLenVectors(e.id, 2, 14f * e.fin(), e.rotation, 0f, (x, y) -> {
@@ -77,12 +78,6 @@ public class DSFx {
             Fill.circle(e.x + x, e.y + y, e.fin(Interp.circleOut) * 6f + 4.75f);
         });
     }),
-    torpedoTrail = new Effect(120, e -> {
-        color(Color.valueOf("e0f4ff80"), Color.valueOf("bfe0f200"), e.fin());
-        randLenVectors(e.id, 2, 10 * e.fin(), (x, y)->{
-            Fill.circle(e.x + x, e.y + y, e.fin() * 0.75f + 1);
-        });
-    }),
     drillImpact = new Effect(150, e->{
         color(Color.valueOf("525570"), Color.valueOf("a4adfc00"), e.fin(Interp.circleOut));
         randLenVectors(e.id, 7, 30 * e.fin(), (x, y)->{
@@ -121,7 +116,7 @@ public class DSFx {
             Lines.ellipse(e.x + eX, e.y + eY, 0.45f * e.fin()+ 0.25f, 2.5f, 8, e.rotation);
         };
     }),
-    dsBulletTrail = new Effect(15, e ->{
+    dsBulletTrail = new Effect(12, e ->{
         color(Color.valueOf("e0f4ff"), Color.valueOf("bfe0f200"), e.fin());
         randLenVectors(e.id, 3, 5 * e.fin(), (x, y)->{
             Fill.circle(e.x + x, e.y + y, e.fin() * 0.85f + 0.45f);
@@ -149,6 +144,77 @@ public class DSFx {
         Lines.circle(e.x, e.y, 10 * e.fin());
         Drawf.light(e.x, e.y, 4 + 7 * e.fout(), Color.valueOf("ccdef0"), 0.7f * e.fout());
     }),
+    dsMassiveExplosion = new Effect(40, e ->{
+        color(e.color);
+        stroke(e.fout() * 2.5f);
+        float circleRad = 6f + e.finpow() * 90f;
+        Lines.circle(e.x, e.y, circleRad);
+        stroke(e.fout() * 0.25f + 0.9f);
+        rand.setSeed(e.id);
+        for(int i = 0; i < 19; i++){
+            float angle = rand.random(360f);
+            float lenRand = rand.random(0.5f, 1f);
+            Lines.lineAngle(e.x, e.y, angle, e.foutpow() * 40f * rand.random(1f, 0.8f) + 2f, e.finpow() * 89f * lenRand + 6f);
+        }
+        Drawf.light(e.x, e.y, circleRad * 2.5f, e.color, e.fout());
+    }),
+    dsMassiveDeepSmoke = new Effect(100, e ->{
+        color(e.color ,Color.valueOf("b5b3b3").a(0.8f), Color.valueOf("212121").a(0), e.fin());
+        randLenVectors(e.id, 14, 70f * e.fin(Interp.pow5Out), (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout(Interp.circleOut) * 4 + 1.45f);
+        });
+        randLenVectors(e.id+1, 8, 60f * e.fin(Interp.pow5Out), (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 2 + 0.95f);
+        });
+    }),
+    dsMassiveSparkSpikes = new Effect(29, e->{
+        color(e.color);
+        rand.setSeed(e.id);
+        for(int i = 0; i < 5; i++){
+            float len = rand.random(50, 90);
+            float wid = rand.random(1, 2);
+            float rot = rand.random(360);
+            Drawf.tri(e.x, e.y, wid * e.fout(Interp.pow3Out), len * 0.8f + (len * 0.2f * e.fin()), rot);
+        }
+        rand.setSeed(e.id+1);
+        for(int i = 0; i < 3; i++){
+            float len = rand.random(90, 140);
+            float wid = rand.random(8, 6);
+            float rot = rand.random(360);
+            Drawf.tri(e.x, e.y, wid * e.fout(Interp.pow3Out), len * e.fin(), rot);
+        }
+    }),
+    dsColorSparkTrail = new Effect(12, e->{
+        color(e.color);
+        stroke(0.6f + e.fout() * 1.1f);
+        rand.setSeed(e.id);
+
+        for(int i = 0; i < 3; i++){
+            float rot = e.rotation + rand.range(15f) + 180f;
+            v.trns(rot, rand.random(e.fin() * 25f));
+            lineAngle(e.x + v.x, e.y + v.y, rot, e.fout() * rand.random(4f, 9f) + 1.2f);
+        }
+        rand.setSeed(e.id+1);
+        for(int s : Mathf.signs){
+            lineAngle(e.x, e.y, e.rotation + 90 * s + 20 * s * e.fin(Interp.circleOut), e.fout(Interp.circleOut) * 5 + 1.2f);
+        }
+        Drawf.light(e.x, e.y,  e.fout(Interp.circleOut) * 10, e.color, e.fout() * 0.5f);
+    }),
+    dsFastSparkTrail = new ParticleEffect(){{
+        cone = 12.5f;
+        length = -16;
+        lifetime = 15;
+        particles = 3;
+        line = true;
+        lenFrom = 3;
+        lenTo = 5.85f;
+        interp = Interp.linear;
+        sizeInterp = Interp.circleOut;
+        strokeFrom = 1.75f;
+        strokeTo = 0;
+        colorFrom = DSPal.dsBulletFront;
+        colorTo = DSPal.dsBulletBack;
+    }},
     sulfurVentSteam = new Effect(250f, e -> {
         color(e.color, Color.valueOf("22261000"), e.fin());
 
@@ -195,10 +261,16 @@ public class DSFx {
 
     drillDetonateEffectTri = new Effect(70, e ->{
         color(Color.valueOf("fcffeb"), Color.valueOf("d1c497"), e.fin());
+        float rotation = Mathf.randomSeedRange(e.id, 35);
         for(int sign : Mathf.signs){
             float cOut = e.fout(Interp.circleOut);
-            Drawf.tri(e.x, e.y, 12 * cOut, 30 * e.fin(Interp.bounceOut), 90 + 90 * sign);
+            Drawf.tri(e.x, e.y, 12 * cOut, 30 * e.fin(Interp.bounceOut), 90 + rotation + 90 * sign);
             Drawf.light(e.x, e.y, 30 * cOut, Color.valueOf("fcffeb"), 0.4f * cOut + 0.15f);
+            stroke(e.fout(Interp.circleOut) * 1.15f);
+            randLenVectors(e.id + 1, 9, 3 + 50 * e.fin(Interp.pow5Out), 90 + rotation + 90 * sign, 35, (x, y)->{
+                lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 1f + e.fout(Interp.pow5Out) * 6f);
+            });
+
         }
     }),
     drillDetonateEffectWave = new Effect(40, e ->{

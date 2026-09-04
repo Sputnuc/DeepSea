@@ -45,7 +45,7 @@ public class AccelPowerTurret extends DSPowerTurret {
         stats.add(DSStats.acTurrReloadEnd, (reload / (maxAccel + 1.0f)) / 60f, StatUnit.seconds);
     }
 
-    public  class AccelTurretBuild extends PowerTurretBuild {
+    public  class AccelTurretBuild extends DSPowerTurretBuild {
         protected float speedUp = 0;
         protected float coolantSpeedMultiplier;
         protected  boolean overheated = false;

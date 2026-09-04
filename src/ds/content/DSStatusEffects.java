@@ -1,6 +1,7 @@
 package ds.content;
 
 import arc.struct.Seq;
+import arc.util.Time;
 import ds.type.entities.dsUnits.SubmarineUnitType;
 import mindustry.entities.effect.ParticleEffect;
 import mindustry.entities.units.StatusEntry;
@@ -24,9 +25,9 @@ public class DSStatusEffects {
             public void update(Unit unit, StatusEntry entry){
                 super.update(unit, entry);
                     if (unit.type instanceof SubmarineUnitType) {
-                        unit.damageContinuousPierce(0.2f * (unit.health / (unit.maxHealth / 1.5f)));
+                        unit.damageContinuousPierce((unit.health / (unit.maxHealth * 2)) / 2.5f * Time.delta);
                         unit.speedMultiplier = Math.max(0.25f, unit.health / unit.maxHealth);
-                    } else unit.damageContinuousPierce(0.025f * (unit.health / (unit.maxHealth / 1.15f)));
+                    } else unit.damageContinuousPierce((unit.health / (unit.maxHealth * 2)) / 3.4f * Time.delta);
             }
         };
     }

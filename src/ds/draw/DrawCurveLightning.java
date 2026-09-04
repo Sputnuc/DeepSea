@@ -5,7 +5,6 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import ds.content.DSFx;
-import mindustry.content.Fx;
 
 public class DrawCurveLightning {
 

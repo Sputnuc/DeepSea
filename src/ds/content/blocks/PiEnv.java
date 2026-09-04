@@ -5,23 +5,27 @@ import ds.content.DSFx;
 import ds.content.items.PiItems;
 import ds.world.blocks.environment.EffectFloor;
 import ds.world.blocks.environment.GlowingSeaweed;
+import ds.world.blocks.environment.RockBlock;
 import ds.world.blocks.environment.TiledFloor;
+import mindustry.type.Category;
 import mindustry.world.Block;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.meta.Attribute;
+import mindustry.world.meta.BuildVisibility;
 
 import static ds.content.DSAttributes.*;
 import static mindustry.content.Blocks.*;
+import static mindustry.type.ItemStack.with;
 
 public class PiEnv {
     public static Block
             //Ores
             aluminiumOre, silverOre, potasiumOre,
             //Limestone
-            limestoneFloor, limestoneWall, roughLimestone, limestoneBoulder,
+            limestoneFloor, limestoneWall, roughLimestone, limestoneMountain, limestoneBoulder,
 
             //Manganese biome
-            manganeseHydroxideFloor,    manganeseHydroxideCrystals,
+            manganeseHydroxideFloor,   manganeseHydroxideCrystals,
 
             // Quartz biome
             quartzFloor, quartzSlabs, quartsCrystalWall, quartsWall, quartzCrystal,
@@ -39,11 +43,12 @@ public class PiEnv {
             deepSandstone, deepSandstoneWall, deepRoughSandstone,
             // Ironstone
             ironstoneFloor, ironstoneWall,
-
             // Nature
             glowingCoral, bigGlowingCoral, deadYellowCoralFloor,
+            //Deep spores
+            deepSpore, deepSporeWall,
             // some sea bushes
-            seaweedFloor, seaweedWall, seaweed, deadYellowcoral, deadYellowcoralAlt, fernAlphared, fernYellow, underwaterRedGrass, underwaterRegGrassAlt;
+            seaweedFloor, seaweedWall, seaweed, deadYellowcoral, deadYellowcoralAlt, fernAlphared, fernYellow, underwaterRedGrass, underwaterRegGrassAlt, underwaterRedWall;
 
     public static void load(){
         //Ores
@@ -63,8 +68,18 @@ public class PiEnv {
             variants = 3;
         }};
         roughLimestone = new Floor("rough-limestone-floor"){{
-            variants = 4;
+            variants = 2;
             wall = limestoneWall;
+        }};
+        limestoneBoulder = new Prop("limestone-boulder"){{
+            variants = 1;
+            limestoneFloor.asFloor().decoration = roughLimestone.asFloor().decoration = this;
+        }};
+        limestoneMountain = new RockBlock("limestone-mountain"){{
+            requirements(Category.effect, with(PiItems.aluminium, 900, PiItems.silver, 700));
+            buildTime = 1900;
+            size = 4;
+            buildVisibility = BuildVisibility.editorOnly;
         }};
 
         // Quartz
@@ -81,23 +96,32 @@ public class PiEnv {
         quartsCrystalWall = new StaticWall("quarts-crystal-wall"){{
             variants = 3;
         }};
+        quartzCrystal = new Prop("quartz-crystal"){{
+            variants = 2;
+            quartzFloor.asFloor().decoration = this;
+        }};
 
         // Sulfur
         sulfurSandFloor = new Floor("sulfur-sand-floor"){{
-            variants = 3;
+            variants = 4;
             wall = sulfurSandWall;
         }};
         sulfurSandWall = new StaticWall("sulfur-sand-wall"){{
             variants = 3;
         }};
         sulfurFloor = new Floor("sulfur-floor"){{
-            variants = 3;
+            variants = 4;
             itemDrop = PiItems.sulfur;
             wall = sulfurWall;
         }};
         sulfurWall = new StaticWall("sulfur-wall"){{
             variants = 3;
             itemDrop = PiItems.sulfur;
+        }};
+
+        sulfurCrystal = new Prop("sulfur-crystal"){{
+            variants = 2;
+            sulfurFloor.asFloor().decoration = this;
         }};
 
         sulfurVent = new SteamVent("sulfur-vent"){{
@@ -133,22 +157,20 @@ public class PiEnv {
             effectChance = 0.04f;
         }};
         geothermalRift = new EffectFloor("geothermal-rift"){{
-            variants = 3;
-            emitLight = true;
-            lightRadius = 12f;
-            lightColor = Color.valueOf("f5954c").a(0.02f);
-            effectChance = 0.004f;
+            variants = 0;
+            effectChance = 0.0001f;
             canShadow = false;
             placeableOn = false;
             solid = true;
+            drawEdgeOut = false;
         }};
         // Sandstone
         deepSandstone = new Floor("deep-sandstone"){{
-            variants = 3;
+            variants = 2;
             wall = deepSandstoneWall;
         }};
         deepRoughSandstone = new Floor("deep-rough-sandstone"){{
-            variants = 4;
+            variants = 3;
             wall = deepSandstoneWall;
         }};
         deepSandstoneWall = new StaticWall("deep-sandstone-wall"){{
@@ -156,7 +178,7 @@ public class PiEnv {
         }};
         // Manganese hydroxide
         manganeseHydroxideFloor = new Floor("manganese-hydroxide-floor"){{
-            variants = 3;
+            variants = 2;
             itemDrop = PiItems.manganeseHydroxide;
         }};
         manganeseHydroxideCrystals = new StaticWall("manganese-hydroxide-crystals"){{

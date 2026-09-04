@@ -142,10 +142,8 @@ public class PointLightningBulletType extends BulletType {
     }
 
     private void hitTarget(Bullet b, float px, float py) {
-        // Поиск юнита для попадания
         cdist = 0f;
-        result = null;
-        float range = 10f; // Радиус поиска
+        float range = 10f;
 
         Units.nearbyEnemies(b.team, px - range, py - range, range * 2f, range * 2f, e -> {
             if (e.dead() || !e.checkTarget(collidesAir, collidesGround) || !e.hittable()) return;
@@ -158,13 +156,13 @@ public class PointLightningBulletType extends BulletType {
                 result = e;
                 cdist = dst;
             }
-        });
 
-        if (result != null) {
             b.collision(result, px, py);
             result.damage(b.damage());
             result.apply(status, statusDuration);
-        } else if (collidesTiles) {
+        });
+
+        if (collidesTiles) {
             Building build = Vars.world.buildWorld(px, py);
             if (build != null && build.team != b.team) {
                 build.collision(b);
@@ -187,8 +185,7 @@ public class PointLightningBulletType extends BulletType {
                 (x, y) -> {
                     Building build = Vars.world.build(x, y);
                     return (furthest = build) != null &&
-                            build.team() != fromTeam &&
-                            build.block.insulated;
+                            build.team() != fromTeam;
                 }
         );
 

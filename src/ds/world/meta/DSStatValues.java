@@ -161,6 +161,62 @@ public class DSStatValues extends StatValues {
                         sep(bt, Core.bundle.format("bullet.pierceDrag", Strings.fixed(((HarpoonBulletType) type).pierceDrag, 1)));
                     }
 
+                    if(type.intervalBullet != null){
+                        bt.row();
+
+                        Table ic = new Table();
+                        ammo(ObjectMap.of(t, type.intervalBullet), true, false).display(ic);
+                        Collapser coll = new Collapser(ic, true);
+                        coll.setDuration(0.1f);
+
+                        bt.table(it -> {
+                            it.left().defaults().left();
+
+                            it.add(Core.bundle.format("bullet.interval", Strings.autoFixed(type.intervalBullets / type.bulletInterval * 60, 2)));
+                            it.button(Icon.downOpen, Styles.emptyi, () -> coll.toggle(false)).update(i -> i.getStyle().imageUp = (!coll.isCollapsed() ? Icon.upOpen : Icon.downOpen)).size(8).padLeft(16f).expandX();
+                        });
+                        bt.row();
+                        bt.add(coll);
+                    }
+
+                    if(type.fragBullet != null){
+                        bt.row();
+
+                        Table fc = new Table();
+                        ammo(ObjectMap.of(t, type.fragBullet), true, false).display(fc);
+                        Collapser coll = new Collapser(fc, true);
+                        coll.setDuration(0.1f);
+
+                        bt.table(ft -> {
+                            ft.left().defaults().left();
+
+                            ft.add(Core.bundle.format("bullet.frags", type.fragBullets));
+                            ft.button(Icon.downOpen, Styles.emptyi, () -> coll.toggle(false)).update(i -> i.getStyle().imageUp = (!coll.isCollapsed() ? Icon.upOpen : Icon.downOpen)).size(8).padLeft(16f).expandX();
+                        });
+                        bt.row();
+                        bt.add(coll);
+                    }
+
+                    if(type.spawnBullets != null && type.spawnBullets.size > 0){
+                        bt.row();
+
+                        Table sc = new Table();
+                        for(BulletType spawn : type.spawnBullets){
+                            if(spawn.showStats) ammo(ObjectMap.of(t, spawn), true, false).display(sc);
+                        }
+                        Collapser coll = new Collapser(sc, true);
+                        coll.setDuration(0.1f);
+
+                        bt.table(st -> {
+                            st.left().defaults().left();
+
+                            st.add(Core.bundle.format("bullet.spawnBullets", type.spawnBullets.size));
+                            if(sc.getChildren().size > 0) st.button(Icon.downOpen, Styles.emptyi, () -> coll.toggle(false)).update(i -> i.getStyle().imageUp = (!coll.isCollapsed() ? Icon.upOpen : Icon.downOpen)).size(8).padLeft(16f).expandX();
+                        });
+                        bt.row();
+                        bt.add(coll);
+                    }
+
                 }).padLeft(indent * 5).padTop(5).padBottom(compact ? 0 : 5).growX().margin(compact ? 0 : 10);
                 table.row();
             }

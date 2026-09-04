@@ -5,6 +5,7 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectMap;
+import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
 import ds.world.meta.DSStatValues;
@@ -17,15 +18,25 @@ import mindustry.gen.Sounds;
 import mindustry.gen.Unit;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
 import static mindustry.Vars.headless;
-import static mindustry.Vars.state;
 
 public class DSWeapon extends Weapon {
-
+    
     public boolean targetUnitPointPosition = false;
+
     @Override
     public void addStats(UnitType u, Table t){
+        if(inaccuracy > 0){
+            t.row();
+            t.add("[lightgray]" + Stat.inaccuracy.localized() + ": [white]" + (int)inaccuracy + " " + StatUnit.degrees.localized());
+        }
+        if(!alwaysContinuous && reload > 0 && !bullet.killShooter){
+            t.row();
+            t.add("[lightgray]" + Stat.reload.localized() + ": " + (mirror ? "2x " : "") + "[white]" + Strings.autoFixed(60f / reload, 2) + " (x" + shoot.shots + ")"+ " " + StatUnit.perSecond.localized());
+        }
         DSStatValues.ammo(ObjectMap.of(u, bullet)).display(t);
     }
 
@@ -43,6 +54,11 @@ public class DSWeapon extends Weapon {
 
     public DSWeapon(){
         super("");
+    }
+
+    @Override
+    public void draw(Unit unit, WeaponMount mount){
+        super.draw(unit, mount);
     }
 
     public void update(Unit unit, WeaponMount mount){
@@ -188,7 +204,6 @@ public class DSWeapon extends Weapon {
         if(mount.shoot && //must be shooting
                 can && //must be able to shoot
                 !(bullet.killShooter && mount.totalShots > 0) && //if the bullet kills the shooter, you should only ever be able to shoot once
-                (!useAmmo || unit.ammo > 0 || !state.rules.unitAmmo || unit.team.rules().infiniteAmmo) && //check ammo
                 (!alternate || wasFlipped == flipSprite) &&
                 mount.warmup >= minWarmup && //must be warmed up
                 velLen >= minShootVelocity && //check velocity requirements
@@ -199,10 +214,6 @@ public class DSWeapon extends Weapon {
 
             mount.reload = reload;
 
-            if(useAmmo){
-                unit.ammo--;
-                if(unit.ammo < 0) unit.ammo = 0;
-            }
         }
     }
 }

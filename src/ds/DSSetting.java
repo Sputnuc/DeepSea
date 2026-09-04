@@ -5,12 +5,15 @@ import mindustry.Vars;
 
 public class DSSetting {
     public static float rayAmountMultiplier;
+
+    public static float[] raysMultipliers = {1, 1.5f, 2};
+
     public static void init(){
         Vars.ui.settings.addCategory("Deep sea",  root ->{
             root.checkPref("@setting.onlyDeepseaMusic", false);
-            root.sliderPref("@setting.rayQuality", 1,1, 5,1,i -> {
-                 rayAmountMultiplier = i;
-                return i + "x";
+            root.sliderPref("@setting.rayQuality", 0,0, 2,1,i -> {
+                 rayAmountMultiplier = raysMultipliers[i];
+                return (i + 1) + "x";
             });
         });
     }
