@@ -68,7 +68,7 @@ public class PiEnv {
             variants = 3;
         }};
         roughLimestone = new Floor("rough-limestone-floor"){{
-            variants = 3;
+            variants = 2;
             wall = limestoneWall;
         }};
         limestoneBoulder = new Prop("limestone-boulder"){{
@@ -170,7 +170,7 @@ public class PiEnv {
             wall = deepSandstoneWall;
         }};
         deepRoughSandstone = new Floor("deep-rough-sandstone"){{
-            variants = 5;
+            variants = 3;
             wall = deepSandstoneWall;
         }};
         deepSandstoneWall = new StaticWall("deep-sandstone-wall"){{

@@ -91,9 +91,6 @@ public class AdvArtilleryBulletType extends BasicBulletType {
 
             if (result != null) {
                 b.collision(result, b.x, b.y);
-                if(b.owner instanceof Posc po) {
-                    CableProcess.addCable(new Cable(new Vec2(po.getX(), po.getY()), new Vec2(b.x, b.y)));
-                }
                 b.hit = true;
             } else if (collidesTiles) {
                 Building build = Vars.world.buildWorld(b.x, b.y);

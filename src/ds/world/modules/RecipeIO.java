@@ -190,24 +190,20 @@ public class RecipeIO {
     }
 
     public void addConsumers(ItemStack[] i){
-        if(i != null){
-            consumers.add(new ConsumeItems(i));
-        }
+        consumers.add(new ConsumeItems(i));
     }
 
     public void addConsumers(LiquidStack[] l){
-        if(l != null){
-            consumers.add(new ConsumeLiquids(l));
-        }
+        consumers.add(new ConsumeLiquids(l));
     }
 
     public void addConsumers(ItemStack[] i, LiquidStack[] l){
-        if(i != null){
-            consumers.add(new ConsumeItems(i));
-        }
-        if(l != null){
-            consumers.add(new ConsumeLiquids(l));
-        }
+        consumers.add(new ConsumeItems(i));
+        consumers.add(new ConsumeLiquids(l));
+    }
+
+    public void addConsumer(Consume cons){
+        consumers.add(cons);
     }
 
     public void apply(Block block){
