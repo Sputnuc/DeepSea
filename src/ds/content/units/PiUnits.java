@@ -344,6 +344,7 @@ public class PiUnits {
             }});
 
             weapons.add(new AdvancedLightWeapon("deepsea-control-weapon"){{
+                lightCone = 35f;
                 shootY = 6.85f;
                 xRand = 2;
                 x = 12f; y = 1.75f;
