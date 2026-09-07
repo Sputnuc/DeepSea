@@ -9,6 +9,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import ds.type.entities.Cable;
 import ds.world.global.CableProcess;
+import ds.world.graphics.Pseudo3D;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Units;
@@ -193,8 +194,6 @@ public class AdvArtilleryBulletType extends BasicBulletType {
 
         Draw.z(zLayer);
 
-        Color mix = Tmp.c1.set(mixColorFrom).lerp(mixColorTo, b.fin());
-        Draw.mixcol(mix, mix.a);
 
         float str = Mathf.cosDeg(b.rotation()) * Mathf.sinDeg(b.rotation()) * 2;
 

@@ -1,6 +1,7 @@
 package ds.world.blocks.crafting;
 
 import arc.Core;
+import arc.audio.Sound;
 import arc.func.Func;
 import arc.graphics.Color;
 import arc.graphics.g2d.TextureRegion;
@@ -23,6 +24,7 @@ import mindustry.entities.Effect;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
+import mindustry.gen.Sounds;
 import mindustry.graphics.Pal;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
@@ -50,6 +52,8 @@ public class MultiRecipeCrafter extends Block {
     public boolean recipesUniqueDrawers = false;
     public int[] liquidOutputDirections = {-1};
     private final OrderedMap<String, Bar> liquidBarMap = new OrderedMap<>();
+    public Sound recipeChangeSound = Sounds.blockRotate;
+    public Effect recipeChangeEffect = Fx.placeBlock;
 
     public MultiRecipeCrafter(String name) {
         super(name);
@@ -282,6 +286,8 @@ public class MultiRecipeCrafter extends Block {
         //Setting new recipe by index
         public void setRecipe(int idx){
             if(recipes.get(idx).recipeIsValid()) {
+                recipeChangeSound.at(x, y);
+                recipeChangeEffect.at(x, y, size);
                 progress = 0;
                 totalProgress = 0;
                 warmup = 0;

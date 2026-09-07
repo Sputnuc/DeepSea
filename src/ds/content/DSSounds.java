@@ -13,6 +13,7 @@ public class DSSounds {
             shootHarpoon = new Sound(),
             shootSmallWeapon = new Sound(),
             shootMediumTank = new Sound(),
+            shootImpulse = new Sound(),
             //Mech steps
             dsMechStep = new Sound(),
             //Mics sounds
@@ -24,6 +25,7 @@ public class DSSounds {
         shootHarpoon = loadSound("harpoonShoot");
         shootSmallWeapon = loadSound("shootSmallWeaponAlt");
         shootMediumTank = loadSound("shootTank");
+        shootImpulse = loadSound("shootImpulse");
         dsMechStep = loadSound("mech-step");
         loopAngler = loadSound("loopAngler");
         loopAnglerAttack  = loadSound("loopAnglerAttack");

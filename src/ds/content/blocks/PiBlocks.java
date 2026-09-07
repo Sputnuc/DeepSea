@@ -945,7 +945,7 @@ public class PiBlocks {
                         liquidInput = LiquidStack.with(hydrogenSulfide, 0.2, hydrogen, 0.1, oxygen, 0.25);
                         liquidOutput = LiquidStack.with(sulfuricAcid, 0.25);
                         craftTime = 60;
-                        uniqueDrawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(sulfuricAcid), new DrawDefault(), new DrawGlowRegion("-glow"){{
+                        uniqueDrawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(sulfuricAcid), new DrawDefault(), new DrawRegion("-sulfur"), new DrawGlowRegion("-glow"){{
                             color = Color.valueOf("bae6ff");
                         }});
                         powerUse = 1;

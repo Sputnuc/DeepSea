@@ -12,6 +12,7 @@ import ds.content.DSFx;
 import ds.content.DSSounds;
 import ds.content.DSStatusEffects;
 import ds.content.items.PiItems;
+import ds.type.entities.abilities.AdvancedArmorPlateAbility;
 import ds.type.entities.bullets.EmptyBulletType;
 import ds.type.entities.weapons.AntiTorpedoesWeapon;
 import ds.world.graphics.DSPal;
@@ -21,11 +22,17 @@ import ds.type.entities.weapons.DSWeapon;
 import mindustry.ai.UnitCommand;
 import mindustry.ai.types.MinerAI;
 import mindustry.content.Fx;
+import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
+import mindustry.entities.abilities.ArmorPlateAbility;
+import mindustry.entities.abilities.ForceFieldAbility;
+import mindustry.entities.abilities.RegenAbility;
 import mindustry.entities.bullet.*;
 import mindustry.entities.effect.MultiEffect;
 import mindustry.entities.effect.ParticleEffect;
 import mindustry.entities.effect.WaveEffect;
+import mindustry.entities.pattern.ShootMulti;
+import mindustry.entities.pattern.ShootPattern;
 import mindustry.gen.Sounds;
 import mindustry.gen.UnitEntity;
 import mindustry.graphics.Drawf;
@@ -265,11 +272,14 @@ public class PiUnits {
             }});
         }};
         oversight = new DSMechUnitType("oversight"){{
-            speed = 0.34f;
-            health = 580;
+            speed = 0.4f;
+            health = 620;
             armor = 2 * tierMultipliers[1];
             hitSize = 13;
             stepSound = DSSounds.dsMechStep;
+            abilities.add(new AdvancedArmorPlateAbility(StatusEffects.slow, 3){{
+                healthMultiplier = 0.65f;
+            }});
             stepSoundPitch = 0.7f;
             stepSoundVolume *= 0.31f;
             weapons.add(
@@ -278,7 +288,7 @@ public class PiUnits {
                         mirror = true;
                         rotate = false;
                         top = false;
-                        reload = 35;
+                        reload = 65;
                         shake = 3.5f;
                         recoil = 2.1f;
                         shootSound = Sounds.shootDiffuse;
@@ -287,7 +297,15 @@ public class PiUnits {
                         lightCone = 35f;
                         shootY = 6;
                         inaccuracy = 10;
-                        shoot.shots = 9;
+                        shootStatus = StatusEffects.slow;
+                        shootStatusDuration = 70;
+                        shoot = new ShootMulti(
+                                new ShootPattern(){{
+                                    shots = 9;
+                            }},
+                                new ShootPattern(){{
+                                    shots = 2; shotDelay = 10;
+                            }});
                         velocityRnd = 0.25f;
                         bullet = new BasicBulletType(12, 24.5f){{
                             recoil = 0.03f;
@@ -299,6 +317,8 @@ public class PiUnits {
                             trailWidth = 0.6f;
                             width = 4;
                             height = 14;
+                            shootEffect = DSFx.dsShoot;
+                            smokeEffect = none;
                             frontColor = hitColor = Color.valueOf("7cbcf7");
                             backColor = trailColor = Color.valueOf("6783e5");
                             hitEffect = despawnEffect = Fx.hitBulletColor;
@@ -308,16 +328,79 @@ public class PiUnits {
                     }}
             );
         }};
+        control = new DSMechUnitType("control"){{
+            speed = 0.37f;
+            health = 800;
+            armor = 3 * tierMultipliers[2];
+            rotateSpeed *= 0.43f;
+            hitSize = 16;
+            stepSound = DSSounds.dsMechStep;
+            stepSoundPitch = 0.65f;
+            stepSoundVolume *= 0.56f;
+            stepShake = 1.25f;
+
+            abilities.add(new ForceFieldAbility(64, 0.25f, 600, 900){{
+                sides = 4;
+            }});
+
+            weapons.add(new AdvancedLightWeapon("deepsea-control-weapon"){{
+                shootY = 6.85f;
+                xRand = 2;
+                x = 12f; y = 1.75f;
+                mirror = true;
+                rotate = false;
+                top = false;
+                recoil = 2.85f;
+                reload = 42;
+                shoot.shots = 3;
+                shoot.shotDelay = 6;
+                shake = 1.15f;
+                shootSound = DSSounds.shootImpulse;
+                shootSoundVolume = 0.25f;
+                bullet = new BasicBulletType(16, 26, "shell"){{
+                    splashDamage = 13;
+                    splashDamageRadius = 18;
+                    scaleLife = true;
+                    lifetime = 12;
+                    trailLength = 8;
+                    trailWidth = 0.9f;
+                    width = 5;
+                    height = 19;
+                    shootEffect = DSFx.dsShoot;
+                    frontColor = hitColor = Color.valueOf("7cbcf7");
+                    backColor = trailColor = Color.valueOf("6783e5");
+                    hitEffect = despawnEffect = new MultiEffect(Fx.hitBulletColor, DSFx.dsBulletHit);
+                    fragBullets = 6;
+                    fragBullet = new BasicBulletType(10f, 16, "shell"){{
+                        drag = 0.18f;
+                        lifetime = 13;
+                        shrinkY = 1;
+                        shrinkX = 0.35f;
+                        frontColor = hitColor = Color.valueOf("7cbcf7");
+                        backColor = trailColor = Color.valueOf("6783e5");
+                        trailLength = 1;
+                        trailWidth = 0.2f;
+                        width = 2;
+                        height = 11;
+                        hitEffect = despawnEffect = none;
+                    }};
+                }};
+            }});
+        }};
+
         oppression = new DSMechUnitType("oppression"){{
             speed = 0.35f;
-            health = 11000;
+            health = 9400;
             rotateSpeed *= 0.35f;
-            armor = 2 * tierMultipliers[3];
+            armor = 3 * tierMultipliers[3];
             hitSize = 26;
+            abilities.add(new RegenAbility(){{
+                amount = 0.5f;
+            }});
             stepSound = DSSounds.dsMechStep;
             stepSoundPitch = 0.5f;
-            mechLegColor = Color.valueOf("131623");
-            stepSoundVolume *= 0.7f;
+            stepSoundVolume *= 0.78f;
+            stepShake = 2.75f;
             weapons.add(
                     new AdvancedLightWeapon("deepsea-oppression-weapon"){{
                         x = 16.75f; y = 0;
@@ -336,7 +419,7 @@ public class PiUnits {
                         lightCone = 35f;
                         shootY = 11;
                         inaccuracy = 2;
-                        bullet = new BasicBulletType(20, 195){{
+                        bullet = new BasicBulletType(20, 215){{
                             splashDamage = 56;
                             splashDamageRadius = 20;
                             recoil = 0.4f;
@@ -368,9 +451,13 @@ public class PiUnits {
                             hitEffect = new MultiEffect(
                                     new Effect(10 ,e->{
                                         color(Color.valueOf("7cbcf7"));
+                                        Drawf.light(e.x, e.y, e.fin() * 14 + 9, e.color, e.fout(Interp.circleOut));
                                         for(int i = 0; i < 3; i++){
                                             Drawf.tri(e.x, e.y, e.fout() * 3 + 1, e.fin() * 44 + 2, e.rotation + Mathf.randomSeedRange(e.id + i, 90));
                                             Drawf.tri(e.x, e.y, e.fout() * 3 + 1, e.fout() * 17, e.rotation + Mathf.randomSeedRange(e.id + i, 90) + 180);
+                                            float x2 = e.x + Mathf.cosDeg(e.rotation + Mathf.randomSeedRange(e.id + i, 90)) * 44 * e.fin();
+                                            float y2 = e.y + Mathf.sinDeg(e.rotation + Mathf.randomSeedRange(e.id + i, 90)) * 44 * e.fin();
+                                            Drawf.light(e.x, e.y, x2, y2, e.fout() * 3.85f + 2.25f, e.color, e.fout(Interp.circleOut));
                                         }
                                     }),
                                     DSFx.dsBulletHit
