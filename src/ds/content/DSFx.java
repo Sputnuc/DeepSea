@@ -144,7 +144,7 @@ public class DSFx {
         Lines.circle(e.x, e.y, 10 * e.fin());
         Drawf.light(e.x, e.y, 4 + 7 * e.fout(), Color.valueOf("ccdef0"), 0.7f * e.fout());
     }),
-    dsMassiveExplosion = new Effect(40, e ->{
+    dsMassiveExplosion = new Effect(90, e ->{
         color(e.color);
         stroke(e.fout() * 2.5f);
         float circleRad = 6f + e.finpow() * 90f;
@@ -158,7 +158,7 @@ public class DSFx {
         }
         Drawf.light(e.x, e.y, circleRad * 2.5f, e.color, e.fout());
     }),
-    dsMassiveDeepSmoke = new Effect(100, e ->{
+    dsMassiveDeepSmoke = new Effect(170, e ->{
         color(e.color ,Color.valueOf("b5b3b3").a(0.8f), Color.valueOf("212121").a(0), e.fin());
         randLenVectors(e.id, 14, 70f * e.fin(Interp.pow5Out), (x, y) -> {
             Fill.circle(e.x + x, e.y + y, e.fout(Interp.circleOut) * 4 + 1.45f);
@@ -167,7 +167,7 @@ public class DSFx {
             Fill.circle(e.x + x, e.y + y, e.fout() * 2 + 0.95f);
         });
     }),
-    dsMassiveSparkSpikes = new Effect(29, e->{
+    dsMassiveSparkSpikes = new Effect(49, e->{
         color(e.color);
         rand.setSeed(e.id);
         for(int i = 0; i < 5; i++){

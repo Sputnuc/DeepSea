@@ -67,9 +67,9 @@ public class Cable {
         this.point2 = (Vec2) owner2;
         createCable(point1, point2);
         baseRegion = Core.atlas.find("deepsea-harpoon-wire");
-        Log.debug(baseRegion.found() ? "Deep sea log: Wire region is found" : "Deep sea log: Wire region isn't found" );
+        Log.debug(baseRegion.found() ? "Deep sea log: PowerWire region is found" : "Deep sea log: PowerWire region isn't found" );
         baseNodeRegion = Core.atlas.find("deepsea-harpoon-wire-end");
-        Log.debug(baseNodeRegion.found() ? "Deep sea log: Wire start region is found" : "Deep sea log: Wire start region isn't found" );
+        Log.debug(baseNodeRegion.found() ? "Deep sea log: PowerWire start region is found" : "Deep sea log: PowerWire start region isn't found" );
     }
 
     public void createCable(Vec2 pos1, Vec2 pos2){
@@ -106,9 +106,9 @@ public class Cable {
 
     public static void load(){
         baseRegion = Core.atlas.find("deepsea-harpoon-wire");
-        Log.info(baseRegion.found() ? "Deep sea log: Wire region is found" : "Deep sea log: Wire region isn't found" );
+        Log.info(baseRegion.found() ? "Deep sea log: PowerWire region is found" : "Deep sea log: PowerWire region isn't found" );
         baseNodeRegion = Core.atlas.find("deepsea-harpoon-wire-end");
-        Log.info(baseNodeRegion.found() ? "Deep sea log: Wire start region is found" : "Deep sea log: Wire start region isn't found" );
+        Log.info(baseNodeRegion.found() ? "Deep sea log: PowerWire start region is found" : "Deep sea log: PowerWire start region isn't found" );
     }
 
     public void init(){

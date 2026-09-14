@@ -91,9 +91,9 @@ public class HarpoonBulletType extends BasicBulletType {
     public void load(){
         super.load();
         wireRegion = Core.atlas.find("deepsea-harpoon-wire");
-        Log.debug(wireRegion.found() ? "Deep sea log: Wire region is found" : "Deep sea log: Wire region isn't found" );
+        Log.debug(wireRegion.found() ? "Deep sea log: PowerWire region is found" : "Deep sea log: PowerWire region isn't found" );
         startRegion = Core.atlas.find("deepsea-harpoon-wire-end");
-        Log.debug(startRegion.found() ? "Deep sea log: Wire start region is found" : "Deep sea log: Wire start region isn't found" );
+        Log.debug(startRegion.found() ? "Deep sea log: PowerWire start region is found" : "Deep sea log: PowerWire start region isn't found" );
     }
 
     @Override

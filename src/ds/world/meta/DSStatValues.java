@@ -1,26 +1,36 @@
 package ds.world.meta;
 
 import arc.Core;
+import arc.graphics.Color;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
+import arc.scene.ui.TextButton;
+import arc.scene.ui.layout.Cell;
 import arc.scene.ui.layout.Collapser;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectMap;
+import arc.struct.Seq;
 import arc.util.Scaling;
 import arc.util.Strings;
 import ds.type.entities.bullets.HarpoonBulletType;
 import ds.type.entities.bullets.PointLightningBulletType;
+import ds.ui.NamelessLiquidDisplay;
+import ds.world.modules.PayloadRecipe;
 import mindustry.content.StatusEffects;
 import mindustry.ctype.UnlockableContent;
 import mindustry.entities.bullet.BulletType;
 import mindustry.gen.Icon;
+import mindustry.graphics.Pal;
+import mindustry.type.ItemStack;
 import mindustry.type.UnitType;
 import mindustry.ui.Styles;
+import mindustry.world.Block;
 import mindustry.world.blocks.defense.turrets.Turret;
+import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValue;
 import mindustry.world.meta.StatValues;
 
-import static mindustry.Vars.tilesize;
+import static mindustry.Vars.*;
 
 
 public class DSStatValues extends StatValues {
@@ -235,5 +245,103 @@ public class DSStatValues extends StatValues {
 
     private static TextureRegion icon(UnlockableContent t) {
         return t.uiIcon;
+    }
+
+    public static Cell<TextButton> infoButton(Table table, UnlockableContent content, float size){
+        return table.button("?", Styles.flatBordert, () -> ui.content.show(content)).size(size).left().name("contentinfo");
+    }
+
+    public static StatValue payloadProducts(Seq<PayloadRecipe> products){
+        return table -> {
+            table.row();
+
+            for(PayloadRecipe recipe: products){
+                table.table(Styles.grayPanel, t -> {
+                    Block out = recipe.blockOutput;
+
+                    if(state.rules.bannedBlocks.contains(out)){
+                        t.image(Icon.cancel).color(Pal.remove).size(40);
+                        return;
+                    }
+
+                    if(recipe.recipeIsValid()){
+                        if(recipe.hasInputBlock()){
+                            t.table(i -> {
+                                i.left();
+
+                                i.image(recipe.blockInput.fullIcon).size(40).left().scaling(Scaling.fit);
+                                i.add(recipe.blockInput.localizedName).padLeft(8f).left();
+                                infoButton(i, recipe.blockInput, 32).padLeft(8f).left();
+
+                                i.image(Icon.right).color(Pal.darkishGray).size(40).pad(8f).center();
+
+                                i.image(out.fullIcon).size(40).right().scaling(Scaling.fit);
+                                i.add(out.localizedName).padLeft(8f).right();
+                                infoButton(i, out, 32).padLeft(8f).right();
+                            }).left().padTop(5).padBottom(5);
+                            t.row();
+                            t.add(Strings.autoFixed(recipe.craftTime / 60f, 1) + " " + StatUnit.seconds.localized()).color(Color.lightGray).padLeft(10f).left();
+                            if(recipe.powerUse > 0){
+                                t.row();
+                                t.add(Strings.autoFixed(recipe.powerUse * 60f, 1) + " " + StatUnit.powerSecond.localized()).color(Color.lightGray).padLeft(10f).left();
+                            }
+                            t.row();
+                        }else{
+                            t.image(out.uiIcon).size(40).pad(10f).left().top();
+                            t.table(info -> {
+                                info.top().defaults().left();
+
+                                info.add(out.localizedName);
+                                infoButton(info, out, 32).padLeft(8f).expandX();
+
+                                info.row();
+                                info.add(Strings.autoFixed(recipe.craftTime / 60f, 1) + " " + StatUnit.seconds.localized()).color(Color.lightGray).colspan(2);
+                                if(recipe.powerUse > 0){
+                                    info.row();
+                                    info.add(Strings.autoFixed(recipe.powerUse * 60f, 1) + " " + StatUnit.powerSecond.localized()).color(Color.lightGray).colspan(2);
+                                }
+                            }).top();
+                        }
+
+                        if(recipe.showReqList()){
+                            t.table(req -> {
+                                if(recipe.hasInputBlock()){
+                                    req.left().defaults().left();
+                                }else{
+                                    req.right().defaults().right();
+                                }
+
+                                int i = 0;
+                                int col = recipe.hasInputBlock() ? 12 : recipe.powerUse > 0 ? 4 : 6;
+                                if(recipe.itemInput.length > 0){
+                                    while(i < recipe.itemInput.length){
+                                        if(i % col == 0) req.row();
+
+                                        ItemStack stack = recipe.itemInput[i];
+                                        req.add(StatValues.displayItem(stack.item, stack.amount, false)).pad(5);
+
+                                        i++;
+                                    }
+                                }
+                                if(recipe.liquidInput.length > 0){
+                                    int j = 0;
+                                    while(j < recipe.itemInput.length){
+                                        if(i % col == 0) req.row();
+
+                                        req.add(new NamelessLiquidDisplay(recipe.liquidInput[j].liquid, recipe.liquidInput[j].amount, false)).pad(5);
+
+                                        j++;
+                                    }
+                                }
+                            }).right().top().grow().pad(10f);
+                        }
+                    }else{
+                        t.image(Icon.lock).color(Pal.darkerGray).size(40);
+                        t.add("@pm-missing-research");
+                    }
+                }).growX().pad(5);
+                table.row();
+            }
+        };
     }
 }

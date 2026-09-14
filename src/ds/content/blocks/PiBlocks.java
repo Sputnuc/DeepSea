@@ -11,10 +11,11 @@ import ds.content.items.PiItems;
 import ds.content.units.PiUnits;
 import ds.world.blocks.crafting.*;
 import ds.world.blocks.distribution.*;
+import ds.world.blocks.payload.ClosedPayloadConveyor;
 import ds.world.blocks.power.*;
 import ds.world.blocks.production.*;
 import ds.world.blocks.turret.*;
-import ds.world.modules.RecipeIO;
+import ds.world.modules.BaseRecipe;
 import ds.draw.drawers.*;
 import ds.world.graphics.DSPal;
 import ds.world.meta.DSEnv;
@@ -22,7 +23,6 @@ import ds.type.entities.bullets.*;
 import ds.type.entities.dsUnits.*;
 import ds.type.entities.effect.RandRadialEffect;
 import ds.type.entities.weapons.DSWeapon;
-import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.UnitSorts;
 import mindustry.entities.bullet.*;
@@ -41,6 +41,7 @@ import mindustry.world.blocks.defense.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.liquid.*;
 import mindustry.world.blocks.logic.LogicBlock;
+import mindustry.world.blocks.payloads.Constructor;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.production.*;
 import mindustry.world.blocks.storage.*;
@@ -63,7 +64,7 @@ public class PiBlocks {
             //Production
             hydraulicDrill, hydraulicWallDrill, gasBore, detonateDrill,
             //Power
-            powerTransmitter, powerDistributor, condensator, fuelGenerator, hydroTurbineGenerator, geothermalGenerator,
+            powerWire, powerTransmitter, powerDistributor, condensator, fuelGenerator, hydroTurbineGenerator, geothermalGenerator,
             //Effect
             lightProjector, repairModule,
             //Crafting
@@ -78,6 +79,8 @@ public class PiBlocks {
             cutoff, irritation, discharge, hydroid, execution, termination,
             //Defends
             aluminiumWall, aluminiumWallLarge, steelWall, steelWallLarge,
+            //Payload
+            componentAssembler, isolatedPayloadConveyor,
             //UnitBlocks
             deepUnitFactory, deepUnitReconstructor,
             //Logic
@@ -522,6 +525,7 @@ public class PiBlocks {
                         damage = 790;
                         sprite = "shell";
                         hitSize = 8;
+                        shadowIncreaseFactor = 2;
                         hitEffect = new MultiEffect(DSFx.dsMassiveExplosion, DSFx.dsMassiveDeepSmoke, DSFx.dsMassiveSparkSpikes);
                         shrinkY = 0.5f;
                         trajectoryZ = 110;
@@ -726,6 +730,10 @@ public class PiBlocks {
         }};
     }
     public static void loadPowerBlocks(){
+        powerWire = new PowerWire("power-wire"){{
+            requirements(Category.power, with(aluminium, 2));
+            size = 1;
+        }};
         powerTransmitter = new PowerNode("power-transmitter"){{
             requirements(Category.power, with(aluminium, 15, silver, 3));
             size = 2;
@@ -735,6 +743,7 @@ public class PiBlocks {
             maxNodes = 2;
             laserRange = 15;
             underBullets = true;
+            squareSprite = false;
         }};
         powerDistributor = new PowerNode("power-distributor"){{
             requirements(Category.power, with(aluminium, 6, silver, 4, graphite, 2));
@@ -745,6 +754,7 @@ public class PiBlocks {
             maxNodes = 10;
             laserRange = 6;
             underBullets = true;
+            squareSprite = false;
         }};
         condensator = new Battery("condensator"){{
             requirements(Category.power, with(aluminium, 45, silver, 25, graphite, 35));
@@ -941,7 +951,7 @@ public class PiBlocks {
             itemCapacity = 50;
             liquidCapacity = 220;
             addRecipes(
-                    new RecipeIO(){{
+                    new BaseRecipe(){{
                         liquidInput = LiquidStack.with(hydrogenSulfide, 0.2, hydrogen, 0.1, oxygen, 0.25);
                         liquidOutput = LiquidStack.with(sulfuricAcid, 0.25);
                         craftTime = 60;
@@ -950,7 +960,7 @@ public class PiBlocks {
                         }});
                         powerUse = 1;
                     }},
-                    new RecipeIO(){{
+                    new BaseRecipe(){{
                         itemInput = ItemStack.with(aluminium, 10, potassium, 5);
                         liquidInput = LiquidStack.with(hydrogen, 0.25);
                         itemOutput = ItemStack.with(sapphire, 2);
@@ -963,6 +973,24 @@ public class PiBlocks {
         }};
     }
     public static void loadUnitBlocks(){
+
+        componentAssembler = new Constructor("component-assembler"){{
+            requirements(Category.units, with(aluminium, 60, silver, 50, manganese, 30));
+            size = 2;
+            hideDetails = false;
+            ambientSound = Sounds.loopMachine;
+            consumeLiquid(hydrogen, 0.1f);
+            consumePower(0.75f);
+            filter = Seq.with(steelWall, steelWallLarge);
+        }};
+
+        isolatedPayloadConveyor = new ClosedPayloadConveyor("isolated-payload-conveyor"){{
+            requirements(Category.units, with(aluminium, 20, graphite, 10));
+            solid = true;
+            size = 2;
+            moveTime = 30;
+        }};
+
         deepUnitFactory = new UnitFactory("deep-unit-factory"){{
             requirements(Category.units, with(aluminium, 95, silver, 75, manganese, 55));
             size = 3;

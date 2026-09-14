@@ -10,10 +10,7 @@ import mindustry.ctype.UnlockableContent;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
 import mindustry.graphics.Pal;
-import mindustry.type.Item;
-import mindustry.type.ItemStack;
-import mindustry.type.Liquid;
-import mindustry.type.LiquidStack;
+import mindustry.type.*;
 import mindustry.ui.Styles;
 import mindustry.world.Block;
 import mindustry.world.consumers.Consume;
@@ -22,7 +19,7 @@ import mindustry.world.consumers.ConsumeLiquids;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.meta.*;
 
-public class RecipeIO {
+public class BaseRecipe {
 
     public ItemStack[] itemInput;
     public ItemStack[] itemOutput;
@@ -82,57 +79,57 @@ public class RecipeIO {
         }
     }
 
-    public RecipeIO(){
+    public BaseRecipe(){
     }
 
-    public RecipeIO(ItemStack[] itemInput, ItemStack[] itemOutput){
+    public BaseRecipe(ItemStack[] itemInput, ItemStack[] itemOutput){
         this.itemInput = itemInput;
         this.itemOutput = itemOutput;
     }
 
-    public RecipeIO(ItemStack[] itemInput, ItemStack[] itemOutput, float craftTime){
-        this.itemInput = itemInput;
-        this.itemOutput = itemOutput;
-        this.craftTime = craftTime;
-
-    }
-
-    public RecipeIO(ItemStack[] itemInput, ItemStack[] itemOutput, float craftTime, float powerUse){
+    public BaseRecipe(ItemStack[] itemInput, ItemStack[] itemOutput, float craftTime){
         this.itemInput = itemInput;
         this.itemOutput = itemOutput;
         this.craftTime = craftTime;
-        this.powerUse = powerUse;
+
     }
 
-    public RecipeIO(ItemStack[] itemInput, ItemStack[] itemOutput, LiquidStack[] liquidInput){
+    public BaseRecipe(ItemStack[] itemInput, ItemStack[] itemOutput, float craftTime, float powerUse){
         this.itemInput = itemInput;
         this.itemOutput = itemOutput;
-        this.liquidInput = liquidInput;
-    }
-
-    public RecipeIO(ItemStack[] itemInput, ItemStack[] itemOutput, LiquidStack[] liquidInput, float craftTime){
-        this.itemInput = itemInput;
-        this.itemOutput = itemOutput;
-        this.liquidInput = liquidInput;
-        this.craftTime = craftTime;
-    }
-
-    public RecipeIO(ItemStack[] itemInput, ItemStack[] itemOutput, LiquidStack[] liquidInput, float craftTime, float powerUse){
-        this.itemInput = itemInput;
-        this.itemOutput = itemOutput;
-        this.liquidInput = liquidInput;
         this.craftTime = craftTime;
         this.powerUse = powerUse;
     }
 
-    public RecipeIO(ItemStack[] itemInput, ItemStack[] itemOutput, LiquidStack[] liquidInput, LiquidStack[] liquidOutput){
+    public BaseRecipe(ItemStack[] itemInput, ItemStack[] itemOutput, LiquidStack[] liquidInput){
+        this.itemInput = itemInput;
+        this.itemOutput = itemOutput;
+        this.liquidInput = liquidInput;
+    }
+
+    public BaseRecipe(ItemStack[] itemInput, ItemStack[] itemOutput, LiquidStack[] liquidInput, float craftTime){
+        this.itemInput = itemInput;
+        this.itemOutput = itemOutput;
+        this.liquidInput = liquidInput;
+        this.craftTime = craftTime;
+    }
+
+    public BaseRecipe(ItemStack[] itemInput, ItemStack[] itemOutput, LiquidStack[] liquidInput, float craftTime, float powerUse){
+        this.itemInput = itemInput;
+        this.itemOutput = itemOutput;
+        this.liquidInput = liquidInput;
+        this.craftTime = craftTime;
+        this.powerUse = powerUse;
+    }
+
+    public BaseRecipe(ItemStack[] itemInput, ItemStack[] itemOutput, LiquidStack[] liquidInput, LiquidStack[] liquidOutput){
         this.itemInput = itemInput;
         this.itemOutput = itemOutput;
         this.liquidInput = liquidInput;
         this.liquidOutput = liquidOutput;
     }
 
-    public RecipeIO(ItemStack[] itemInput, ItemStack[] itemOutput, LiquidStack[] liquidInput, LiquidStack[] liquidOutput, float craftTime){
+    public BaseRecipe(ItemStack[] itemInput, ItemStack[] itemOutput, LiquidStack[] liquidInput, LiquidStack[] liquidOutput, float craftTime){
         this.itemInput = itemInput;
         this.itemOutput = itemOutput;
         this.liquidInput = liquidInput;
@@ -140,13 +137,17 @@ public class RecipeIO {
         this.craftTime = craftTime;
     }
 
-    public RecipeIO(ItemStack[] itemInput, ItemStack[] itemOutput, LiquidStack[] liquidInput, LiquidStack[] liquidOutput, float craftTime, float powerUse){
+    public BaseRecipe(ItemStack[] itemInput, ItemStack[] itemOutput, LiquidStack[] liquidInput, LiquidStack[] liquidOutput, float craftTime, float powerUse){
         this.itemInput = itemInput;
         this.itemOutput = itemOutput;
         this.liquidInput = liquidInput;
         this.liquidOutput = liquidOutput;
         this.craftTime = craftTime;
         this.powerUse = powerUse;
+    }
+
+    public boolean showReqList(){
+        return itemInput.length > 0 || liquidInput != null;
     }
 
     public void addRequire(ItemStack[] items){

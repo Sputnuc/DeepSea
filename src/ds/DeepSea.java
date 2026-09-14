@@ -46,10 +46,7 @@ public class DeepSea extends Mod{
              */
         }
 
-        Events.run(EventType.Trigger.update, ()->{
-            DSWorldProcessor.update();
-        });
-        //Test
+        Events.run(EventType.Trigger.update, DSWorldProcessor::update);
         /*
         Events.on(EventType.WorldLoadEvent.class, e->{
             for(int i = 0; i < 970; i++){
@@ -59,6 +56,7 @@ public class DeepSea extends Mod{
                 ));
             };
         });
+
          */
         Events.on(EventType.StateChangeEvent.class, e ->{
             if (e.from != GameState.State.menu && e.to == GameState.State.menu) {

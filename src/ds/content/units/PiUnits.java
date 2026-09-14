@@ -27,6 +27,7 @@ import mindustry.entities.Effect;
 import mindustry.entities.abilities.ArmorPlateAbility;
 import mindustry.entities.abilities.ForceFieldAbility;
 import mindustry.entities.abilities.RegenAbility;
+import mindustry.entities.abilities.ShieldArcAbility;
 import mindustry.entities.bullet.*;
 import mindustry.entities.effect.MultiEffect;
 import mindustry.entities.effect.ParticleEffect;
@@ -395,9 +396,21 @@ public class PiUnits {
             rotateSpeed *= 0.35f;
             armor = 3 * tierMultipliers[3];
             hitSize = 26;
-            abilities.add(new RegenAbility(){{
-                amount = 0.5f;
-            }});
+            abilities.add(
+                    new RegenAbility(){{
+                        amount = 0.15f;
+                    }},
+                    new ShieldArcAbility(){{
+                        radius = 27;
+                        regen = 0.25f;
+                        max = 750;
+                        cooldown = 240;
+                        angle = 240;
+                        width = 3.75f;
+                        chanceDeflect = 0.35f;
+                        whenShooting = false;
+                    }}
+            );
             stepSound = DSSounds.dsMechStep;
             stepSoundPitch = 0.5f;
             stepSoundVolume *= 0.78f;

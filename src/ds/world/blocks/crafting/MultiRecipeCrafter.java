@@ -15,7 +15,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import ds.world.modules.RecipeIO;
+import ds.world.modules.BaseRecipe;
 import ds.world.meta.DSStats;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -44,7 +44,7 @@ public class MultiRecipeCrafter extends Block {
     //Standard block drawer (can be overwritten by Recipes)
     public DrawBlock drawer = new DrawDefault();
     //Recipes
-    public Seq<RecipeIO> recipes = new Seq<>();
+    public Seq<BaseRecipe> recipes = new Seq<>();
     public Effect craftEffect = Fx.none;
     public Effect updateEffect = Fx.smeltsmoke;
     public float updateEffectChance = 0.01f;
@@ -69,12 +69,12 @@ public class MultiRecipeCrafter extends Block {
     }
 
     //Adding recipes for recipes array :/
-    public void addRecipes(RecipeIO...r){
+    public void addRecipes(BaseRecipe...r){
         recipes.add(r);
     }
 
-    public void addRecipesNonRequire(Boolean unlocked, RecipeIO...r){
-        for(RecipeIO recipe : r){
+    public void addRecipesNonRequire(Boolean unlocked, BaseRecipe...r){
+        for(BaseRecipe recipe : r){
             recipe.needDoUnlock = false;
         }
         recipes.add(r);
@@ -107,11 +107,11 @@ public class MultiRecipeCrafter extends Block {
 
     @Override
     public void init(){
-        for(RecipeIO r : recipes){
+        for(BaseRecipe r : recipes){
             r.apply(this);
             if(r.powerUse > 0) hasPower = true;
         }
-        for(RecipeIO r : recipes) r.init();
+        for(BaseRecipe r : recipes) r.init();
 
         //Dynamic consumer for recipes (from Carpe Diem)
         consume(new Consume(){
@@ -121,7 +121,7 @@ public class MultiRecipeCrafter extends Block {
                 boolean[] prevItemFilter = block.itemFilter;
                 boolean[] prevLiquidFilter = block.liquidFilter;
 
-                for (RecipeIO recipe : recipes) {
+                for (BaseRecipe recipe : recipes) {
                     block.itemFilter = new boolean[Vars.content.items().size];
                     block.liquidFilter = new boolean[Vars.content.liquids().size];
 
@@ -163,12 +163,12 @@ public class MultiRecipeCrafter extends Block {
 
             @Override
             public void build(Building build, Table table) {
-                RecipeIO[] current = {null};
+                BaseRecipe[] current = {null};
 
                 table.table(cont -> {
                     table.update(() -> {
                         if (build instanceof MultiRecipeCrafterBuild crafter) {
-                            RecipeIO recipe = crafter.getCurRecipe();
+                            BaseRecipe recipe = crafter.getCurRecipe();
                             if (current[0] != recipe) {
                                 current[0] = recipe;
                                 rebuild(build, cont, current[0]);
@@ -180,7 +180,7 @@ public class MultiRecipeCrafter extends Block {
                 });
             }
 
-            public void rebuild(Building build, Table table, RecipeIO recipe) {
+            public void rebuild(Building build, Table table, BaseRecipe recipe) {
                 table.clear();
 
                 if (recipe != null) {
@@ -214,7 +214,7 @@ public class MultiRecipeCrafter extends Block {
 
         stats.add(DSStats.recipes, table -> {
             table.row();
-            for (RecipeIO recipe : recipes) {
+            for (BaseRecipe recipe : recipes) {
                 recipe.display(table);
                 table.row();
             }
@@ -242,7 +242,7 @@ public class MultiRecipeCrafter extends Block {
         super.load();
 
         drawer.load(this);
-        for(RecipeIO r : recipes){
+        for(BaseRecipe r : recipes){
             if(r.uniqueDrawer != null) r.uniqueDrawer.load(this);
         }
     }
@@ -256,7 +256,7 @@ public class MultiRecipeCrafter extends Block {
         //if a recipe has a unique drawer, draw this drawer
         @Override
         public void draw(){
-            RecipeIO r = getCurRecipe();
+            BaseRecipe r = getCurRecipe();
             if(!recipesUniqueDrawers || r == null || r.uniqueDrawer == null){
                 drawer.draw(this);
             }else{
@@ -276,7 +276,7 @@ public class MultiRecipeCrafter extends Block {
         }
 
         //Getting current recipe from current recipe index.
-        public RecipeIO getCurRecipe(){
+        public BaseRecipe getCurRecipe(){
             if (recipeIDX < 0 || recipeIDX >= recipes.size || !recipes.get(recipeIDX).recipeIsValid()) {
                 return null;
             }
@@ -298,7 +298,7 @@ public class MultiRecipeCrafter extends Block {
         //Craft progress
         @Override
         public void updateTile(){
-            RecipeIO recipe = getCurRecipe();
+            BaseRecipe recipe = getCurRecipe();
             if(recipe != null){
                 if(efficiency > 0){
                     progress += getProgressIncrease(recipe.craftTime);
@@ -329,7 +329,7 @@ public class MultiRecipeCrafter extends Block {
 
         //Craft itself
         public void craft() {
-            RecipeIO recipe = getCurRecipe();
+            BaseRecipe recipe = getCurRecipe();
             consume();
 
             if (recipe != null) {
@@ -344,7 +344,7 @@ public class MultiRecipeCrafter extends Block {
         }
 
         //Output progress
-        public void dumpOutputs(RecipeIO r) {
+        public void dumpOutputs(BaseRecipe r) {
             if (r != null) {
                 r.dumpOutputs(this);
                 if (timer(timerDump, dumpTime / timeScale)) {
@@ -362,7 +362,7 @@ public class MultiRecipeCrafter extends Block {
         //Checking block fullness
         @Override
         public boolean shouldConsume() {
-            RecipeIO currentRecipe = getCurRecipe();
+            BaseRecipe currentRecipe = getCurRecipe();
             return currentRecipe != null && currentRecipe.shouldConsume(this);
         }
 
@@ -371,7 +371,7 @@ public class MultiRecipeCrafter extends Block {
         public boolean acceptItem(Building source, Item item) {
             if (!hasItems) return false;
 
-            RecipeIO currentRecipe = getCurRecipe();
+            BaseRecipe currentRecipe = getCurRecipe();
             boolean recipeConsumes = false;
 
             if (currentRecipe != null) {
@@ -384,7 +384,7 @@ public class MultiRecipeCrafter extends Block {
         public boolean acceptLiquid(Building source, Liquid liquid) {
             if (!hasLiquids) return false;
 
-            RecipeIO currentRecipe = getCurRecipe();
+            BaseRecipe currentRecipe = getCurRecipe();
             boolean recipeConsumes = false;
 
             if (configurable) {
@@ -392,7 +392,7 @@ public class MultiRecipeCrafter extends Block {
                     recipeConsumes = currentRecipe.consumesLiquid(liquid);
                 }
             } else {
-                for (RecipeIO recipe : recipes) {
+                for (BaseRecipe recipe : recipes) {
                     if (recipe.consumesLiquid(liquid)) {
                         recipeConsumes = true;
                         break;
@@ -440,7 +440,7 @@ public class MultiRecipeCrafter extends Block {
                 t.table(buttons ->{
                     for(int i = 0; i < recipes.size; i++){
                         final int recipeIndex = i;
-                        RecipeIO recipe = recipes.get(i);
+                        BaseRecipe recipe = recipes.get(i);
                         if(recipe == null) continue;
 
                         boolean isCurrent = recipeIDX == recipeIndex;
@@ -525,7 +525,7 @@ public class MultiRecipeCrafter extends Block {
             }
         }
         //Interface functions...
-        private void addRecipeResources(Table table, RecipeIO recipe){
+        private void addRecipeResources(Table table, BaseRecipe recipe){
             if(recipe.itemInput != null){
                 for(ItemStack input : recipe.itemInput){
                     if(input == null || input.item == null) continue;
@@ -541,7 +541,7 @@ public class MultiRecipeCrafter extends Block {
                 }
             }
         }
-        private void addOutputResources(Table table, RecipeIO recipe){
+        private void addOutputResources(Table table, BaseRecipe recipe){
             if(recipe.itemOutput != null){
                 for(ItemStack output : recipe.itemOutput){
                     if(output == null || output.item == null) continue;
