@@ -18,11 +18,11 @@ import mindustry.type.UnitType;
 import mindustry.world.meta.Env;
 
 public class DSPlanets {
-    public static Planet pi312;
+    public static Planet obj312;
     public static void loadContent(){
         //"Vmtkb2JFbEZWbWhqYmxKdg=="
-        pi312 = new Planet("obj-312", Planets.sun, 2f, 3){{
-            generator = new PiGenerator();
+        obj312 = new Planet("obj-312", Planets.sun, 2f, 3){{
+            generator = new DSPlanetGenerator();
             meshLoader = () -> new HexMesh(this, 6);
             cloudMeshLoader = () -> new MultiMesh(
                     new HexSkyMesh(this, 3, 0.13f, 0.11f, 5, Color.valueOf("c4ebed").a(0.75f), 2, 0.18f, 1.2f, 0.3f),
@@ -60,9 +60,9 @@ public class DSPlanets {
             defaultEnv = Env.terrestrial | DSEnv.underwaterWarm & ~(Env.groundOil | Env.scorching | Env.spores);
         }};
 
-        unitWhiteList(PiUnits.pi312units, pi312);
-        addItemWhitelist(Seq.with(Items.graphite), pi312);
-        addLiquidWhitelist(PiLiquids.piLiquids, pi312);
+        unitWhiteList(PiUnits.pi312units, obj312);
+        addItemWhitelist(Seq.with(Items.graphite), obj312);
+        addLiquidWhitelist(PiLiquids.piLiquids, obj312);
     }
 
     protected static void unitWhiteList(Seq<UnitType>units, Planet planet){

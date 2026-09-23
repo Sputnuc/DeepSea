@@ -7,11 +7,12 @@ import arc.math.Mathf;
 import arc.math.Angles;
 import arc.util.Log;
 import arc.util.Time;
+import ds.content.DSFx;
 import ds.world.blocks.turret.DSHarpoonTurret;
 import ds.draw.DrawWire;
 import ds.type.entities.comp.HarpoonBulletComp;
-import ds.world.blocks.turret.DSTurret;
 import mindustry.content.Fx;
+import mindustry.entities.Effect;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.game.EventType;
 import mindustry.gen.*;
@@ -29,6 +30,10 @@ public class HarpoonBulletType extends BasicBulletType {
     public TextureRegion startRegion;
     public float pierceDrag = 0.5f;
     public float pierceAccelFactor = 0.15f;
+    public Effect rippleEffect = DSFx.dsHaproonRipple;
+    public float rippleEffectSpacing = 0.15f;
+    public float rippleEffectChance = 0.85f;
+    public float rippleEffectThreshold = 0.7f;
 
 
     public HarpoonBulletType(float speed, float damage, String bulletSprite) {
@@ -111,6 +116,11 @@ public class HarpoonBulletType extends BasicBulletType {
                 }
             }
         }
+
+        if(rippleEffectThreshold > 0 && b.vel().len() >= rippleEffectThreshold){
+            if(b.timer(0, rippleEffectSpacing) && Mathf.random() >= rippleEffectChance) rippleEffect.at(b.x, b.y, b.rotation(), b.vel());
+        }
+
     }
 
     private boolean ownerValid(Bullet b){
@@ -196,7 +206,7 @@ public class HarpoonBulletType extends BasicBulletType {
         if(!hdata.returning) {
             b.vel().scl(1 - pierceDrag);
             super.hit(b, x, y);
-            if(b.vel().len2() < speed * pierceAccelFactor) manualBackup(b);
+            if(b.vel().len() < speed * pierceAccelFactor) manualBackup(b);
         }
     }
 

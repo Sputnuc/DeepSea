@@ -4,9 +4,8 @@ import ds.content.blocks.DSBlocksLoader;
 import ds.content.items.DSItemLoader;
 import ds.content.liquids.PiLiquids;
 import ds.content.planets.DSPlanets;
-import ds.content.planets.PiSectors;
+import ds.content.planets.DSSectorPresets;
 import ds.content.units.PiUnits;
-import ds.type.entities.Cable;
 import ds.world.global.*;
 
 public class ContentLoader {
@@ -25,7 +24,7 @@ public class ContentLoader {
 
         //end load
         DSPlanets.loadContent();
-        PiSectors.load();
+        DSSectorPresets.load();
         DSTechTree.load();
     }
 }

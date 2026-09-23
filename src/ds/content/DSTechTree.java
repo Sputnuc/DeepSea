@@ -8,7 +8,7 @@ import static ds.content.blocks.PiBlocks.*;
 import static ds.content.items.PiItems.*;
 import static ds.content.liquids.PiLiquids.*;
 import static ds.content.planets.DSPlanets.*;
-import static ds.content.planets.PiSectors.*;
+import static ds.content.planets.DSSectorPresets.*;
 import static ds.content.units.PiUnits.*;
 import static mindustry.content.Items.*;
 import static mindustry.content.Liquids.*;
@@ -16,13 +16,10 @@ import static mindustry.content.TechTree.*;
 
 public class DSTechTree {
     public static void load(){
-        pi312.techTree = nodeRoot("P-I-312", coreInfluence, false, ()->{
+        obj312.techTree = nodeRoot("P-I-312", coreInfluence, false, ()->{
             //Sectors
             node(theBeginning, ()->{
-                node(canyon, Seq.with(new Objectives.SectorComplete(theBeginning)), ()->{
-                    node(plate, Seq.with(new Objectives.SectorComplete(canyon)),()->{
-                        node(outpost, Seq.with(new Objectives.SectorComplete(plate)), ()->{});
-                    });
+                node(crevice, Seq.with(new Objectives.SectorComplete(theBeginning)), ()->{
                 });
             });
 
@@ -51,7 +48,7 @@ public class DSTechTree {
                 });
             });
             //Unit blocks
-            node(deepUnitFactory, Seq.with(new Objectives.SectorComplete(plate)), ()->{
+            node(deepUnitFactory, ()->{
                 //Units
                 node(condition, ()->{
                     node(oversight, Seq.with(new Objectives.Research(deepUnitReconstructor)), ()->{});
@@ -69,7 +66,7 @@ public class DSTechTree {
             node(pressuredContainer, ()->{
                 node(pressuredUnloader);
             });
-            node(lightProjector);
+            node(lightProjector, ItemStack.with(aluminium, 100, silver, 20), ()->{});
             node(repairModule);
             //Turrets
             node(cutoff, ItemStack.with(aluminium, 100, silver, 90),()->{
@@ -93,35 +90,32 @@ public class DSTechTree {
                         node(isolatedUnderflowGate);
                     });
                 });
-                node(pipe, ()->{
-                    node(liquidDistributor);
-                    node(pipeBridge);
-                    node(pressuredLiquidContainer);
+                node(pipe, ItemStack.with(silver, 20), ()->{
+                    node(liquidDistributor, ItemStack.with(silver, 70), ()->{});
+                    node(pipeBridge, ItemStack.with(silver, 80), ()->{});
+                    node(pressuredLiquidContainer, ItemStack.with(silver, 190), ()->{});
                 });
             });
 
             //Production
-            node(hydrogenSulfideCollector, ItemStack.with(aluminium, 80, silver, 60), ()->{
-                node(hydrogenSulfideDiffuser, ItemStack.with(aluminium, 180, silver, 90), ()->{
+            node(hydrogenSulfideCollector, ItemStack.with(aluminium, 80, silver, 60, graphite, 20), ()->{
+                node(hydrogenSulfideDiffuser, ItemStack.with(aluminium, 180, silver, 90, graphite, 40), ()->{
                     node(manganeseSynthesizer, ItemStack.with(aluminium, 420, silver, 390), Seq.with(new Objectives.Research(manganeseHydroxide)), ()->{
-                        node(steelKiln, Seq.with(new Objectives.SectorComplete(outpost)), ()->{});
                     });
-                    node(decompositionChamber, Seq.with(new Objectives.SectorComplete(plate)), ()->{});
                 });
             });
 
             //Drills
             node(hydraulicDrill, ItemStack.with(aluminium, 20), ()->{
-                node(hydraulicWallDrill, ItemStack.with(aluminium, 200, silver, 100), ()->{
-                    node(gasBore, Seq.with(new Objectives.SectorComplete(plate)), ()->{});
+                node(hydraulicWallDrill, ItemStack.with(aluminium, 150, silver, 100), ()->{
                 });
                 node(detonateDrill);
             });
 
             //Power
-            node(powerTransmitter, ItemStack.with(aluminium, 90, silver, 20),() ->{
-                node(powerDistributor);
-                node(condensator);
+            node(powerWire, ItemStack.with(aluminium, 20),() ->{
+                node(powerDistributor, ItemStack.with(aluminium, 125, silver, 90, manganese, 75), ()->{});
+                node(condensator, ItemStack.with(aluminium, 80, silver, 40, manganese, 10), ()->{});
             });
             node(fuelGenerator, ItemStack.with(aluminium, 30, silver, 20), ()->{
                 node(hydroTurbineGenerator, ItemStack.with(aluminium, 120, silver, 90, graphite, 50), ()->{

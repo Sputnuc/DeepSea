@@ -23,6 +23,11 @@ public class PiEnv {
             aluminiumOre, silverOre, potasiumOre,
             //Limestone
             limestoneFloor, limestoneWall, roughLimestone, limestoneMountain, limestoneBoulder,
+            //Nartanite
+            natanite, nataniteRough, nataniteStoneWall,
+
+            //Ekronite
+            smoothEkronite, hillyEkronite, ekroniteWall,
 
             //Manganese biome
             manganeseHydroxideFloor,   manganeseHydroxideCrystals,
@@ -80,6 +85,36 @@ public class PiEnv {
             buildTime = 1900;
             size = 4;
             buildVisibility = BuildVisibility.editorOnly;
+        }};
+
+        //Natanite
+        natanite = new Floor("natanite-stone"){{
+            variants = 4;
+            wall = nataniteStoneWall;
+        }};
+
+        nataniteRough = new Floor("natanite-stone-rough"){{
+            variants = 4;
+            wall = nataniteStoneWall;
+        }};
+
+        nataniteStoneWall = new StaticWall("natanite-stone-wall"){{
+            variants = 3;
+        }};
+
+        //Ekronite
+        smoothEkronite = new Floor("smooth-ekronite"){{
+            variants = 5;
+            wall = ekroniteWall;
+        }};
+
+        hillyEkronite = new Floor("hilly-ekronite"){{
+            variants = 5;
+            wall = ekroniteWall;
+        }};
+
+        ekroniteWall = new StaticWall("ekronite-wall"){{
+            variants = 3;
         }};
 
         // Quartz
@@ -178,7 +213,7 @@ public class PiEnv {
         }};
         // Manganese hydroxide
         manganeseHydroxideFloor = new Floor("manganese-hydroxide-floor"){{
-            variants = 2;
+            variants = 7;
             itemDrop = PiItems.manganeseHydroxide;
         }};
         manganeseHydroxideCrystals = new StaticWall("manganese-hydroxide-crystals"){{

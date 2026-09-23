@@ -401,14 +401,13 @@ public class PiUnits {
                         amount = 0.15f;
                     }},
                     new ShieldArcAbility(){{
-                        radius = 27;
+                        radius = 25;
                         regen = 0.25f;
-                        max = 750;
+                        max = 350;
                         cooldown = 240;
-                        angle = 240;
+                        angle = 140;
                         width = 3.75f;
                         chanceDeflect = 0.35f;
-                        whenShooting = false;
                     }}
             );
             stepSound = DSSounds.dsMechStep;

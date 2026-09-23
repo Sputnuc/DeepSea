@@ -108,16 +108,25 @@ public class PiBlocks {
             requirements(Category.turret, with(aluminium, 75, silver, 45));
             outlineColor = DSPal.dsTurretOutline;
             size = 2;
-            reload = 120;
+            reload = 180;
             range = 200;
             shake = 2;
             envRequired = DSEnv.underwaterWarm;
             shootSound = DSSounds.shootHarpoon;
             consumeItem(sulfur, 3);
             shootCone = 1;
-            drawer = new DrawTurret("ds-turret-");
+            drawer = new DrawTurret("ds-turret-"){{
+                parts.add(
+                        new RegionPart("-side"){{
+                            mirror = true;
+                            progress = PartProgress.recoil.blend(PartProgress.warmup, 0.25f);
+                            moveRot = -15;
+                            under = true;
+                        }}
+                );
+            }};
             shootY = 3.75f;
-            shootType = new HarpoonBulletType(16, 30){{
+            shootType = new HarpoonBulletType(18.85f, 30){{
                 knockback = 2.3f;
                 status = DSStatusEffects.waterLeak;
                 statusDuration = 180;
@@ -126,7 +135,7 @@ public class PiBlocks {
                 pierceDrag = 0.25f;
                 shootEffect = DSFx.dsInclinedWave;
                 layer = Layer.bullet - 3;
-                drag = 0.08f;
+                drag = 0.09f;
                 frontColor = Color.valueOf("d4d4d4");
                 backColor = Color.valueOf("929aa8");
                 wireStroke = 1.75f;
@@ -262,11 +271,11 @@ public class PiBlocks {
             targetInterval = 0.5f;
             newTargetInterval = 1;
             shootCone = 13;
-            inaccuracy = 5;
+            inaccuracy = 7.5f;
             reload = 150;
-            maxAccel = 50;
+            maxAccel = 30;
             shake = 1.25f;
-            speedUpPerShoot = 10;
+            speedUpPerShoot = 7.5f;
             recoil = 0.35f;
             recoilTime = 20f;
             recoils = 4;

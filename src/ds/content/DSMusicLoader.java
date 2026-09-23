@@ -5,12 +5,10 @@ import arc.audio.Music;
 import arc.struct.Seq;
 import arc.util.Log;
 import ds.DSSetting;
-import ds.DSSoundControl;
 import ds.content.planets.DSPlanets;
 import mindustry.Vars;
 import mindustry.core.GameState;
 import mindustry.game.EventType;
-import mindustry.gen.Musics;
 
 //TODO remade this for advanced music control (for things......................))))))))
 public class DSMusicLoader {
@@ -63,7 +61,7 @@ public class DSMusicLoader {
 
     public static void attach() {
         Events.on(EventType.WorldLoadEvent.class, e -> {
-            if (Vars.state.rules.planet != null && Vars.state.rules.planet == DSPlanets.pi312) {
+            if (Vars.state.rules.planet != null && Vars.state.rules.planet == DSPlanets.obj312) {
                 vannilaMusic = !DSSetting.getOnlyModMus();
                 deepSeaMusic = true;
             } else {

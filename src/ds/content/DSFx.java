@@ -132,6 +132,12 @@ public class DSFx {
         Drawf.light(e.x, e.y, 6 * e.fin(), e.color, 0.2f * e.fout());
         stroke(1.5f * e.fout());
     }),
+    dsHaproonRipple = new Effect(120, e->{
+        color(e.color, new Color(e.color).a(0), e.fin());
+        randLenVectors(e.id, 1, 5 + 3 * e.fin(Interp.pow2Out), (x, y)->{
+            Fill.circle(e.x + x, e.y + y, e.fin(Interp.pow2Out) * 0.85f + 0.2f);
+        });
+    }),
     dsBulletHit = new Effect(15, e->{
         Color eColor = e.color;
         color(Color.valueOf("ffffff"), eColor, e.fin());

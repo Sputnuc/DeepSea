@@ -18,7 +18,7 @@ import mindustry.world.TileGen;
 
 import static mindustry.Vars.world;
 
-public class PiGenerator extends PlanetGenerator {
+public class DSPlanetGenerator extends PlanetGenerator {
     Color c1 = Color.valueOf("5057a6"), c2 = Color.valueOf("272766");
 
     Block[][] arr = {

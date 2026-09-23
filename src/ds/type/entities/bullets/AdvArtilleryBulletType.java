@@ -190,7 +190,7 @@ public class AdvArtilleryBulletType extends BasicBulletType {
 
         Draw.color(Pal.shadow, Pal.shadow.a);
 
-        Draw.rect(frontRegion, b.x , b.y, Mathf.lerp(width, width + trajectoryZ / 8, pr * (b.lifetime / b.type.lifetime) * shadowIncreaseFactor), Mathf.lerp(height, height + trajectoryZ / 8, pr * (b.lifetime / b.type.lifetime) * shadowIncreaseFactor), b.rotation() + offset);
+        Draw.rect(frontRegion, b.x , b.y, Mathf.lerp(width, width + trajectoryZ / 8, pr * Mathf.pow(b.lifetime / b.type.lifetime, 2) * shadowIncreaseFactor), Mathf.lerp(height, height + trajectoryZ / 8, pr * Mathf.pow(b.lifetime / b.type.lifetime, 2) * shadowIncreaseFactor), b.rotation() + offset);
 
         Draw.z(zLayer);
 

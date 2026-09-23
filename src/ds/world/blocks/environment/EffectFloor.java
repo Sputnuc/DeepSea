@@ -3,6 +3,7 @@ package ds.world.blocks.environment;
 import arc.math.Mathf;
 import ds.content.DSFx;
 import ds.world.meta.DSEnv;
+import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.entities.Effect;
 import mindustry.world.Tile;
@@ -16,11 +17,11 @@ public class EffectFloor extends Floor {
     public Effect tileEffect;
     public float effectChance = 0.2f;
     public boolean needEnv = false;
-    public int envEffect = DSEnv.underwaterWarm;
+    public int envRequire = DSEnv.underwaterWarm;
 
     @Override
     public boolean updateRender(Tile tile) {
-        return true;
+        return  Vars.state.rules.env == envRequire || !needEnv;
     }
 
     @Override
