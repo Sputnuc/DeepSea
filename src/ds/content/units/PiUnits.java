@@ -87,8 +87,8 @@ public class PiUnits {
                 x = 2;
                 y = 1;
                 shootCone = 15;
-                lightCone = 45;
-                lightLength = 28 * tilesize;
+                lightCone = 23.5f;
+                lightLength = 11f * 8;
                 lightTileable = false;
                 shootSound = Sounds.shootAlpha;
                 rotate = false;
@@ -103,7 +103,7 @@ public class PiUnits {
                     despawnEffect = hitEffect = DSFx.dsBulletHit;
                     shootEffect = DSFx.dsShoot;
                     smokeEffect = none;
-                    lifetime = 44;
+                    lifetime = 22;
                 }};
             }});
         }};
