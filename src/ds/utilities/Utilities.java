@@ -3,16 +3,13 @@ package ds.utilities;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
-import ds.content.blocks.PiEnv;
-import ds.world.meta.DSEnv;
 import mindustry.Vars;
-import mindustry.content.Blocks;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 
 import static mindustry.Vars.tilesize;
 
-public class DSMath {
+public class Utilities {
     public static int[] singsZeroInclude = {-1, 0, 1};
     //for FX
     public static Vec2 RayCastSolid(float stx, float sty, float dir, int len, int stepS, Seq<Block> exceptions){

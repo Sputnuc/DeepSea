@@ -60,9 +60,10 @@ public class DSFx {
                 }
             }),
     dsMoveEffect = new Effect(45, e -> {
+        if(!(e.data instanceof Float f)) return;
         color(Color.valueOf("e0f4ff"), Color.valueOf("bfe0f200"), e.fin());
-        randLenVectors(e.id, 2, 30 * e.fin(),  e.rotation - 180,  85,(x, y)->{
-            Fill.circle(e.x + x, e.y + y, e.fout() * 1.25f);
+        randLenVectors(e.id, 1 + Mathf.round(f * 2), 11 * e.fin() + 3, (x, y)->{
+            Fill.circle(e.x + x, e.y + y, e.fin() * 1.5f * f + 0.75f);
         });
     }),
     waterBlood = new Effect(600, e ->{
@@ -85,14 +86,14 @@ public class DSFx {
         });
     }),
     dsShoot = new Effect(15, e->{
-        color(Color.valueOf("a1e9ff"), Color.valueOf("ffffff"), Color.valueOf("2e4b94"), e.fin());
+        color(e.color, Color.valueOf("ffffff"), e.color, e.fin());
         Drawf.tri(e.x, e.y, 1.75f * e.fout(Interp.circleOut), 5.75f * e.fout(), e.rotation - 90);
         Drawf.tri(e.x, e.y, 1.75f * e.fout(Interp.circleOut), 5.75f * e.fout(), e.rotation + 90);
         Drawf.tri(e.x, e.y, 2.5f * e.fout(Interp.circleOut), 2 + 7 * e.fout(), e.rotation);
         Drawf.tri(e.x, e.y, 2.5f * e.fout(Interp.circleOut), 1 + 1 * e.fout(), e.rotation + 180);
     }),
     dsShootBig = new Effect(15, e->{
-        color(Color.valueOf("a1e9ff"), Color.valueOf("ffffff"), Color.valueOf("2e4b94"), e.fin());
+        color(e.color, Color.valueOf("ffffff"), e.color, e.fin());
         Drawf.tri(e.x, e.y, 2.75f * e.fout(Interp.circleOut), 8.75f * e.fout(), e.rotation - 90);
         Drawf.tri(e.x, e.y, 2.75f * e.fout(Interp.circleOut), 8.75f * e.fout(), e.rotation + 90);
         Drawf.tri(e.x, e.y, 3.75f * e.fout(Interp.circleOut), 2 + 10 * e.fout(), e.rotation);
@@ -104,11 +105,11 @@ public class DSFx {
         Lines.ellipse(e.x + eX, e.y + eY, 0.45f * e.fin()+ 0.25f, 1.5f, 3, e.rotation);
     }),
     dsShootTank = new Effect(16, e->{
-        color(Color.valueOf("a1e9ff"), Color.valueOf("ffffff"), Color.valueOf("2e4b94"), e.fin());
+        color(e.color, Color.valueOf("ffffff"), e.color, e.fin());
         for(int sign : Mathf.signs){
             Drawf.tri(e.x, e.y, 4 * e.fout(Interp.circleOut), 8 * e.fin(), e.rotation + 45 * sign + (65 * sign * e.fout(Interp.pow5Out)));
             Drawf.tri(e.x, e.y, 6 * e.fout(Interp.pow3Out), 13 * e.fin(), e.rotation);
-            color(Color.valueOf("a1e9ff"));
+            color(e.color);
             stroke(1 * e.fout(Interp.circleOut));
             float foffset = 2 + 14 * e.fin(Interp.circleOut);
             float eX = Mathf.cosDeg(e.rotation)* foffset;
@@ -117,7 +118,8 @@ public class DSFx {
         };
     }),
     dsBulletTrail = new Effect(12, e ->{
-        color(Color.valueOf("e0f4ff"), Color.valueOf("bfe0f200"), e.fin());
+        color(e.color);
+        alpha(e.fout());
         randLenVectors(e.id, 3, 5 * e.fin(), (x, y)->{
             Fill.circle(e.x + x, e.y + y, e.fin() * 0.85f + 0.45f);
         });

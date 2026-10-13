@@ -2,22 +2,22 @@ package ds.content.items;
 
 import arc.graphics.Color;
 import arc.struct.Seq;
+import ds.content.DSBullets;
+import ds.type.AmmoItem;
 import mindustry.type.Item;
 
 public class PiItems {
-    public static Item aluminium;
-    public static Item silver;
-    public static Item manganeseHydroxide;
-    public static Item manganese;
-    public static Item sulfur;
-    public static Item ironstone;
-    public static Item steel;
-    public static Item molybdenum;
-    public static Item magnesium;
-    public static Item lithium;
-    public static Item potassium;
-    public static Item sapphire;
+    public static Item
+            aluminium, silver, manganeseHydroxide, manganese, sulfur, ironstone, steel, molybdenum, magnesium, lithium, potassium, sapphire, uranium, enrichedUranium;
+    public static AmmoItem
+            //AmmoItems
+            smallApAmmo, smallExAmmo, smallSdAmmo,
+            smallBackshotAmmo, smallClusterAmmo,
+            aaApAmmo, aaUfAmmo, aaSdAmmo
+            ;
+
     public static Seq<Item> piItems = new Seq<>();
+
     public static void load(){
         aluminium = new Item("aluminium"){{
             color = Color.valueOf("d7c0e0");
@@ -100,5 +100,18 @@ public class PiItems {
             alwaysUnlocked = false;
             piItems.add(this);
         }};
+
+        loadAmmo();
+    }
+
+    protected static void loadAmmo(){
+        smallApAmmo = new AmmoItem("small-ap-ammo", DSBullets.smallApBullet, 3);
+        smallExAmmo = new AmmoItem("small-ex-ammo", DSBullets.smallExBullet, 3);
+        smallSdAmmo = new AmmoItem("small-sd-ammo", DSBullets.smallSdBullet, 3);
+        smallBackshotAmmo = new AmmoItem("small-backshot-ammo", DSBullets.smallBackshotBullet, 3);
+        smallClusterAmmo = new AmmoItem("small-cluster-ammo", DSBullets.smallClusterBullet, 3);
+        aaApAmmo = new AmmoItem("aa-ap-ammo", DSBullets.aaApBullet, 2);
+        aaUfAmmo = new AmmoItem("aa-uf-ammo", DSBullets.aaUfBullet, 2);
+        aaSdAmmo = new AmmoItem("aa-sd-ammo", DSBullets.aaSdBullet, 2);
     }
 }

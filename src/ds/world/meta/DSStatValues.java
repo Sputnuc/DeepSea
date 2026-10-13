@@ -12,6 +12,7 @@ import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.Scaling;
 import arc.util.Strings;
+import ds.type.AmmoItem;
 import ds.type.entities.bullets.HarpoonBulletType;
 import ds.type.entities.bullets.PointLightningBulletType;
 import ds.ui.NamelessLiquidDisplay;
@@ -53,7 +54,9 @@ public class DSStatValues extends StatValues {
             orderedKeys.sort();
 
             for (T t : orderedKeys) {
-                boolean compact = t instanceof UnitType && !showUnit || indent > 0;
+                boolean compact = (t instanceof UnitType && !showUnit || indent > 0);
+
+                boolean isPack = t instanceof AmmoItem;
 
                 BulletType type = map.get(t);
 
@@ -89,7 +92,7 @@ public class DSStatValues extends StatValues {
                         sep(bt, Core.bundle.format("bullet.splashdamage", type.splashDamage, Strings.fixed(type.splashDamageRadius / tilesize, 1)));
                     }
 
-                    if (!compact && !Mathf.equal(type.ammoMultiplier, 1f) && type.displayAmmoMultiplier && (!(t instanceof Turret turret) || turret.displayAmmoMultiplier)) {
+                    if (!compact && !isPack && !Mathf.equal(type.ammoMultiplier, 1f) && type.displayAmmoMultiplier && (!(t instanceof Turret turret) || turret.displayAmmoMultiplier)) {
                         sep(bt, Core.bundle.format("bullet.multiplier", (int) type.ammoMultiplier));
                     }
 
@@ -128,6 +131,26 @@ public class DSStatValues extends StatValues {
 
                     if (type.pierceArmor) {
                         sep(bt, "@bullet.armorpierce");
+                    } else{
+                        if(type.armorMultiplier != 1f){
+                            if(type.armorMultiplier > 1f){
+                                sep(bt, Core.bundle.format("bullet.armorweakness", (type.armorMultiplier)));
+                            }else if(Mathf.sign(type.armorMultiplier) == 1){
+                                sep(bt, Core.bundle.format("bullet.partialarmorpierce", Mathf.round((1 - type.armorMultiplier) * 100)));
+                            }else{
+                                sep(bt, Core.bundle.format("bullet.antiarmor", (-type.armorMultiplier)));
+                            }
+                        }
+
+                        if(type.blockArmorMultiplier != 1f){
+                            if(type.blockArmorMultiplier > 1f){
+                                sep(bt, Core.bundle.format("bullet.blockarmorweakness", (type.blockArmorMultiplier)));
+                            }else if(Mathf.sign(type.blockArmorMultiplier) == 1){
+                                sep(bt, Core.bundle.format("bullet.blockpartialarmorpierce", (int)((1 - type.blockArmorMultiplier) * 100)));
+                            }else{
+                                sep(bt, Core.bundle.format("bullet.blockantiarmor", (-type.blockArmorMultiplier)));
+                            }
+                        }
                     }
 
                     if (type.suppressionRange > 0) {

@@ -11,6 +11,8 @@ import arc.util.Tmp;
 import ds.world.meta.DSStatValues;
 import mindustry.Vars;
 import mindustry.audio.SoundLoop;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
 import mindustry.entities.Predict;
 import mindustry.entities.Sized;
 import mindustry.entities.units.WeaponMount;
@@ -24,6 +26,9 @@ import mindustry.world.meta.StatUnit;
 import static mindustry.Vars.headless;
 
 public class DSWeapon extends Weapon {
+
+    public float ejectX = 0, ejectY = 0, ejectRotation = 0;
+    public Effect ejectEffect = Fx.none;
     
     public boolean targetUnitPointPosition = false;
 
@@ -215,5 +220,17 @@ public class DSWeapon extends Weapon {
             mount.reload = reload;
 
         }
+    }
+
+    @Override
+    protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation){
+        super.shoot(unit, mount, shootX, shootY, rotation);
+        float
+                weaponRotation = unit.rotation - 90 + (rotate ? mount.rotation : baseRotation),
+                mountX = unit.x + Angles.trnsx(unit.rotation - 90, x, y),
+                mountY = unit.y + Angles.trnsy(unit.rotation - 90, x, y),
+                ejectX = mountX + Angles.trnsx(weaponRotation, this.ejectX, this.ejectY),
+                ejectY = mountY + Angles.trnsy(weaponRotation, this.ejectX, this.ejectY);
+        ejectEffect.at(ejectX, ejectY, weaponRotation + ejectRotation);
     }
 }

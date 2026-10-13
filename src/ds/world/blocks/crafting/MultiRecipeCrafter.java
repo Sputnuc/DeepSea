@@ -55,6 +55,7 @@ public class MultiRecipeCrafter extends Block {
     public Sound recipeChangeSound = Sounds.blockRotate;
     public Effect recipeChangeEffect = Fx.placeBlock;
 
+
     public MultiRecipeCrafter(String name) {
         super(name);
         configurable = true;
@@ -456,7 +457,7 @@ public class MultiRecipeCrafter extends Block {
                                                 if(recipe.powerUse != 0){
                                                     td.table(pwrUse ->{
                                                         pwrUse.image(Icon.power).color(Pal.accent);
-                                                        pwrUse.add(recipe.powerUse * 60 + "/s");
+                                                        pwrUse.add(Strings.autoFixed(recipe.powerUse * 60, 3) + "/s");
                                                     });
                                                 }
                                                 td.table(arrow -> {
@@ -560,9 +561,14 @@ public class MultiRecipeCrafter extends Block {
 
         private void addResourceElement(Table table, TextureRegion icon, String text, boolean isOutput){
             table.table(element -> {
-                element.image(icon).size(20).padRight(2);
+                element.image(icon).size(25).padRight(4);
                 element.add(text).color(Color.lightGray);
-            }).padRight(3);
+            });
+            if (isOutput) {
+                table.right();
+            } else {
+                table.left();
+            }
         }
 
         @Override

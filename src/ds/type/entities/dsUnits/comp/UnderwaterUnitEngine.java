@@ -18,7 +18,6 @@ public class UnderwaterUnitEngine{
     public float engineXRand = 0;
     public Effect engineEffect = DSFx.dsMoveEffect;
     private float counter = 0;
-    private float efficiency;
 
 
     public UnderwaterUnitEngine(float x, float y, float rotation){
@@ -29,13 +28,13 @@ public class UnderwaterUnitEngine{
 
     public void update(Unit unit){
         UnitType type = unit.type;
-        efficiency = unit.moving() ? Mathf.approachDelta(efficiency, 1,1) : Mathf.approachDelta(efficiency, 0,1);
+        float efficiency = Mathf.pow(unit.vel().len() / type.speed, 2);
 
         if(efficiency > 0.05f && !unit.inFogTo(Vars.player.team())){
             counter += Time.delta * efficiency;
             if(counter > engineEffectInterval && Mathf.chanceDelta(engineEffectChance)){
                 Tmp.v1.trns(unit.rotation - 90f, x, y);
-                engineEffect.at(Tmp.v1.x + unit.x, Tmp.v1.y + unit.y, rotation + unit.rotation);
+                engineEffect.at(Tmp.v1.x + unit.x, Tmp.v1.y + unit.y, rotation + unit.rotation, efficiency);
                 counter %= engineEffectInterval;
             }
         }

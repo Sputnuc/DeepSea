@@ -49,10 +49,10 @@ public class AccelItemTurret extends DSItemTurret {
     }
 
     public  class AccelItemTurretBuild extends DSItemTurretBuild {
-        protected float speedUp = 0;
-        protected float coolantSpeedMultiplier;
-        protected  boolean overheated = false;
-        protected float cdInt = cooldownInterval;
+        public float speedUp = 0;
+        public float coolantSpeedMultiplier;
+        public   boolean overheated = false;
+        public float cdInt = cooldownInterval;
 
         @Override
         public void updateTile() {

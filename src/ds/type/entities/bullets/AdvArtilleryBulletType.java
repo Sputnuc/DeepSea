@@ -1,15 +1,10 @@
 package ds.type.entities.bullets;
 
-import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.math.Interp;
 import arc.math.Mathf;
-import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
-import ds.type.entities.Cable;
-import ds.world.global.CableProcess;
-import ds.world.graphics.Pseudo3D;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Units;

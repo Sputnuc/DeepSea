@@ -5,14 +5,11 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import ds.DSSetting;
-import ds.utilities.DSMath;
-import mindustry.core.World;
-import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.world.Block;
 
 import static ds.content.blocks.PiEnv.*;
-import static ds.utilities.DSMath.*;
+import static ds.utilities.Utilities.*;
 import static mindustry.content.Blocks.*;
 
 //Draws lights from cone

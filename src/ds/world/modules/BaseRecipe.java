@@ -233,7 +233,7 @@ public class BaseRecipe {
                     }
                     if(this.powerUse != 0) in.table(pwrUse -> {
                         pwrUse.image(Icon.power).color(Pal.accent).size(40);
-                        pwrUse.add(this.powerUse * 60 + "/s");
+                        pwrUse.add(Strings.autoFixed(this.powerUse * 60, 3)+ "/s");
                     });
                 }).left().pad(10f);
 
@@ -248,7 +248,7 @@ public class BaseRecipe {
                     time.left();
                 });
 
-                t.add(Core.bundle.format("ui.craftTime", Strings.autoFixed(this.craftTime / 60, 3))).color(Pal.accent).pad(10f).left();
+                t.add(Strings.autoFixed(this.craftTime / 60, 3)+ Core.bundle.get("unit.seconds")).color(Pal.accent).pad(10f).left();
 
                 t.table(out ->{
                     out.right();

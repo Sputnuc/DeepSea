@@ -1,0 +1,122 @@
+package ds.world.blocks.turret;
+
+import arc.Core;
+import arc.math.Mathf;
+import arc.util.Strings;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import ds.world.meta.DSStats;
+import mindustry.entities.bullet.BulletType;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
+import mindustry.world.consumers.ConsumeLiquidFilter;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
+
+import static mindustry.Vars.tilesize;
+
+public class AccelItemAmmoTurret extends AmmoItemTurret{
+
+    public float speedUpPerShoot = 2;
+    //0.5f = 150%, 0.6f = 160% etc.
+    public float maxAccel = 0.5f;
+
+    public float cooldownSpeed = 1;
+
+    public float cooldownInterval = 60f;
+
+    public AccelItemAmmoTurret(String name) {
+        super(name);
+    }
+
+    @Override
+    public void setBars(){
+        super.setBars();
+        addBar("speedingUp", (AccelAmmoTurretBuild entity) ->
+                new Bar(
+                        () -> Core.bundle.format("bar.speedingUp", Strings.autoFixed((entity.speedUp/maxAccel) * 100, 0)),
+                        () -> Pal.powerBar,
+                        () -> entity.speedUp / maxAccel
+                )
+        );
+    }
+
+    @Override
+    public void setStats(){
+        super.setStats();
+        stats.remove(Stat.reload);
+        stats.add(DSStats.acTurrReloadStart, reload / 60f, StatUnit.seconds);
+        stats.add(DSStats.acTurrReloadEnd, (reload / (maxAccel + 1.0f)) / 60f, StatUnit.seconds);
+    }
+
+    public class  AccelAmmoTurretBuild extends AmmoTurretBuild{
+        public float speedUp = 0;
+        public float coolantSpeedMultiplier;
+        public   boolean overheated = false;
+        public float cdInt = cooldownInterval;
+
+        @Override
+        public void updateTile() {
+            //cooldown progress
+            boolean shPr = (!isShooting() || !hasAmmo() || !isActive() || overheated);
+            if (shPr & !(cdInt > 0)){
+                if(speedUp > 0 ) {
+                    speedUp -= delta() * cooldownSpeed;
+
+                }else {
+                    speedUp = 0;
+                }
+            } else if (shPr){
+                cdInt  -= delta();
+            } else cdInt = cooldownInterval;
+            super.updateTile();
+        }
+
+        @Override
+        protected void updateCooling(){
+            if(reloadCounter < reload && coolant != null && coolant.efficiency(this) > 0 && efficiency > 0){
+                float capacity = coolant instanceof ConsumeLiquidFilter filter ? filter.getConsumed(this).heatCapacity : (coolant.consumes(liquids.current()) ? liquids.current().heatCapacity : 0.4f);
+                float amount = coolant.amount * coolant.efficiency(this);
+                coolant.update(this);
+                coolantSpeedMultiplier = amount * capacity * coolantMultiplier;
+                if(Mathf.chance(0.06 * amount)){
+                    coolEffect.at(x + Mathf.range(size * tilesize / 2f), y + Mathf.range(size * tilesize / 2f));
+                }
+            }
+        }
+        @Override
+        public void updateShooting(){
+            //override shooting method
+            if (reloadCounter >= reload) {
+                BulletType type = peekAmmo();
+
+                shoot(type);
+                reloadCounter = 0;
+            }
+            else
+            {
+                reloadCounter += (1 + speedUp) * edelta() * baseReloadSpeed();
+            }
+        }
+        @Override
+        public void shoot(BulletType type){
+            //speedUp per shoot
+            super.shoot(type);
+            speedUp = Math.min(speedUp + speedUpPerShoot * ammoReloadMultiplier() * delta(), maxAccel);
+            speedUp = Math.min(speedUp + coolantSpeedMultiplier * delta(), maxAccel);
+        }
+        @Override
+        public void write(Writes write){
+            super.write(write);
+            write.f(speedUp);
+            write.bool(overheated);
+        }
+
+        @Override
+        public void read(Reads read, byte revision){
+            super.read(read, revision);
+            speedUp = read.f();;
+            overheated = read.bool();
+        }
+    }
+}

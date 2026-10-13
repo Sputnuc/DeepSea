@@ -9,6 +9,7 @@ import ds.content.DSSounds;
 import ds.content.DSStatusEffects;
 import ds.content.items.PiItems;
 import ds.content.units.PiUnits;
+import ds.type.entities.parts.KeyFramePart;
 import ds.world.blocks.crafting.*;
 import ds.world.blocks.distribution.*;
 import ds.world.blocks.payload.ClosedPayloadConveyor;
@@ -61,6 +62,8 @@ import static mindustry.type.ItemStack.*;
 
 public class PiBlocks {
     public static Block
+            //Test
+            ammoTurret,
             //Production
             hydraulicDrill, hydraulicWallDrill, gasBore, detonateDrill,
             //Power
@@ -68,7 +71,7 @@ public class PiBlocks {
             //Effect
             lightProjector, repairModule,
             //Crafting
-            hydrogenSulfideCollector, hydrogenSulfideDiffuser, manganeseSynthesizer, decompositionChamber, steelKiln, chemicalPlant,
+            ammoPress, hydrogenSulfideCollector, hydrogenSulfideDiffuser, manganeseSynthesizer, decompositionChamber, steelKiln, chemicalPlant,
             //Logistic
             isolatedConveyor, isolatedRouter, isolatedJunction, isolatedSorter, isolatedInvertedSorter, isolatedOverflowGate, isolatedUnderflowGate, isolatedBridge, pipe, liquidDistributor, pipeBridge, pipeJunction,
             //Storage
@@ -95,13 +98,59 @@ public class PiBlocks {
         loadTurrets();
         loadDefence();
         loadUnitBlocks();
+
         logicalExecutor = new LogicBlock("logicalExecutor"){{
             requirements(Category.logic, with(aluminium, 15, silver, 20, manganese, 10));
-            instructionsPerTick = 60;
+            instructionsPerTick = 1;
             consumePower(0.1f);
         }};
     }
     public static void loadTurrets(){
+        ammoTurret = new AmmoItemTurret("test-ammo-turret"){{
+            requirements(Category.turret, with());
+            size = 2;
+            range = 22 * 8;
+            ammo(smallApAmmo, smallExAmmo, smallSdAmmo);
+            reload = 180;
+            drawer = new DrawTurret(){{
+                parts.add(new KeyFramePart("-someThing"){{
+                    progress = PartProgress.reload;
+                    moves(
+                            new KeyFrameMove(){{
+                                progressStart = 0;
+                                progressEnd = 0.1f;
+                                moveX = -3;
+                                moveRot = 3;
+                            }},
+                            new KeyFrameMove(){{
+                                progressStart = 0.1f;
+                                progressEnd = 0.25f;
+                                moveX = 0;
+                                moveY = -10;
+                            }},
+                            new KeyFrameMove(){{
+                                progressStart = 0.25f;
+                                progressEnd = 0.5f;
+                                moveX = 0;
+                                moveY = 12;
+                            }},
+                            new KeyFrameMove(){{
+                                progressStart = 0.5f;
+                                progressEnd = 0.75f;
+                                moveX = 0;
+                                moveY = -2;
+                            }},
+                            new KeyFrameMove(){{
+                                progressStart = 0.75f;
+                                progressEnd = 1f;
+                                moveX = 3;
+                                moveY = -3;
+                                moveRot = -3;
+                            }}
+                    );
+                }});
+            }};
+        }};
         cutoff = new DSHarpoonTurret("cutoff"){{
             emitDirectLight = false;
             scaledHealth = 90;
@@ -133,7 +182,8 @@ public class PiBlocks {
                 buildingDamageMultiplier = 0.3f;
                 lifetime = 45;
                 pierceDrag = 0.25f;
-                shootEffect = DSFx.dsInclinedWave;
+                smokeEffect = DSFx.dsInclinedWave;
+                shootEffect = Fx.shootBig;
                 layer = Layer.bullet - 3;
                 drag = 0.09f;
                 frontColor = Color.valueOf("d4d4d4");
@@ -144,7 +194,7 @@ public class PiBlocks {
                 returnSpeed = 3;
             }};
         }};
-        irritation = new DSItemTurret("irritation"){{
+        irritation = new AmmoItemTurret("irritation"){{
             lightCone = 45;
             scaledHealth = 90;
             requirements(Category.turret, with(aluminium, 75, silver, 45));
@@ -154,6 +204,20 @@ public class PiBlocks {
                 spread = 1.75f;
                 shots = 9;
             }};
+            ejectX = 0;
+            ejectY = -8.5f;
+            ejectEffect = new MultiEffect(Fx.casing2,
+                    new ParticleEffect(){{
+                        baseRotation = -103;
+                        length = 15;
+                        sizeFrom = 1f;
+                        sizeTo = 0;
+                        colorFrom = Color.white;
+                        colorTo = Color.valueOf("ffffff").a(0);
+                        lifetime = 19;
+                        cone = 15;
+                    }}
+            );
             inaccuracy = 1;
             shootCone = 10;
             velocityRnd = 0.1f;
@@ -163,63 +227,23 @@ public class PiBlocks {
             reload = 50;
             shake = 2.75f;
             targetAir = false;
-            drawer = new DrawTurret("ds-turret-");
-            ammo(
-                    silver, new BasicBulletType(8,15){{
-                        pierce = true;
-                        pierceCap = 2;
-                        lifetime = 17;
-                        trailLength = 4;
-                        trailWidth = 0.6f;
-                        width = 5;
-                        height = 12;
-                        frontColor = hitColor = Color.valueOf("f0fdff");
-                        backColor = trailColor = Color.valueOf("ace1e8");
-                        hitEffect = despawnEffect = Fx.hitBulletColor;
-                        trailInterval = 2;
-                        trailEffect = DSFx.dsBulletSparkTrail;
-                        ammoMultiplier = 1;
+            shootEffect = Fx.shootBig;
+            smokeEffect = Fx.shootSmallSmoke;
+            drawer = new DrawTurret("ds-turret-"){{
+                parts.add(
+                    new RegionPart("-barrel"){{
+                        progress = PartProgress.recoil.curve(Interp.pow5In);
+                        moveY = -4;
+                        under = true;
                     }},
-                    steel, new BasicBulletType(8,25){{
-                        shootPattern = new ShootPattern(){{
-                            shots = 1;
-                        }};
-                        reloadMultiplier = 0.75f;
-                        pierce = true;
-                        pierceCap = 3;
-                        lifetime = 8;
-                        rangeChange = 5 * tilesize;
-                        trailLength = 6;
-                        trailWidth = 3;
-                        width = 15;
-                        height = 18;
-                        frontColor = hitColor = Color.valueOf("ffc7bf");
-                        backColor = trailColor = Color.valueOf("d98e84");
-                        hitEffect = despawnEffect = Fx.hitBulletColor;
-                        trailInterval = 2;
-                        trailEffect = DSFx.dsBulletSparkTrail;
-                        ammoMultiplier = 1;
-                        fragVelocityMin = 0.9f;
-                        fragVelocityMax = 1;
-                        fragSpread = 2.25f;
-                        fragRandomSpread = 1.5f;
-                        fragBullets = 10;
-                        pierceFragCap = 2;
-                        fragBullet = new BasicBulletType(11.2f, 19){{
-                            lifetime = 10;
-                            rangeChange = 5 * tilesize;
-                            trailLength = 4;
-                            trailWidth = 0.6f;
-                            width = 5;
-                            height = 12;
-                            frontColor = hitColor = Color.valueOf("ffc7bf");
-                            backColor = trailColor = Color.valueOf("d98e84");
-                            hitEffect = despawnEffect = Fx.hitBulletColor;
-                            trailInterval = 2;
-                            trailEffect = DSFx.dsBulletSparkTrail;
-                        }};
+                    new RegionPart("-bolt"){{
+                        progress = PartProgress.recoil.curve(Interp.pow5In);
+                        moveY = -4;
+                        under = true;
                     }}
-            );
+                );
+            }};
+            ammo(smallBackshotAmmo, smallClusterAmmo);
         }};
         discharge = new AccelPowerTurret("discharge"){{
             envDisabled = DSEnv.underwaterWarm;
@@ -261,7 +285,7 @@ public class PiBlocks {
             }};
         }};
 
-        execution = new AccelItemTurret("execution"){{
+        execution = new AccelItemAmmoTurret("execution"){{
             lightCone = 45;
             requirements(Category.turret, with(aluminium, 125, silver, 35, graphite, 50, manganese, 35));
             size = 3;
@@ -271,106 +295,55 @@ public class PiBlocks {
             targetInterval = 0.5f;
             newTargetInterval = 1;
             shootCone = 13;
-            inaccuracy = 7.5f;
+            inaccuracy = 2.5f;
             reload = 150;
-            maxAccel = 30;
-            shake = 1.25f;
-            speedUpPerShoot = 7.5f;
+            maxAccel = 25;
+            shake = 3.25f;
+            speedUpPerShoot = 3.5f;
             recoil = 0.35f;
-            recoilTime = 20f;
-            recoils = 4;
+            recoilTime = 17f;
+            recoils = 2;
             cooldownSpeed = 1f;
             targetGround = false;
-            consumeLiquid(hydrogen, 0.25f);
-            consumePower(1f);
+            consumePower(1.5f);
             shootSound = Sounds.shootDisperse;
             range = 30 * tilesize;
             drawer = new DrawTurret("ds-turret-"){{
-                for(int i = 0; i < 4; i++){
+                for(int i = 0; i < 2; i++){
                     int f = i;
                     parts.add(
                             new RegionPart("-barrel-"+ (f + 1) ){{
-                                progress = PartProgress.recoil.curve(Interp.pow2In);
+                                progress = PartProgress.recoil.curve(Interp.circleIn);
                                 recoilIndex = f;
-                                under = true;
                                 moveY = -4;
-                                if(f > 1) {
-                                    moveRot = (f == 2 ? -3.5f : 3.5f);
-                                }
                             }}
                     );
                 }
             }};
-            shoot = new ShootBarrel(){{
-                barrels = new float[]{
-                        2f, 0, 0,
-                        -2f, 0, 0,
-                        6.5f, -3f, 0,
-                        -6.5f, -3f, 0
-                };
+            shoot = new ShootAlternate(){{
+                barrels = 2;
+                spread = 10;
             }};
-            ammo(
-                    aluminium, new BasicBulletType(10,28f){{
-                        pierce = true;
-                        pierceCap = 3;
-                        lifetime = 24;
-                        ammoMultiplier = 3;
-                        frontColor = hitColor = Color.valueOf("f5d9ff");
-                        backColor = trailColor = Color.valueOf("cea4de");
-                        trailEffect = DSFx.dsColorSparkSmall;
-                        trailInterval = 1;
-                        trailRotation = true;
-                        trailLength = 8;
-                        trailWidth = 0.75f;
-                        height = 17;
-                        width = 5;
-                        shootEffect = Fx.shootSmallColor;
-                        hitEffect = Fx.hitBulletColor;
-                        despawnEffect = Fx.hitBulletColor;
-                        collidesGround = false;
-                    }},
-                    silver, new BasicBulletType(12,21){{
-                        pierce = true;
-                        pierceCap = 2;
-                        lifetime = 24;
-                        ammoMultiplier = 2;
-                        rangeChange = 48;
-                        reloadMultiplier = 2f;
-                        frontColor = hitColor = Color.valueOf("edfdff");
-                        backColor = trailColor = Color.valueOf("bce3e8");
-                        trailEffect = DSFx.dsColorSparkSmall;
-                        trailInterval = 1;
-                        trailRotation = true;
-                        trailLength = 8;
-                        trailWidth = 0.75f;
-                        height = 17;
-                        width = 5;
-                        shootEffect = Fx.shootSmallColor;
-                        hitEffect = Fx.hitBulletColor;
-                        despawnEffect = Fx.hitBulletColor;
-                        collidesGround = false;
-                    }},
-                    steel, new BasicBulletType(6,38){{
-                        lifetime = 40;
-                        ammoMultiplier = 4;
-                        frontColor = hitColor = Color.valueOf("ab7272");
-                        backColor = trailColor = Color.valueOf("824d4d");
-                        trailEffect = DSFx.dsColorSparkSmall;
-                        trailInterval = 2;
-                        trailRotation = true;
-                        reloadMultiplier = 0.25f;
-                        trailLength = 8;
-                        trailWidth = 0.75f;
-                        height = 17;
-                        width = 5;
-                        shootEffect = Fx.shootSmallColor;
-                        hitEffect = Fx.hitBulletColor;
-                        despawnEffect = Fx.hitBulletColor;
-                        status = DSStatusEffects.waterLeak;
-                        statusDuration = 60;
-                        collidesGround = false;
+
+            ejectPositions = new float[]{
+                    -7.5f, -7, 160,
+                    7.5f, -7, 20
+            };
+
+            ejectEffect = new MultiEffect(Fx.casing3,
+                    new ParticleEffect(){{
+                        baseRotation = -103;
+                        length = 15;
+                        sizeFrom = 1f;
+                        sizeTo = 0;
+                        colorFrom = Color.white;
+                        colorTo = Color.valueOf("ffffff").a(0);
+                        lifetime = 19;
+                        cone = 15;
                     }}
             );
+            velocityRnd = 0.19f;
+            ammo(aaApAmmo, aaUfAmmo, aaSdAmmo);
         }};
 
         hydroid = new DSItemTurret("hydroid"){{
@@ -744,24 +717,24 @@ public class PiBlocks {
             size = 1;
         }};
         powerTransmitter = new PowerNode("power-transmitter"){{
-            requirements(Category.power, with(aluminium, 15, silver, 3));
+            requirements(Category.power, with(aluminium, 30, silver, 10, manganese, 14));
             size = 2;
             laserColor1 = Color.valueOf("ffdede");
             laserColor2 = Color.valueOf("e56e6e");
             laserScale = 0.75f;
             maxNodes = 2;
-            laserRange = 15;
+            laserRange = 25;
             underBullets = true;
             squareSprite = false;
         }};
         powerDistributor = new PowerNode("power-distributor"){{
-            requirements(Category.power, with(aluminium, 6, silver, 4, graphite, 2));
+            requirements(Category.power, with(aluminium, 18, silver, 4, manganese, 10));
             size = 1;
             laserColor1 = Color.valueOf("ffdede");
             laserColor2 = Color.valueOf("e56e6e");
-            laserScale = 0.35f;
-            maxNodes = 10;
-            laserRange = 6;
+            laserScale = 0.45f;
+            maxNodes = 6;
+            laserRange = 10;
             underBullets = true;
             squareSprite = false;
         }};
@@ -838,6 +811,18 @@ public class PiBlocks {
         }};
     }
     public static void loadCraftBlocks(){
+        ammoPress = new MultiRecipeCrafter("ammo-press"){{
+            requirements(Category.crafting, with(aluminium, 75, silver, 50));
+            size = 2;
+            addRecipes(
+                    new BaseRecipe(ItemStack.with(sulfur, 8, aluminium, 5, silver, 3), ItemStack.with(smallApAmmo, 1), 120, 0.25f),
+                    new BaseRecipe(ItemStack.with(sulfur, 12, aluminium, 4, silver, 4), ItemStack.with(smallExAmmo, 1), 120, 0.25f),
+                    new BaseRecipe(ItemStack.with(sulfur, 9, aluminium, 4, steel, 5), ItemStack.with(smallSdAmmo, 1), 150, 0.25f),
+                    new BaseRecipe(ItemStack.with(sulfur, 8, aluminium, 10, silver, 8), ItemStack.with(smallBackshotAmmo, 1), 120, 0.25f),
+                    new BaseRecipe(ItemStack.with(sulfur, 8, aluminium, 9, steel, 7), ItemStack.with(smallClusterAmmo, 1), 150, 0.25f)
+            );
+            itemCapacity = 30;
+        }};
         hydrogenSulfideCollector = new AttributeCrafter("hydrogen-sulfide-collector"){{
             requirements(Category.production, with(aluminium, 65, silver, 25, graphite, 10));
             liquidCapacity = 60;

@@ -12,10 +12,12 @@ public class ContentLoader {
     public static void load(){
         DSWorldProcessor.addProcess(new CableProcess("Cable processor"));
 
+
         DSStatusEffects.load();
         DSAttributes.load();
         SchematicsLoader.load();
         DSSounds.load();
+        DSBullets.load();
         DSItemLoader.load();
 
         PiLiquids.load();
