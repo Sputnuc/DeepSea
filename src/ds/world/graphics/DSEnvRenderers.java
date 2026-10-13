@@ -16,7 +16,7 @@ public class DSEnvRenderers {
 
     public static void init(){
 
-        Color waterColor = Color.valueOf("363159"); //First ver — 353982. Second ver — 30626e. Third ver — 363159.
+        Color waterColor = Color.valueOf("241154"); //First ver — 353982. Second ver — 30626e. Third ver — 363159.
         Color darknessColor = Color.valueOf("28252b"); //First ver — 2e2d40.
         Rand rand = new Rand();
 
@@ -31,7 +31,7 @@ public class DSEnvRenderers {
 
         renderer.addEnvRenderer(DSEnv.underwaterWarm, () -> {
             Draw.draw(Layer.light + 1, () -> {
-                Draw.color(waterColor, 0.45f);
+                Draw.color(waterColor, 0.4f);
                 Fill.rect(Core.camera.position.x, Core.camera.position.y, Core.camera.width, Core.camera.height);
                 Draw.reset();
 

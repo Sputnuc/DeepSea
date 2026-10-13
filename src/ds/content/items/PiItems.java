@@ -8,11 +8,28 @@ import mindustry.type.Item;
 
 public class PiItems {
     public static Item
-            aluminium, silver, manganeseHydroxide, manganese, sulfur, ironstone, steel, molybdenum, magnesium, lithium, potassium, sapphire, uranium, enrichedUranium;
+            //Items in progression
+
+            //1-st tier
+            aluminium, silver, sulfur, sandstone, /*graphite*/ manganeseHydroxide, manganese,
+            //2-nd tier
+            ironstone, steel, /*silicon*/potassium, magnesium,
+            //3-st tier
+            strontium, molybdenum, lithium, sapphire,
+            //4-st tier
+            molybdenumSilicate, uranium, enrichedUranium, depletedUranium,
+            //5-st tier
+            denseAlloy, reinforsedMetalPlasticStructure;
+
     public static AmmoItem
             //AmmoItems
+
+            //Small calibre
             smallApAmmo, smallExAmmo, smallSdAmmo,
+            //Small shotguns calibre
             smallBackshotAmmo, smallClusterAmmo,
+
+            //Medium AA calibre
             aaApAmmo, aaUfAmmo, aaSdAmmo
             ;
 

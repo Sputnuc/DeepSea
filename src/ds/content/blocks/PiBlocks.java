@@ -3,6 +3,7 @@ package ds.content.blocks;
 
 import arc.graphics.Color;
 import arc.math.Interp;
+import arc.math.Mathf;
 import arc.struct.Seq;
 import ds.content.DSFx;
 import ds.content.DSSounds;
@@ -24,6 +25,7 @@ import ds.type.entities.bullets.*;
 import ds.type.entities.dsUnits.*;
 import ds.type.entities.effect.RandRadialEffect;
 import ds.type.entities.weapons.DSWeapon;
+import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.entities.UnitSorts;
 import mindustry.entities.bullet.*;
@@ -79,7 +81,7 @@ public class PiBlocks {
             //Cores
             coreInfluence, coreEnforcement, coreEminence,
             //Turrets
-            cutoff, irritation, discharge, hydroid, execution, termination,
+            cutoff, irritation, height, discharge, hydroid, execution, termination,
             //Defends
             aluminiumWall, aluminiumWallLarge, steelWall, steelWallLarge,
             //Payload
@@ -107,7 +109,7 @@ public class PiBlocks {
     }
     public static void loadTurrets(){
         ammoTurret = new AmmoItemTurret("test-ammo-turret"){{
-            requirements(Category.turret, with());
+            requirements(Category.turret, BuildVisibility.sandboxOnly, with());
             size = 2;
             range = 22 * 8;
             ammo(smallApAmmo, smallExAmmo, smallSdAmmo);
@@ -244,6 +246,30 @@ public class PiBlocks {
                 );
             }};
             ammo(smallBackshotAmmo, smallClusterAmmo);
+        }};
+        height = new DSItemTurret("height"){{
+            requirements(Category.turret, with(aluminium, 95, silver, 75, graphite, 25));
+            size = 2;
+            consumePower(0.5f);
+            float r = range = 45 * tilesize;
+            ammo(
+                    graphite, new AdvArtilleryBulletType(r / 240f, 20, "shell"){{
+                        lifetime = 240;
+                        height = 20;
+                        width = 12;
+                        shrinkY = 0.75f;
+                        frontColor = hitColor = DSPal.dsBulletFront;
+                        backColor = trailColor = DSPal.dsBulletBack;
+                        trailLength = 5;
+                        trailWidth = 1.2f;
+                        hitShake = 14;
+                        splashDamage = 150;
+                        splashDamageRadius = 48;
+                    }}
+            );
+            shootSound = Sounds.shootArtillerySmall;
+            shake = 7;
+            reload = 180;
         }};
         discharge = new AccelPowerTurret("discharge"){{
             envDisabled = DSEnv.underwaterWarm;
@@ -507,10 +533,10 @@ public class PiBlocks {
                         damage = 790;
                         sprite = "shell";
                         hitSize = 8;
-                        shadowIncreaseFactor = 2;
+                        shadowIncreaseFactor = 0.25f;
                         hitEffect = new MultiEffect(DSFx.dsMassiveExplosion, DSFx.dsMassiveDeepSmoke, DSFx.dsMassiveSparkSpikes);
                         shrinkY = 0.5f;
-                        trajectoryZ = 110;
+                        trajectoryZ = 20;
                         angleFactor = 20f;
                         lifetime = 150;
                         height =  24;

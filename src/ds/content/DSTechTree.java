@@ -26,26 +26,40 @@ public class DSTechTree {
             //Items
             nodeProduce(aluminium, ()->{
                 nodeProduce(silver, ()->{
-                    nodeProduce(sulfur, ()->{
-                        nodeProduce(hydrogenSulfide, ()->{
-                            nodeProduce(hydrogen, ()->{});
-                            nodeProduce(sulfuricAcid, ()->{
-                                nodeProduce(oxygen, ()->{});
-                            });
-                        });
-                        nodeProduce(graphite, ()->{});
+                    nodeProduce(graphite, ()->{
                         nodeProduce(manganeseHydroxide, ()->{
                             nodeProduce(manganese, ()->{
                                 nodeProduce(ironstone, ()->{
-                                    nodeProduce(steel, ()->{});
-                                });
-                                nodeProduce(magnesium, ()->{
-                                    nodeProduce(lithium, ()->{});
+                                    nodeProduce(steel, ()->{
+                                        nodeProduce(potassium, ()->{});
+                                        nodeProduce(silicon, ()->{
+                                        /*
+                                        nodeProduce(magnesium, Seq.with(new Objectives.Research(potassium)), ()->{
+                                            nodeProduce(strontium, ()->{});
+                                            nodeProduce(molybdenum, ()->{
+                                                nodeProduce(sapphire, ()->{
+                                                    nodeProduce(molybdenumSilicate, ()->{
+                                                        nodeProduce(uranium, ()->{
+                                                            nodeProduce(enrichedUranium, ()->{});
+                                                            nodeProduce(depletedUranium, ()->{});
+                                                            nodeProduce(denseAlloy, Seq.with(new Objectives.Research(enrichedUranium), new Objectives.Research(depletedUranium)), ()->{
+                                                                nodeProduce(reinforsedMetalPlasticStructure, ()->{});
+                                                            });
+                                                        });
+                                                    });
+                                                });
+                                            });
+                                        });
+                                        */
+                                        });
+                                    });
                                 });
                             });
                         });
                     });
                 });
+                nodeProduce(sulfur, ()->{});
+                //nodeProduce(sandstone, ()->{});
             });
             //Unit blocks
             node(deepUnitFactory, ()->{

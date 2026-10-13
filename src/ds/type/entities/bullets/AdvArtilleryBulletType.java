@@ -8,6 +8,7 @@ import arc.util.Tmp;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Units;
+import mindustry.entities.bullet.ArtilleryBulletType;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.gen.*;
 import mindustry.graphics.Drawf;
@@ -17,50 +18,24 @@ import mindustry.graphics.Trail;
 
 import static mindustry.Vars.headless;
 
-public class AdvArtilleryBulletType extends BasicBulletType {
+public class AdvArtilleryBulletType extends ArtilleryBulletType {
     public float trailMult = 1f, trailSize = 4f;
     //Bullet trajectory height
     public float trajectoryZ = 50;
     //Degree of bullet rotation deviation along the trajectory
     public float angleFactor = 0.25f;
 
-    public float shadowIncreaseFactor = 1f;
+    public float shadowIncreaseFactor = 0.15f;
 
     private static float cdist = 0f;
     private static Unit result;
 
     public AdvArtilleryBulletType() {
         super(1, 1, "shell");
-        collidesTiles = false;
-        collides = false;
-        collidesAir = false;
-        scaleLife = true;
-        hitShake = 1f;
-        hitSound = Sounds.explosionArtillery;
-        hitEffect = Fx.flakExplosion;
-        shootEffect = Fx.shootBig;
-        trailEffect = Fx.artilleryTrail;
-        shrinkInterp = Interp.slope;
     }
 
     public AdvArtilleryBulletType(float speed, float damage, String sprite){
         super(speed, damage, sprite);
-        collidesTiles = false;
-        collides = false;
-        collidesAir = false;
-        scaleLife = true;
-        hitShake = 1f;
-        hitSound = Sounds.explosionArtillery;
-        hitEffect = Fx.flakExplosion;
-        shootEffect = Fx.shootBig;
-        trailEffect = Fx.artilleryTrail;
-        shrinkInterp = Interp.slope;
-    }
-
-    @Override
-    public void init(Bullet b){
-        super.init(b);
-        drawSize += trajectoryZ * 1.2f;
     }
 
     @Override
@@ -99,110 +74,25 @@ public class AdvArtilleryBulletType extends BasicBulletType {
         }
     }
 
-    public void drawLight(Bullet b){
-        if(lightOpacity <= 0f || lightRadius <= 0f) return;
-        float pr = Mathf.sinDeg(b.time() / b.lifetime * 180);
-        float bulletZ =  Mathf.sinDeg(b.rotation()) * pr * trajectoryZ * (b.lifetime / b.type.lifetime);
-        Drawf.light(b.x, b.y + bulletZ, lightRadius, lightColor, lightOpacity);
-    }
-
-    @Override
-    public void updateTrail(Bullet b){
-        float pr = Mathf.sinDeg(b.time() / b.lifetime * 180);
-        float bulletZ =  Mathf.sinDeg(b.rotation()) * pr * trajectoryZ * (b.lifetime / b.type.lifetime);
-
-        if(!headless && trailLength > 0){
-            if(b.trail == null){
-                b.trail = new Trail(trailLength);
-            }
-            b.trail.length = trailLength;
-            b.trail.update(b.x, b.y + bulletZ, trailInterp.apply(b.fin()) * (1f + (trailSinMag > 0 ? Mathf.absin(Time.time, trailSinScl, trailSinMag) : 0f)));
-        }
-    }
-
-
-    @Override
-    public void updateTrailEffects(Bullet b){
-
-        float pr = Mathf.sinDeg(b.time() / b.lifetime * 180);
-        float bulletZ =  Mathf.sinDeg(b.rotation()) * pr * trajectoryZ * (b.lifetime / b.type.lifetime);
-        float secProg = Mathf.sinDeg(b.time() / b.lifetime * 180 + 90);
-
-        float str = Mathf.cosDeg(b.rotation()) * Mathf.sinDeg(b.rotation()) * 2;
-
-        float degree = angleFactor * -secProg * str * Math.min(b.fin() * 2, 1);
-
-        float drawRotation = b.rotation() - degree;
-
-        boolean canSpawn = trailMinVelocity <= 0f || b.vel.len2() >= trailMinVelocity * trailMinVelocity;
-
-        if(trailChance > 0 && canSpawn){
-            if(Mathf.chanceDelta(trailChance)){
-                if(trailSpread > 0){
-                    Tmp.v1.rnd(Mathf.random(trailSpread));
-                }else{
-                    Tmp.v1.setZero();
-                }
-                trailEffect.at(b.x + Tmp.v1.x, b.y + Tmp.v1.y + bulletZ, trailRotation ? drawRotation : trailParam, trailColor);
-            }
-        }
-
-        if(trailInterval > 0f && canSpawn){
-            if(b.timer(0, trailInterval)){
-                if(trailSpread > 0){
-                    Tmp.v1.rnd(Mathf.random(trailSpread));
-                }else{
-                    Tmp.v1.setZero();
-                }
-                trailEffect.at(b.x + Tmp.v1.x, b.y + Tmp.v1.y + bulletZ, trailRotation ? drawRotation: trailParam, trailColor);
-            }
-        }
-    }
-
     @Override
     public void draw(Bullet b){
         float zLayer = Draw.z();
 
-        if(trailLength > 0 && b.trail != null){
-            //draw below bullets
-            Draw.z(zLayer - 0.0001f);
-            b.trail.draw(trailColor, trailWidth);
-            Draw.z(zLayer);
-        }
-
-        float offset = -90 + (spin != 0 ? Mathf.randomSeed(b.id, 360f) + b.time * spin : 0f) + rotationOffset;
-        float pr = Mathf.sinDeg(b.time() / b.lifetime * 180);
-        float secProg = Mathf.sinDeg(b.time() / b.lifetime * 180 + 90);
         float shrink = shrinkInterp.apply(b.fout());
-        float height = this.height + ((1f - shrinkX) + shrinkX * shrink * Math.min(0.35f + Mathf.sinDeg(b.rotation()), 1) );
+        float height = this.height * ((1f - shrinkY) + shrinkY * shrink);
         float width = this.width * ((1f - shrinkX) + shrinkX * shrink);
-
-
-        float bulletZ =  Mathf.sinDeg(b.rotation()) * pr * trajectoryZ * (b.lifetime / b.type.lifetime);
+        float offset = -90 + (spin != 0 ? Mathf.randomSeed(b.id, 360f) + b.time * spin : 0f) + rotationOffset;
 
 
         Draw.z(Layer.darkness);
 
         Draw.color(Pal.shadow, Pal.shadow.a);
 
-        Draw.rect(frontRegion, b.x , b.y, Mathf.lerp(width, width + trajectoryZ / 8, pr * Mathf.pow(b.lifetime / b.type.lifetime, 2) * shadowIncreaseFactor), Mathf.lerp(height, height + trajectoryZ / 8, pr * Mathf.pow(b.lifetime / b.type.lifetime, 2) * shadowIncreaseFactor), b.rotation() + offset);
+        float shadowSize = 1 + (b.fin() * b.fout() * 4) * trajectoryZ / 8 * shadowIncreaseFactor * (b.lifetime / b.type.lifetime);
+
+        Draw.rect(frontRegion, b.x - (b.fin() * b.fout() * 4) * trajectoryZ , b.y - (b.fin() * b.fout() * 4) * trajectoryZ, width * shadowSize, height * shadowSize, b.rotation() + offset);
 
         Draw.z(zLayer);
-
-
-        float str = Mathf.cosDeg(b.rotation()) * Mathf.sinDeg(b.rotation()) * 2;
-
-        float degree = angleFactor * -secProg * str * Math.min(b.fin() * 2, 1);
-
-        float drawRotation = b.rotation() - degree;
-
-        if(backRegion.found()){
-            Draw.color(backColor);
-            Draw.rect(backRegion, b.x, b.y + bulletZ, width, height, drawRotation + offset);
-        }
-
-        Draw.color(frontColor);
-        Draw.rect(frontRegion, b.x, b.y + bulletZ, width, height, drawRotation + offset);
-        Draw.reset();
+        super.draw(b);
     }
 }

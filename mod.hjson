@@ -1,12 +1,11 @@
 name: "deepsea"
 main: "ds.DeepSea"
-version: 0.2.1
+version: 0.2.5
 minGameVersion: 159
 
 displayName: "Project: [#324ba6[]]Deep [#5aa9d6[]]Sea[white[]] [accent[]](Alpha)[white[]]"
-description: "The mod is about planet P-I-312 and more. Some fishes and underwater campaign \nSpecial thanks to: \n- [#5865f2[]]@meepoffaith[white[]] for the pseudo-3D drawing code. \n\n[gray[]]Fish: (*=)<[]"
+description: "The mod is about underwater campaign and more. \n[#4b457a[]]You're going TOO DEEP to come back[white[]] \n\nSpecial thanks to: \n [#ef75ff[]]Cirrusisakey (c4anide) - for many things[white[]] \n [#ffb969[]]AnDashik - some help[white[]] \n [#ff3d61[]]Skifor - some sounds[white[]]"
 subtitle: "[#5c629e[]]Буль[#6475b3[]]Буль[#678ec7[]]Буль...[white[]]"
 
-author: "Authors: \n [#ffd469[]]Sputnuc[] - main creator[white[]] \n [#ffb969[]]AnDashik - co-creator[white[]] \n [#ff3d61[]]Skifor - Sound designer[white[]]"
-
+author: "[#ffd469[]]Sputnuc[]"
 java: true

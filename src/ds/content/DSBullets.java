@@ -127,10 +127,10 @@ public class DSBullets {
                 trailEffect = DSFx.dsBulletSparkTrail;
             }};
         }};
-        aaApBullet = new BasicBulletType(10,28f){{
+        aaApBullet = new BasicBulletType(15,28f){{
             pierce = true;
             pierceCap = 3;
-            lifetime = 24;
+            lifetime = 16;
             ammoMultiplier = 2;
             frontColor = hitColor = Color.valueOf("f5d9ff");
             backColor = trailColor = Color.valueOf("cea4de");
@@ -146,11 +146,11 @@ public class DSBullets {
             despawnEffect = Fx.hitBulletColor;
             collidesGround = false;
         }};
-        aaUfBullet = new BasicBulletType(12,31){{
+        aaUfBullet = new BasicBulletType(24,31){{
             armorMultiplier = 1.15f;
             pierce = true;
             pierceCap = 2;
-            lifetime = 24;
+            lifetime = 12;
             ammoMultiplier = 2;
             rangeChange = 48;
             reloadMultiplier = 2f;
@@ -168,8 +168,8 @@ public class DSBullets {
             despawnEffect = Fx.hitBulletColor;
             collidesGround = false;
         }};
-        aaSdBullet = new BasicBulletType(6,38){{
-            lifetime = 40;
+        aaSdBullet = new BasicBulletType(10,38){{
+            lifetime = 24;
             ammoMultiplier = 2;
             frontColor = hitColor = Color.valueOf("ab7272");
             backColor = trailColor = Color.valueOf("824d4d");

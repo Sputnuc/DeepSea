@@ -9,6 +9,7 @@ import ds.type.entities.DSUnitType;
 import ds.type.entities.dsUnits.comp.UnderwaterUnitEngine;
 import mindustry.entities.Effect;
 import mindustry.gen.Unit;
+import mindustry.world.meta.Env;
 
 public class SubmarineUnitType extends DSUnitType {
     public float bubblesInterval = 2;

@@ -10,6 +10,7 @@ import mindustry.gen.Sounds;
 import mindustry.gen.Unit;
 import mindustry.graphics.Pal;
 import mindustry.type.unit.MissileUnitType;
+import mindustry.world.meta.Env;
 
 public class TorpedoUnitType extends MissileUnitType {
     public Seq<UnderwaterUnitEngine> undEngines = new Seq<>();
