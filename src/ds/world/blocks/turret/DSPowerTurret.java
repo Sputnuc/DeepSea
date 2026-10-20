@@ -2,6 +2,7 @@ package ds.world.blocks.turret;
 
 import arc.math.Mathf;
 import arc.struct.ObjectMap;
+import arc.util.Strings;
 import ds.draw.DrawDirLight;
 import ds.world.meta.DSStatValues;
 import mindustry.Vars;
@@ -25,7 +26,7 @@ public class DSPowerTurret extends PowerTurret {
         stats.remove(Stat.ammo);
         stats.add(Stat.ammo, DSStatValues.ammo(ObjectMap.of(this, shootType)));
         stats.remove(Stat.reload);
-        stats.add(Stat.reload, (60f / (reload + (!reloadWhileCharging ? shoot.firstShotDelay : 0f))  + " (x"+shoot.shots+")"), StatUnit.perSecond);
+        stats.add(Stat.reload, (Strings.autoFixed(60f / (reload + (!reloadWhileCharging ? shoot.firstShotDelay : 0f)), 3)  + " (x"+shoot.shots+")"), StatUnit.perSecond);
     }
 
     @Override

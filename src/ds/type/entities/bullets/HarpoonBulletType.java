@@ -5,12 +5,12 @@ import arc.graphics.Color;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.Angles;
+import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Time;
 import ds.content.DSFx;
 import ds.world.blocks.turret.DSHarpoonTurret;
 import ds.draw.DrawWire;
-import ds.type.entities.comp.HarpoonBulletComp;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.bullet.BasicBulletType;
@@ -86,7 +86,7 @@ public class HarpoonBulletType extends BasicBulletType {
     @Override
     public void init(Bullet b){
         super.init(b);
-        b.data = new HarpoonBulletComp(){{
+        b.data = new HarpoonBulletData(){{
             returning = false;
         }};
         b.lifetime += speed * lifetime / returnSpeed;
@@ -104,7 +104,7 @@ public class HarpoonBulletType extends BasicBulletType {
     @Override
     public void update(Bullet b) {
         super.update(b);
-        HarpoonBulletComp hdata = (HarpoonBulletComp)b.data;
+        HarpoonBulletData hdata = (HarpoonBulletData)b.data;
         if(b.data != null){
             if (!hdata.returning) {
                 if (b.time >= lifetime && b.owner instanceof Posc) {
@@ -202,7 +202,7 @@ public class HarpoonBulletType extends BasicBulletType {
 
     @Override
     public void hit(Bullet b, float x, float y){
-        HarpoonBulletComp hdata = (HarpoonBulletComp)b.data;
+        HarpoonBulletData hdata = (HarpoonBulletData)b.data;
         if(!hdata.returning) {
             b.vel().scl(1 - pierceDrag);
             super.hit(b, x, y);
@@ -212,25 +212,30 @@ public class HarpoonBulletType extends BasicBulletType {
 
     @Override
     public void hitEntity(Bullet b, Hitboxc entity, float health){
-        HarpoonBulletComp hdata = (HarpoonBulletComp) b.data;
+        HarpoonBulletData hdata = (HarpoonBulletData) b.data;
         if (!hdata.returning) {
             super.hitEntity(b, entity, health);
         }
     }
 
     protected void manualBackup(Bullet b){
-        if(b.data instanceof HarpoonBulletComp){
-            ((HarpoonBulletComp) b.data).returning = true;
+        if(b.data instanceof HarpoonBulletData){
+            ((HarpoonBulletData) b.data).returning = true;
             b.vel.scl(0.05f);
         }
     }
 
     @Override
     public void hitTile(Bullet b, Building build, float x, float y, float initialHealth, boolean direct){
-        HarpoonBulletComp hdata = (HarpoonBulletComp) b.data;
+        HarpoonBulletData hdata = (HarpoonBulletData) b.data;
         if (!hdata.returning) {
             super.hitTile(b, build, x, y, initialHealth, direct);
             manualBackup(b);
         }
+    }
+
+    public class HarpoonBulletData {
+        public boolean returning;
+        public Seq<Unit> targets = new Seq<>();
     }
 }

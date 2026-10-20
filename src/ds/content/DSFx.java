@@ -303,4 +303,25 @@ public class DSFx {
             Draw.blend();
         }).layer(Layer.effect + 0.15f);
     }
+
+    public static Effect spikesEffect(Color color, float radius, float radiusRnd, float width, float widthRnd, float lifetime, int spikes, float range){
+        return new Effect(lifetime, radius + radiusRnd, e->{
+            color(color);
+            rand.setSeed(e.id);
+            for(int i = 0; i < spikes; i++){
+                float len = rand.random(radius - radiusRnd, radius + radiusRnd);
+                float wid = rand.random(width - widthRnd, width + widthRnd);
+                float rot = e.rotation + rand.range(range);
+                Drawf.tri(e.x, e.y, wid * e.fout(Interp.pow3Out), len * 0.8f + (len * 0.2f * e.fin()), rot);
+            }
+        });
+    }
+
+    public static Effect spikesEffect(Color color, float radius, float width, float lifetime, int spikes, float range){
+        return spikesEffect(color, radius, 0, width, 0, lifetime, spikes, range);
+    }
+
+    public static Effect spikesEffect(Color color, float radius, float width, float lifetime, int spikes){
+        return spikesEffect(color, radius, 0, width, 0, lifetime, spikes, 360);
+    }
 }

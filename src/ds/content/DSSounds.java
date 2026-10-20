@@ -10,15 +10,17 @@ import mindustry.Vars;
 public class DSSounds {
     public static Sound
             //Shoot
-            shootHarpoon = new Sound(),
-            shootSmallWeapon = new Sound(),
-            shootMediumTank = new Sound(),
-            shootImpulse = new Sound(),
+            shootHarpoon,
+            shootSmallWeapon,
+            shootMediumTank,
+            shootImpulse,
+            shootMortar ,
             //Mech steps
-            dsMechStep = new Sound(),
+            dsMechStep,
             //Mics sounds
-            loopAngler = new Sound(),
-            loopAnglerAttack = new Sound();
+            loopAngler ,
+            loopAnglerAttack
+            ;
             //Blocks
 
     public static void load(){
@@ -26,6 +28,7 @@ public class DSSounds {
         shootSmallWeapon = loadSound("shootSmallWeaponAlt");
         shootMediumTank = loadSound("shootTank");
         shootImpulse = loadSound("shootImpulse");
+        shootMortar = loadSound("shootMortar");
         dsMechStep = loadSound("mech-step");
         loopAngler = loadSound("loopAngler");
         loopAnglerAttack  = loadSound("loopAnglerAttack");

@@ -90,6 +90,8 @@ public class AdvArtilleryBulletType extends ArtilleryBulletType {
 
         float shadowSize = 1 + (b.fin() * b.fout() * 4) * trajectoryZ / 8 * shadowIncreaseFactor * (b.lifetime / b.type.lifetime);
 
+        Draw.alpha(((1 - (b.fin() * b.fout() * 4)) * Pal.shadow.a * 0.9f) + (Pal.shadow.a * 0.4f));
+
         Draw.rect(frontRegion, b.x - (b.fin() * b.fout() * 4) * trajectoryZ , b.y - (b.fin() * b.fout() * 4) * trajectoryZ, width * shadowSize, height * shadowSize, b.rotation() + offset);
 
         Draw.z(zLayer);

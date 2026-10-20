@@ -10,6 +10,7 @@ import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.struct.Seq;
 import arc.util.Eachable;
+import mindustry.Vars;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
@@ -109,7 +110,7 @@ public class PowerWire extends PowerNode {
                 Point2 p = Geometry.d4(i);
                 Building accept = this.nearby(p.x * trns, p.y * trns);
                 if(accept != null && accept.block.hasPower){
-                    Drawf.light(x, y,x + p.x,y + p.y, glowWidth, glowColor, this.power.graph.getPowerBalance() > 0 ? 0.25f : 0.05f);
+                    if(Vars.state.rules.lighting) Drawf.light(x, y,x + p.x,y + p.y, glowWidth, glowColor, this.power.graph.getPowerBalance() > 0 ? 0.25f : 0.05f);
                     if(accept.block.squareSprite || accept.block == this.block){
                         Draw.rect(connectorRegion, x, y, Angles.angle(p.x, p.y));
                     } else Draw.rect(connectorRegionExt, x, y, Angles.angle(p.x, p.y));

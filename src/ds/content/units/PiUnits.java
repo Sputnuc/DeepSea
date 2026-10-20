@@ -359,7 +359,9 @@ public class PiUnits {
                 shake = 1.15f;
                 shootSound = DSSounds.shootImpulse;
                 shootSoundVolume = 0.25f;
+                inaccuracy = 5.85f;
                 bullet = new BasicBulletType(16, 26, "shell"){{
+                    followAimSpeed = 0.02f;
                     splashDamage = 13;
                     splashDamageRadius = 18;
                     scaleLife = true;

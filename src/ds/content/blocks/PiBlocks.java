@@ -3,7 +3,6 @@ package ds.content.blocks;
 
 import arc.graphics.Color;
 import arc.math.Interp;
-import arc.math.Mathf;
 import arc.struct.Seq;
 import ds.content.DSFx;
 import ds.content.DSSounds;
@@ -25,7 +24,6 @@ import ds.type.entities.bullets.*;
 import ds.type.entities.dsUnits.*;
 import ds.type.entities.effect.RandRadialEffect;
 import ds.type.entities.weapons.DSWeapon;
-import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.entities.UnitSorts;
 import mindustry.entities.bullet.*;
@@ -81,7 +79,7 @@ public class PiBlocks {
             //Cores
             coreInfluence, coreEnforcement, coreEminence,
             //Turrets
-            cutoff, irritation, height, discharge, hydroid, execution, termination,
+            cutoff, irritation, altitude, discharge, hydroid, execution, termination,
             //Defends
             aluminiumWall, aluminiumWallLarge, steelWall, steelWallLarge,
             //Payload
@@ -246,30 +244,47 @@ public class PiBlocks {
                 );
             }};
             ammo(smallBackshotAmmo, smallClusterAmmo);
+            maxAmmo = 10;
         }};
-        height = new DSItemTurret("height"){{
+        altitude = new AmmoItemTurret("altitude"){{
             requirements(Category.turret, with(aluminium, 95, silver, 75, graphite, 25));
             size = 2;
-            consumePower(0.5f);
+            consumePower(1);
             float r = range = 45 * tilesize;
             ammo(
-                    graphite, new AdvArtilleryBulletType(r / 240f, 20, "shell"){{
-                        lifetime = 240;
-                        height = 20;
-                        width = 12;
-                        shrinkY = 0.75f;
-                        frontColor = hitColor = DSPal.dsBulletFront;
-                        backColor = trailColor = DSPal.dsBulletBack;
-                        trailLength = 5;
-                        trailWidth = 1.2f;
-                        hitShake = 14;
-                        splashDamage = 150;
-                        splashDamageRadius = 48;
+                    mediumMortarHeAmmo
+            );
+            recoilTime = 40;
+            drawer = new DrawTurret("ds-turret-"){{
+                parts.add(new RegionPart("-barrel"){{
+                    progress = PartProgress.recoil.curve(Interp.pow5In);
+                    moveY = -3.25f;
+                    under = true;
+                }});
+            }};
+            ejectEffect = new MultiEffect(Fx.casing3,
+                    new ParticleEffect(){{
+                        baseRotation = -100;
+                        length = 19;
+                        sizeFrom = 1.25f;
+                        sizeTo = 0;
+                        colorFrom = Color.white;
+                        colorTo = Color.valueOf("ffffff").a(0);
+                        lifetime = 21;
+                        cone = 20;
                     }}
             );
-            shootSound = Sounds.shootArtillerySmall;
+            ejectX = 0;
+            ejectY = -4.5f;
+            ejectRotation = 0;
+            shootSound = DSSounds.shootMortar;
             shake = 7;
-            reload = 180;
+            reload = 120;
+            emitDirectLight = false;
+            outlineColor = DSPal.dsTurretOutline;
+            maxAmmo = 4;
+            targetBlocks = false;
+            unitSort = UnitSorts.grouped;
         }};
         discharge = new AccelPowerTurret("discharge"){{
             envDisabled = DSEnv.underwaterWarm;
@@ -740,13 +755,14 @@ public class PiBlocks {
     public static void loadPowerBlocks(){
         powerWire = new PowerWire("power-wire"){{
             requirements(Category.power, with(aluminium, 2));
+            glowColor = Color.valueOf("e0efff");
             size = 1;
         }};
         powerTransmitter = new PowerNode("power-transmitter"){{
             requirements(Category.power, with(aluminium, 30, silver, 10, manganese, 14));
             size = 2;
-            laserColor1 = Color.valueOf("ffdede");
-            laserColor2 = Color.valueOf("e56e6e");
+            laserColor1 = Color.valueOf("e0efff");
+            laserColor2 = Color.valueOf("7f7dc7");
             laserScale = 0.75f;
             maxNodes = 2;
             laserRange = 25;
@@ -756,8 +772,8 @@ public class PiBlocks {
         powerDistributor = new PowerNode("power-distributor"){{
             requirements(Category.power, with(aluminium, 18, silver, 4, manganese, 10));
             size = 1;
-            laserColor1 = Color.valueOf("ffdede");
-            laserColor2 = Color.valueOf("e56e6e");
+            laserColor1 = Color.valueOf("e0efff");
+            laserColor2 = Color.valueOf("7f7dc7");
             laserScale = 0.45f;
             maxNodes = 6;
             laserRange = 10;
@@ -767,7 +783,7 @@ public class PiBlocks {
         condensator = new Battery("condensator"){{
             requirements(Category.power, with(aluminium, 45, silver, 25, graphite, 35));
             size = 2;
-            fullLightColor = Color.valueOf("bed5f7");
+            fullLightColor = Color.valueOf("ddbaff");
             consumePowerBuffered(7800f);
             baseExplosiveness = 3.5f;
         }};
@@ -778,13 +794,13 @@ public class PiBlocks {
             itemDuration = 120;
             consume(new ConsumeItemFlammable(0.45f));
             drawer = new DrawMulti(new DrawDefault(), new DrawWarmupRegion(){{
-                color = Color.valueOf("ebfaff");
+                color = Color.valueOf("bfe4ff");
             }});
         }};
-        hydroTurbineGenerator = new ThermalGenerator("hydro-turbine-generator"){{
+        hydroTurbineGenerator = new VentGenerator("hydro-turbine-generator"){{
             requirements(Category.power, with(aluminium, 95, silver, 85, graphite, 35));
             displayEfficiencyScale = 1f / 9f;
-            minEfficiency = 9f - 0.0001f;
+            minEfficiency = 1.5f - 0.0001f;
             displayEfficiency = false;
             attribute = geyser;
             size = 3;

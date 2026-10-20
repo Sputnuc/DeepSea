@@ -1,19 +1,26 @@
 package ds.content;
 
 import arc.graphics.Color;
+import arc.graphics.g2d.*;
+import arc.math.Interp;
+import arc.math.Mathf;
+import ds.type.entities.bullets.AdvArtilleryBulletType;
 import ds.world.graphics.DSPal;
 import mindustry.content.Fx;
+import mindustry.entities.Effect;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.effect.ExplosionEffect;
 import mindustry.entities.effect.MultiEffect;
 import mindustry.entities.pattern.ShootPattern;
+import mindustry.gen.Sounds;
+import mindustry.graphics.Drawf;
 
 import static mindustry.Vars.tilesize;
 
 public class DSBullets {
     public static BulletType
-        smallApBullet, smallExBullet, smallSdBullet, smallBackshotBullet, smallClusterBullet, aaApBullet, aaUfBullet, aaSdBullet
+        smallApBullet, smallExBullet, smallSdBullet, smallBackshotBullet, smallClusterBullet, aaApBullet, aaUfBullet, aaSdBullet, mediumMortarHe
     ;
 
     public static void load(){
@@ -187,6 +194,44 @@ public class DSBullets {
             status = DSStatusEffects.waterLeak;
             statusDuration = 60;
             collidesGround = false;
+        }};
+        mediumMortarHe = new AdvArtilleryBulletType(3f, 40, "missile-large"){{
+            shieldDamageMultiplier = 0.45f;
+            buildingDamageMultiplier = 0.15f;
+            armorMultiplier = 1.15f;
+            lifetime = 120;
+            height = 18;
+            width = 10;
+            shrinkY = 0.75f;
+            hitSound = Sounds.explosionDull;
+            frontColor = hitColor = DSPal.dsBulletFront;
+            backColor = trailColor = DSPal.dsBulletBack;
+            hitEffect = new MultiEffect(
+                new ExplosionEffect(){{
+                    waveColor = Color.white;
+                    sparkColor = DSPal.dsBulletFront;
+                    waveRad =  50;
+                    sparkRad = 59;
+                    sparkLen = 8;
+                    smokeRad = 37;
+                    smokes = 9;
+                    sparks = 5;
+                    lifetime = 40;
+                }},
+                DSFx.spikesEffect(DSPal.dsBulletFront, 48, 4, 2.75f, 1f, 35, 4, 360)
+            );
+            trailEffect = new MultiEffect(DSFx.dsFastSparkTrail, new Effect(10, e->{
+                Draw.color(e.color);
+                for(int sign : Mathf.signs){
+                    Drawf.tri(e.x, e.y, 1.5f + e.fout(), e.fout() * 7, e.rotation + 90 * sign);
+                }
+            }));
+            trailRotation = true;
+            trailLength = 9;
+            trailWidth = 1.9f;
+            hitShake = 18;
+            splashDamage = 150;
+            splashDamageRadius = 48;
         }};
     }
 }

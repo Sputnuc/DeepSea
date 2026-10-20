@@ -30,7 +30,9 @@ public class PiItems {
             smallBackshotAmmo, smallClusterAmmo,
 
             //Medium AA calibre
-            aaApAmmo, aaUfAmmo, aaSdAmmo
+            aaApAmmo, aaUfAmmo, aaSdAmmo,
+            //Mortar
+            mediumMortarHeAmmo, mediumMortarClaserAmmo
             ;
 
     public static Seq<Item> piItems = new Seq<>();
@@ -130,5 +132,6 @@ public class PiItems {
         aaApAmmo = new AmmoItem("aa-ap-ammo", DSBullets.aaApBullet, 2);
         aaUfAmmo = new AmmoItem("aa-uf-ammo", DSBullets.aaUfBullet, 2);
         aaSdAmmo = new AmmoItem("aa-sd-ammo", DSBullets.aaSdBullet, 2);
+        mediumMortarHeAmmo = new AmmoItem("medium-mortar-he-ammo", DSBullets.mediumMortarHe, 1);
     }
 }

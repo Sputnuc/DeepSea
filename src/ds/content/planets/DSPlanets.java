@@ -8,6 +8,7 @@ import ds.content.liquids.PiLiquids;
 import ds.content.units.PiUnits;
 import ds.world.meta.DSEnv;
 import mindustry.content.Items;
+import mindustry.content.Liquids;
 import mindustry.content.Planets;
 import mindustry.game.Team;
 import mindustry.graphics.g3d.*;
@@ -63,6 +64,7 @@ public class DSPlanets {
         unitWhiteList(PiUnits.pi312units, obj312);
         addItemWhitelist(Seq.with(Items.graphite), obj312);
         addLiquidWhitelist(PiLiquids.piLiquids, obj312);
+        addLiquidWhitelist(Seq.with(Liquids.hydrogen), obj312);
     }
 
     protected static void unitWhiteList(Seq<UnitType>units, Planet planet){

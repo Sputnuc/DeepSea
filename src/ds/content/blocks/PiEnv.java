@@ -165,6 +165,7 @@ public class PiEnv {
             effectColor = Color.valueOf("202411");
             effect = DSFx.sulfurVentSteam;
             attributes.set(sulfuric, 1f);
+            attributes.set(geyser, 0.5f);
         }};
 
         sulfurGeyser = new SteamVent("sulfur-geyser"){{

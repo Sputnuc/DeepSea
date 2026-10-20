@@ -28,7 +28,7 @@ public class UnderwaterUnitEngine{
 
     public void update(Unit unit){
         UnitType type = unit.type;
-        float efficiency = Mathf.pow(unit.vel().len() / type.speed, 2);
+        float efficiency = unit.vel().len() / type.speed;
 
         if(efficiency > 0.05f && !unit.inFogTo(Vars.player.team())){
             counter += Time.delta * efficiency;
