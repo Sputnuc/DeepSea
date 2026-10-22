@@ -1,5 +1,6 @@
 package ds.content;
 
+import deepsea.gen.EntityRegistry;
 import ds.content.blocks.DSBlocksLoader;
 import ds.content.items.DSItemLoader;
 import ds.content.liquids.PiLiquids;
@@ -22,6 +23,7 @@ public class ContentLoader {
 
         PiLiquids.load();
         PiUnits.loadUnits();
+        EntityRegistry.registerUnits();
         DSBlocksLoader.load();
 
         //end load

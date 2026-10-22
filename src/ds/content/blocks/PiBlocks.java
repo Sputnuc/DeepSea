@@ -79,7 +79,7 @@ public class PiBlocks {
             //Cores
             coreInfluence, coreEnforcement, coreEminence,
             //Turrets
-            cutoff, irritation, altitude, discharge, hydroid, execution, termination,
+            cutoff, irritation, altitude, hydroid, execution, termination,
             //Defends
             aluminiumWall, aluminiumWallLarge, steelWall, steelWallLarge,
             //Payload
@@ -285,45 +285,8 @@ public class PiBlocks {
             maxAmmo = 4;
             targetBlocks = false;
             unitSort = UnitSorts.grouped;
-        }};
-        discharge = new AccelPowerTurret("discharge"){{
-            envDisabled = DSEnv.underwaterWarm;
-            shootY = 28/4f;
-            scaledHealth = 90;
-            predictTarget = false;
-            requirements(Category.turret, with(aluminium, 95, silver, 75, manganese, 55));
-            outlineColor = DSPal.dsTurretOutline;
-            size = 3;
-            range = 25 * tilesize;
-            cooldownInterval = 120;
-            shootCone = 15;
-            shootSound = Sounds.shootArc;
-            shootEffect = Fx.none;
-            consumePower(360/60f);
-            reload = 300;
-            maxAccel = 40;
-            shake = 1.65f;
-            speedUpPerShoot = 6f;
-            drawer = new DrawTurret("ds-turret-"){{
-                parts.add(
-                    new RegionPart("-decal"){{
-                        progress = PartProgress.recoil;
-                        heatProgress = PartProgress.warmup;
-                        heatColor = Color.valueOf("a1fff9");
-                        drawRegion = false;
-                        mirror = false;
-                        under = false;
-                }});
-            }};
-
-            shootType = new PointLightningBulletType(6.5f){{
-                pierceArmor = true;
-                despawnEffect = Fx.none;
-                hitColor = lightningColor;
-                hitEffect = Fx.colorSpark;
-                buildingDamageMultiplier = 0.1f;
-                subBoltDamage = 0;
-            }};
+            inaccuracy = 5;
+            lifeRnd = 0.1f;
         }};
 
         execution = new AccelItemAmmoTurret("execution"){{

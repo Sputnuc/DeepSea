@@ -12,6 +12,7 @@ import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.effect.ExplosionEffect;
 import mindustry.entities.effect.MultiEffect;
+import mindustry.entities.part.HaloPart;
 import mindustry.entities.pattern.ShootPattern;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Drawf;
@@ -218,7 +219,8 @@ public class DSBullets {
                     sparks = 5;
                     lifetime = 40;
                 }},
-                DSFx.spikesEffect(DSPal.dsBulletFront, 48, 4, 2.75f, 1f, 35, 4, 360)
+                DSFx.spikesEffect(DSPal.dsBulletFront, 48, 4, 2.75f, 1f, 35, 4, 360),
+                DSFx.spikesEffect(DSPal.dsBulletFront, 13, 2, 1, 0.1f, 25, 13, 360)
             );
             trailEffect = new MultiEffect(DSFx.dsFastSparkTrail, new Effect(10, e->{
                 Draw.color(e.color);
@@ -226,6 +228,25 @@ public class DSBullets {
                     Drawf.tri(e.x, e.y, 1.5f + e.fout(), e.fout() * 7, e.rotation + 90 * sign);
                 }
             }));
+
+            parts.add(
+                    new HaloPart(){{
+                        y = -4.5f;
+                        rotateSpeed = 0;
+                        haloRadius = 1;
+                        haloRadiusTo = 1;
+                        radius = 3;
+                        radiusTo = 4;
+                        tri = true;
+                        triLength = 3;
+                        triLengthTo = 5;
+                        progress = PartProgress.life.curve(Interp.slope);
+                        shapes = 2;
+                        haloRotation = 90;
+                        color = colorTo = DSPal.dsBulletFront;
+                        moveY = -2;
+                    }}
+            );
             trailRotation = true;
             trailLength = 9;
             trailWidth = 1.9f;

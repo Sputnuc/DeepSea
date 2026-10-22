@@ -85,7 +85,6 @@ public class DSTechTree {
             //Turrets
             node(cutoff, ItemStack.with(aluminium, 100, silver, 90),()->{
                 node(irritation, ItemStack.with(aluminium, 150, silver, 120), ()->{
-                    node(discharge);
                 });
             });
             //Defence

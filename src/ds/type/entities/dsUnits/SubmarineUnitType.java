@@ -6,10 +6,12 @@ import ds.content.DSFx;
 import ds.world.graphics.DSPal;
 import ds.world.meta.DSEnv;
 import ds.type.entities.DSUnitType;
-import ds.type.entities.dsUnits.comp.UnderwaterUnitEngine;
+import ds.type.entities.dsUnits.parts.UnderwaterUnitEngine;
+import mindustry.ai.types.CommandAI;
 import mindustry.entities.Effect;
+import mindustry.game.Team;
+import mindustry.gen.TimedKillc;
 import mindustry.gen.Unit;
-import mindustry.world.meta.Env;
 
 public class SubmarineUnitType extends DSUnitType {
     public float bubblesInterval = 2;
@@ -37,14 +39,22 @@ public class SubmarineUnitType extends DSUnitType {
             }
         }
     }
-
     @Override
-    public void update(Unit unit){
-        super.update(unit);
-        if(!undEngines.isEmpty()){
-            for(var e : undEngines){
-                e.update(unit);
-            }
+    public Unit create(Team team){
+        Unit unit = constructor.get();
+        unit.team = team;
+        unit.setType(this);
+        if(unit.controller() instanceof CommandAI command && defaultCommand != null){
+            command.command = defaultCommand;
         }
+        for(var ability : unit.abilities){
+            ability.created(unit);
+        }
+        unit.elevation = flying ? 1f : 0;
+        unit.heal();
+        if(unit instanceof TimedKillc u){
+            u.lifetime(lifetime);
+        }
+        return unit;
     }
 }

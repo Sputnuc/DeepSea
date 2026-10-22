@@ -2,15 +2,12 @@ package ds.type.entities.dsUnits;
 
 import arc.math.Mathf;
 import arc.struct.Seq;
-import ds.content.DSFx;
-import ds.type.entities.dsUnits.comp.UnderwaterUnitEngine;
+import ds.type.entities.dsUnits.parts.UnderwaterUnitEngine;
 import ds.world.meta.DSEnv;
-import mindustry.entities.abilities.MoveEffectAbility;
 import mindustry.gen.Sounds;
 import mindustry.gen.Unit;
 import mindustry.graphics.Pal;
 import mindustry.type.unit.MissileUnitType;
-import mindustry.world.meta.Env;
 
 public class TorpedoUnitType extends MissileUnitType {
     public Seq<UnderwaterUnitEngine> undEngines = new Seq<>();

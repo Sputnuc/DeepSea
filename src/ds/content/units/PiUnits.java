@@ -8,6 +8,8 @@ import arc.math.Mathf;
 import arc.math.geom.Rect;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
+import deepsea.gen.EntityRegistry;
+import deepsea.gen.SubmarineEnginec;
 import ds.content.DSFx;
 import ds.content.DSSounds;
 import ds.content.DSStatusEffects;
@@ -19,6 +21,7 @@ import ds.world.graphics.DSPal;
 import ds.type.entities.dsUnits.*;
 import ds.type.entities.weapons.AdvancedLightWeapon;
 import ds.type.entities.weapons.DSWeapon;
+import ent.anno.Annotations;
 import mindustry.ai.UnitCommand;
 import mindustry.ai.types.MinerAI;
 import mindustry.content.Fx;
@@ -34,8 +37,10 @@ import mindustry.entities.effect.ParticleEffect;
 import mindustry.entities.effect.WaveEffect;
 import mindustry.entities.pattern.ShootMulti;
 import mindustry.entities.pattern.ShootPattern;
+import mindustry.gen.EntityMapping;
 import mindustry.gen.Sounds;
 import mindustry.gen.UnitEntity;
+import mindustry.gen.Unitc;
 import mindustry.graphics.Drawf;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
@@ -67,6 +72,7 @@ public class PiUnits {
             untitledFish, angler,
             //DO NOT ASK
             annihilator;
+    @Annotations.EntityDef(value = {Unitc.class, SubmarineEnginec.class}) public static UnitType anotherTestSubmarine;
     public static void loadUnits(){
         //Core units
         moment = new SubmarineUnitType("moment"){{
@@ -732,6 +738,10 @@ public class PiUnits {
         //End load
         loadFauna();
         pi312units.addAll(moment, condition, complicity, note);
+
+        anotherTestSubmarine = new SubmarineUnitType("test-submarine"){{
+            setUndEngines(5, -5, 0, true);
+        }};
     }
     public static void loadFauna(){
         untitledFish = new FaunaUnitType("untitled-fish"){{
