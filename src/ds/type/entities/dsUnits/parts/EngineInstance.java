@@ -10,14 +10,16 @@ public class EngineInstance {
     private float count;
     public EngineInstance(UnderwaterUnitEngine engine){
         this.engine = engine;
+        count = 0;
     }
 
     public void update(Unit unit, float eff){
 
         count += Time.delta * eff;
+
         if(count >= engine.engineEffectInterval) {
-            engine.update(unit);
-            count = 0;
+            count %= engine.engineEffectInterval;
+            engine.update(unit, eff);
         }
     }
 }

@@ -57,29 +57,35 @@ public class PiUnits {
     public static UnitType
             //Support units
             sprig,
-            //Core units
-            moment,
-
             //Assault units
                 //Mechs
             condition, oversight, control, oppression, suppression,
                 //Tanks
             note, sound, chord, melody, composition,
                 //Submarines
-            complicity, consequences, correlation, culmination, cessation,
 
     //fauna
             untitledFish, angler,
             //DO NOT ASK
             annihilator;
+
+    //Submarines
+    @Annotations.EntityDef(value = {Unitc.class, SubmarineEnginec.class}) public static UnitType
+            //Core units
+            moment,
+            //Assault submarines
+            complicity, consequences, correlation, culmination, cessation
+            ;
+
     @Annotations.EntityDef(value = {Unitc.class, SubmarineEnginec.class}) public static UnitType anotherTestSubmarine;
     public static void loadUnits(){
         //Core units
         moment = new SubmarineUnitType("moment"){{
             setUndEngines(0, -5, 180, false);
+            undEngines.get(0).efficiencyMultiplier = 1.5f;
+            undEngines.get(0).engineEffectInterval = 1.85f;
             omniMovement = true;
             strafePenalty = 0.45f;
-            constructor = UnitEntity::create;
             speed = 4.5f;
             health = 125;
             buildRange = 20 * tilesize;
@@ -116,7 +122,6 @@ public class PiUnits {
         //Support submarines
         sprig = new SubmarineUnitType("sprig"){{
             setUndEngines(0, -3, 180, false);
-            constructor = UnitEntity::create;
             mineItems = Seq.with(PiItems.aluminium, PiItems.silver);
             defaultCommand = UnitCommand.mineCommand;
             aiController = MinerAI::new;
@@ -147,7 +152,7 @@ public class PiUnits {
         //Assault Submarines
         complicity = new SubmarineUnitType("complicity"){{
             setUndEngines(0, -5, 180, false);
-            constructor = UnitEntity::create;
+            undEngines.get(0).efficiencyMultiplier = 1.65f;
             rotateSpeed = 1.85f;
             speed = 2.65f;
             health = 95;
@@ -198,7 +203,6 @@ public class PiUnits {
             rotateSpeed = 1.5f;
             health = 395;
             hitSize = 14;
-            constructor = UnitEntity::create;
             omniMovement = true;
             strafePenalty = 0.25f;
             weapons.add(new AdvancedLightWeapon(){{

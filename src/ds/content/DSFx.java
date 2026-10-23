@@ -62,7 +62,7 @@ public class DSFx {
     dsMoveEffect = new Effect(45, e -> {
         if(!(e.data instanceof Float f)) return;
         color(Color.valueOf("e0f4ff"), Color.valueOf("bfe0f200"), e.fin());
-        randLenVectors(e.id, 1 + Mathf.round(f * 2), 11 * e.fin() + 3, (x, y)->{
+        randLenVectors(e.id, 1 + Mathf.round(f), 6 * e.fin() + (1.75f * f * e.fin()) + 2, (x, y)->{
             Fill.circle(e.x + x, e.y + y, e.fin() * 1.5f * f + 0.75f);
         });
     }),

@@ -14,8 +14,6 @@ import mindustry.gen.TimedKillc;
 import mindustry.gen.Unit;
 
 public class SubmarineUnitType extends DSUnitType {
-    public float bubblesInterval = 2;
-    public Effect bubbleEffect = DSFx.dsMoveEffect;
     public Seq<UnderwaterUnitEngine> undEngines = new Seq<>();
 
     public SubmarineUnitType(String name) {

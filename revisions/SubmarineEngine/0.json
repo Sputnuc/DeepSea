@@ -1,0 +1,1 @@
+{fields:[{name:engines,type:"ds.type.entities.dsUnits.parts.EngineInstance[]"},{name:enginesEfficiency,type:float},{name:vel,type:arc.math.geom.Vec2},{name:x,type:float},{name:y,type:float}]}

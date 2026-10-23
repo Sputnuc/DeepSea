@@ -13,7 +13,7 @@ import mindustry.gen.*;
 import mindustry.type.UnitType;
 
 @Annotations.EntityComponent
-abstract class SubmarineEngineComp implements Entityc, Physicsc, Drawc{
+abstract class SubmarineEngineComp implements Entityc, Physicsc{
 
     EngineInstance[] engines;
 
@@ -31,7 +31,7 @@ abstract class SubmarineEngineComp implements Entityc, Physicsc, Drawc{
     }
 
     void updateEngines(){
-        enginesEfficiency = Mathf.approach(enginesEfficiency, vel.len() / type.speed,  Time.delta);
+        enginesEfficiency = Mathf.pow(moving() ? vel.len() / type.speed : 0, 2);
         for(EngineInstance eng : engines){
             eng.update(self(), enginesEfficiency);
         }
@@ -48,50 +48,5 @@ abstract class SubmarineEngineComp implements Entityc, Physicsc, Drawc{
 
     public void setType(UnitType type){
         setEngines(type);
-    }
-
-    public void moveAt(Vec2 vector, float acceleration){
-        Vec2 t = tmp1.set(vector); //target vector
-        tmp2.set(t).sub(vel).limit(acceleration * vector.len() * Time.delta); //delta vector
-        vel.add(tmp2);
-
-        if(type instanceof SubmarineUnitType s){
-            if(!s.undEngines.isEmpty()){
-                for(var e : s.undEngines){
-                    e.update(self());
-                }
-            }
-        }
-
-    }
-
-    public void moveAt(Vec2 vector){
-        moveAt(vector, type.accel);
-    }
-
-    public void rotateMove(Vec2 vec){
-        moveAt(Tmp.v2.trns(rotation, vec.len()));
-
-        if(!vec.isZero()){
-            rotation = Angles.moveToward(rotation, vec.angle(), type.rotateSpeed * Time.delta * speedMultiplier);
-        }
-    }
-
-    public void movePref(Vec2 movement){
-        if(type.omniMovement){
-            moveAt(movement);
-        }else{
-            rotateMove(movement);
-        }
-    }
-
-    @Override
-    public float clipSize(){
-        return type.hitSize * 1.1f;
-    }
-
-    @Override
-    public void draw(){
-        type.draw(self());
     }
 }

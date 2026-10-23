@@ -15,8 +15,9 @@ import mindustry.type.UnitType;
 public class UnderwaterUnitEngine{
     public float x, y;
     public float rotation;
-    public float engineEffectInterval = 2f;
+    public float engineEffectInterval = 3f;
     public float engineEffectChance = 1f;
+    public float efficiencyMultiplier = 1;
     public float engineXRand = 0;
     public Effect engineEffect = DSFx.dsMoveEffect;
 
@@ -27,11 +28,11 @@ public class UnderwaterUnitEngine{
         this.rotation = rotation;
     }
 
-    public void update(Unit unit){
+    public void update(Unit unit, float eff){
         if(!unit.inFogTo(Vars.player.team())){
             if(Mathf.random(1) <= engineEffectChance){
                 Tmp.v1.trns(unit.rotation - 90f, x, y);
-                engineEffect.at(Tmp.v1.x + unit.x, Tmp.v1.y + unit.y, rotation + unit.rotation, 1f);
+                engineEffect.at(Tmp.v1.x + unit.x, Tmp.v1.y + unit.y, rotation + unit.rotation, eff * efficiencyMultiplier);
             }
         }
     }
