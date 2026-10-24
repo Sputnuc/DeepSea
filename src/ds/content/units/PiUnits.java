@@ -588,6 +588,7 @@ public class PiUnits {
             weapons.add(new AdvancedLightWeapon("deepsea-note-weapon"){{
                 x = 0;
                 y = -1;
+                shootY = 6;
                 mirror = false;
                 rotate = true;
                 rotateSpeed = 1.35f;

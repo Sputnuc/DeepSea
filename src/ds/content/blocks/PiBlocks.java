@@ -25,6 +25,7 @@ import ds.type.entities.dsUnits.*;
 import ds.type.entities.effect.RandRadialEffect;
 import ds.type.entities.weapons.DSWeapon;
 import mindustry.content.Fx;
+import mindustry.core.Renderer;
 import mindustry.entities.UnitSorts;
 import mindustry.entities.bullet.*;
 import mindustry.entities.effect.*;
