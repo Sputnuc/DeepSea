@@ -8,17 +8,18 @@ import arc.math.Mathf;
 import arc.math.geom.Rect;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
-import deepsea.gen.EntityRegistry;
 import deepsea.gen.SubmarineEnginec;
+import deepsea.gen.SubmarineMovec;
+import deepsea.gen.TorpedoUnitc;
 import ds.content.DSFx;
 import ds.content.DSSounds;
 import ds.content.DSStatusEffects;
 import ds.content.items.PiItems;
+import ds.type.dsUnitTypes.*;
 import ds.type.entities.abilities.AdvancedArmorPlateAbility;
 import ds.type.entities.bullets.EmptyBulletType;
 import ds.type.entities.weapons.AntiTorpedoesWeapon;
 import ds.world.graphics.DSPal;
-import ds.type.entities.dsUnits.*;
 import ds.type.entities.weapons.AdvancedLightWeapon;
 import ds.type.entities.weapons.DSWeapon;
 import ent.anno.Annotations;
@@ -27,7 +28,6 @@ import mindustry.ai.types.MinerAI;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
-import mindustry.entities.abilities.ArmorPlateAbility;
 import mindustry.entities.abilities.ForceFieldAbility;
 import mindustry.entities.abilities.RegenAbility;
 import mindustry.entities.abilities.ShieldArcAbility;
@@ -37,7 +37,6 @@ import mindustry.entities.effect.ParticleEffect;
 import mindustry.entities.effect.WaveEffect;
 import mindustry.entities.pattern.ShootMulti;
 import mindustry.entities.pattern.ShootPattern;
-import mindustry.gen.EntityMapping;
 import mindustry.gen.Sounds;
 import mindustry.gen.UnitEntity;
 import mindustry.gen.Unitc;
@@ -51,7 +50,7 @@ import static arc.math.Angles.*;
 import static mindustry.Vars.tilesize;
 import static mindustry.content.Fx.*;
 
-public class PiUnits {
+public class DSUnits {
     public static float[] tierMultipliers = {1, 2f, 4f, 8f, 20f};
     public static Seq<UnitType> pi312units = new Seq<>();
     public static UnitType
@@ -70,14 +69,17 @@ public class PiUnits {
             annihilator;
 
     //Submarines
-    @Annotations.EntityDef(value = {Unitc.class, SubmarineEnginec.class}) public static UnitType
+    @Annotations.EntityDef(value = {Unitc.class, SubmarineEnginec.class, SubmarineMovec.class}) public static UnitType
             //Core units
             moment,
             //Assault submarines
             complicity, consequences, correlation, culmination, cessation
             ;
 
-    @Annotations.EntityDef(value = {Unitc.class, SubmarineEnginec.class}) public static UnitType anotherTestSubmarine;
+    @Annotations.EntityDef(value = {Unitc.class, SubmarineEnginec.class, SubmarineMovec.class}) public static UnitType anotherTestSubmarine;
+
+    //For generate torpedo units
+    @Annotations.EntityDef(value = {TorpedoUnitc.class}) public static UnitType torpedo;
     public static void loadUnits(){
         //Core units
         moment = new SubmarineUnitType("moment"){{
@@ -86,7 +88,7 @@ public class PiUnits {
             undEngines.get(0).engineEffectInterval = 1.85f;
             omniMovement = true;
             strafePenalty = 0.45f;
-            speed = 4.5f;
+            speed = 2.5f;
             health = 125;
             buildRange = 20 * tilesize;
             buildSpeed = 2.75f;
@@ -99,7 +101,7 @@ public class PiUnits {
                 x = 2;
                 y = 1;
                 shootCone = 15;
-                lightCone = 23.5f;
+                lightCone = 27.5f;
                 lightLength = 11f * 8;
                 lightTileable = false;
                 shootSound = Sounds.shootAlpha;
@@ -189,7 +191,7 @@ public class PiUnits {
                             shootSound = Sounds.none;
                             bullet = new ExplosionBulletType(31,3.5f * tilesize){{
                                 buildingDamageMultiplier = 0.75f;
-                                despawnEffect = Fx.massiveExplosion;
+                                despawnEffect = new MultiEffect(Fx.massiveExplosion, DSFx.smoothColorCircle(Color.white, 0.75f, 3 * tilesize, 18, Interp.linear, Interp.pow2Out));
                                 damage = 0;
                             }};
                         }});
@@ -235,7 +237,7 @@ public class PiUnits {
                             shootSound = Sounds.none;
                             bullet = new ExplosionBulletType(49,4.5f * tilesize){{
                                 buildingDamageMultiplier = 0.75f;
-                                despawnEffect = Fx.massiveExplosion;
+                                despawnEffect = new MultiEffect(Fx.massiveExplosion, DSFx.smoothColorCircle(new Color(Color.white).a(0.15f), 4* tilesize, 21, Interp.linear));
                                 status = DSStatusEffects.waterLeak;
                                 statusDuration = 300;
                                 damage = 0;
@@ -275,9 +277,9 @@ public class PiUnits {
                     trailEffect = DSFx.dsBulletTrail;
                     shootEffect = DSFx.dsShoot;
                     lightColor = Color.valueOf("bfe8ff");
-                    frontColor = hitColor = DSPal.dsBulletFront;
+                    frontColor = hitColor = trailColor = DSPal.dsBulletFront;
                     backColor = DSPal.dsBulletBack;
-                    lifetime = 22;
+                    lifetime = 14;
                     hitEffect = despawnEffect = DSFx.dsBulletHit;
                 }};
             }});

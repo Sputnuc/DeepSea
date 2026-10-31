@@ -2,15 +2,11 @@ package ds.type.entities.weapons;
 
 import arc.Core;
 import arc.scene.ui.layout.Table;
-import ds.type.entities.dsUnits.TorpedoUnitType;
+import ds.type.dsUnitTypes.TorpedoUnitType;
 import mindustry.entities.Units;
-import mindustry.gen.Groups;
 import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
 import mindustry.type.UnitType;
-import mindustry.type.Weapon;
-import mindustry.world.meta.Stat;
-import mindustry.world.meta.StatUnit;
 
 public class AntiTorpedoesWeapon extends DSWeapon {
 

@@ -6,12 +6,10 @@ import mindustry.type.ItemStack;
 
 import static ds.content.blocks.PiBlocks.*;
 import static ds.content.items.PiItems.*;
-import static ds.content.liquids.PiLiquids.*;
 import static ds.content.planets.DSPlanets.*;
 import static ds.content.planets.DSSectorPresets.*;
-import static ds.content.units.PiUnits.*;
+import static ds.content.units.DSUnits.*;
 import static mindustry.content.Items.*;
-import static mindustry.content.Liquids.*;
 import static mindustry.content.TechTree.*;
 
 public class DSTechTree {

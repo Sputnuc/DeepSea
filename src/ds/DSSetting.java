@@ -42,6 +42,6 @@ public class DSSetting {
     }
 
     public static boolean getOnlyModMus(){
-        return Core.settings.getBool("onlyDeepseaMusic", false);
+        return Core.settings.getBool("@setting.onlyDeepseaMusic", false);
     }
 }

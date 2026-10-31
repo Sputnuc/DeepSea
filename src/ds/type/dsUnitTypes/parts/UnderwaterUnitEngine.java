@@ -1,15 +1,11 @@
-package ds.type.entities.dsUnits.parts;
+package ds.type.dsUnitTypes.parts;
 
 import arc.math.Mathf;
-import arc.util.Log;
-import arc.util.Time;
 import arc.util.Tmp;
-import deepsea.gen.SubmarineEnginec;
 import ds.content.DSFx;
 import mindustry.Vars;
 import mindustry.entities.Effect;
 import mindustry.gen.Unit;
-import mindustry.type.UnitType;
 
 //Content class for UnitType
 public class UnderwaterUnitEngine{

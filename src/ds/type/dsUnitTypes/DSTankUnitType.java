@@ -1,4 +1,4 @@
-package ds.type.entities.dsUnits;
+package ds.type.dsUnitTypes;
 
 import ds.world.graphics.DSPal;
 import mindustry.gen.TankUnit;

@@ -8,7 +8,8 @@ import ds.content.DSFx;
 import ds.content.DSSounds;
 import ds.content.DSStatusEffects;
 import ds.content.items.PiItems;
-import ds.content.units.PiUnits;
+import ds.content.units.DSUnits;
+import ds.type.dsUnitTypes.TorpedoUnitType;
 import ds.type.entities.parts.KeyFramePart;
 import ds.world.blocks.crafting.*;
 import ds.world.blocks.distribution.*;
@@ -21,11 +22,9 @@ import ds.draw.drawers.*;
 import ds.world.graphics.DSPal;
 import ds.world.meta.DSEnv;
 import ds.type.entities.bullets.*;
-import ds.type.entities.dsUnits.*;
 import ds.type.entities.effect.RandRadialEffect;
 import ds.type.entities.weapons.DSWeapon;
 import mindustry.content.Fx;
-import mindustry.core.Renderer;
 import mindustry.entities.UnitSorts;
 import mindustry.entities.bullet.*;
 import mindustry.entities.effect.*;
@@ -554,7 +553,7 @@ public class PiBlocks {
             itemCapacity = 5300;
             buildCostMultiplier = 3;
             unitCapModifier = 18;
-            unitType = PiUnits.moment;
+            unitType = DSUnits.moment;
             envEnabled |= Env.terrestrial | DSEnv.underwaterWarm;
             envDisabled = Env.none;
             squareSprite = false;
@@ -997,9 +996,9 @@ public class PiBlocks {
             consumePower(2.5f);
             consumeLiquid(oxygen, 0.2f);
             plans = Seq.with(
-                    new UnitPlan(PiUnits.condition, 60f * 25, with(silver, 30, graphite, 15)),
-                    new UnitPlan(PiUnits.note, 60f * 40, with(silver, 55, graphite, 30, manganese, 45)),
-                    new UnitPlan(PiUnits.complicity, 60f * 25, with(aluminium, 25, manganese, 20))
+                    new UnitPlan(DSUnits.condition, 60f * 25, with(silver, 30, graphite, 15)),
+                    new UnitPlan(DSUnits.note, 60f * 40, with(silver, 55, graphite, 30, manganese, 45)),
+                    new UnitPlan(DSUnits.complicity, 60f * 25, with(aluminium, 25, manganese, 20))
             );
         }};
         deepUnitReconstructor = new Reconstructor("deep-unit-reconstructor"){{
@@ -1009,9 +1008,9 @@ public class PiBlocks {
             consumeLiquid(hydrogen, 0.25f);
             consumeItems(with(aluminium, 45, graphite, 55, steel, 30));
             upgrades.addAll(
-                    new UnitType[]{PiUnits.condition, PiUnits.oversight},
-                    new UnitType[]{PiUnits.complicity, PiUnits.consequences},
-                    new UnitType[]{PiUnits.note, PiUnits.sound}
+                    new UnitType[]{DSUnits.condition, DSUnits.oversight},
+                    new UnitType[]{DSUnits.complicity, DSUnits.consequences},
+                    new UnitType[]{DSUnits.note, DSUnits.sound}
             );
             constructTime = 20 * 60f;
         }};

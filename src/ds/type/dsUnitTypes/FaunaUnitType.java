@@ -1,12 +1,8 @@
-package ds.type.entities.dsUnits;
+package ds.type.dsUnitTypes;
 
-import arc.graphics.g2d.*;
-import arc.math.Mathf;
-import arc.util.Time;
 import ds.content.DSFx;
 import ds.world.ai.PassiveAi;
 import ds.type.entities.DSUnitType;
-import mindustry.entities.part.*;
 import mindustry.gen.Sounds;
 
 public class FaunaUnitType extends DSUnitType {

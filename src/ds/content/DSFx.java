@@ -295,10 +295,22 @@ public class DSFx {
     //FX Functions
 
     public static Effect smoothColorCircle(Color out, float rad, float lifetime, Interp interpolation) {
+        return smoothColorCircle(out, rad, lifetime, interpolation, Interp.pow5Out);
+    }
+
+    public static Effect smoothColorCircle(Color out, float rad, float lifetime, Interp interpolation, Interp colorInterp) {
+       return smoothColorCircle(out,1, rad, lifetime, interpolation, colorInterp);
+    }
+
+    public static Effect smoothColorCircle(Color out, float a, float rad, float lifetime, Interp interpolation) {
+        return smoothColorCircle(out,a, rad, lifetime, interpolation, Interp.pow5Out);
+    }
+
+    public static Effect smoothColorCircle(Color out, float a, float rad, float lifetime, Interp interpolation, Interp colorInterp) {
         return new Effect(lifetime, rad * 2, e -> {
             Draw.blend(Blending.additive);
             float radius = e.fin(interpolation) * rad;
-            Fill.light(e.x, e.y, circleVertices(radius), radius, Color.clear, Tmp.c1.set(out).a(e.fout(Interp.pow5Out)));
+            Fill.light(e.x, e.y, circleVertices(radius), radius, Color.clear, Tmp.c1.set(out).a(e.fout(colorInterp) * a));
             Drawf.light(e.x, e.y, radius * 1.3f, out, 0.7f * e.fout(0.23f));
             Draw.blend();
         }).layer(Layer.effect + 0.15f);

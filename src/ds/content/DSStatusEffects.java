@@ -1,10 +1,8 @@
 package ds.content;
 
-import arc.math.Mathf;
 import arc.struct.Seq;
-import arc.util.Time;
-import ds.type.entities.dsUnits.DSMechUnitType;
-import ds.type.entities.dsUnits.SubmarineUnitType;
+import ds.type.dsUnitTypes.DSMechUnitType;
+import ds.type.dsUnitTypes.SubmarineUnitType;
 import ds.world.meta.DSEnv;
 import mindustry.Vars;
 import mindustry.entities.effect.ParticleEffect;

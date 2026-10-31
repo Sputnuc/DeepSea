@@ -6,7 +6,7 @@ import ds.content.items.DSItemLoader;
 import ds.content.liquids.PiLiquids;
 import ds.content.planets.DSPlanets;
 import ds.content.planets.DSSectorPresets;
-import ds.content.units.PiUnits;
+import ds.content.units.DSUnits;
 import ds.world.global.*;
 
 public class ContentLoader {
@@ -22,7 +22,7 @@ public class ContentLoader {
         DSItemLoader.load();
 
         PiLiquids.load();
-        PiUnits.loadUnits();
+        DSUnits.loadUnits();
         EntityRegistry.registerUnits();
         DSBlocksLoader.load();
 

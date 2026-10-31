@@ -1,4 +1,4 @@
-package ds.type.entities.dsUnits;
+package ds.type.dsUnitTypes;
 
 import arc.graphics.Color;
 import ds.type.entities.DSUnitType;

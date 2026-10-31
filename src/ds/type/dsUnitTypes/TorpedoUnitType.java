@@ -1,20 +1,19 @@
-package ds.type.entities.dsUnits;
+package ds.type.dsUnitTypes;
 
 import arc.math.Mathf;
 import arc.struct.Seq;
-import deepsea.gen.TorpedoUnitc;
-import ds.type.entities.dsUnits.parts.UnderwaterUnitEngine;
+import deepsea.gen.TorpedoUnit;
+import ds.type.dsUnitTypes.parts.UnderwaterUnitEngine;
 import ds.world.meta.DSEnv;
-import ent.anno.Annotations;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Pal;
-import mindustry.type.UnitType;
 import mindustry.type.unit.MissileUnitType;
 
 public class TorpedoUnitType extends MissileUnitType {
     public Seq<UnderwaterUnitEngine> undEngines = new Seq<>();
     public TorpedoUnitType(String name) {
         super(name);
+        constructor = TorpedoUnit::create;
         health = 40;
         envRequired = DSEnv.underwaterWarm;
         trailLength = 0;

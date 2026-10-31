@@ -3,11 +3,9 @@ package ds.world.global;
 import arc.Events;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
-import arc.util.Log;
 import arc.util.Time;
-import ds.content.units.PiUnits;
+import ds.content.units.DSUnits;
 import mindustry.Vars;
-import mindustry.entities.Units;
 import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.Unit;
@@ -41,7 +39,7 @@ public class FishSpawnProcess extends WorldProcess{
     @Override
     public void load(){
         super.load();
-        spawnUnits.add(PiUnits.untitledFish);
+        spawnUnits.add(DSUnits.untitledFish);
     }
 
     @Override

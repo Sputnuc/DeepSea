@@ -5,7 +5,7 @@ import arc.struct.ObjectSet;
 import arc.struct.Seq;
 import ds.content.blocks.PiBlocks;
 import ds.content.liquids.PiLiquids;
-import ds.content.units.PiUnits;
+import ds.content.units.DSUnits;
 import ds.world.meta.DSEnv;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
@@ -61,7 +61,7 @@ public class DSPlanets {
             defaultEnv = Env.terrestrial | DSEnv.underwaterWarm & ~(Env.groundOil | Env.scorching | Env.spores);
         }};
 
-        unitWhiteList(PiUnits.pi312units, obj312);
+        unitWhiteList(DSUnits.pi312units, obj312);
         addItemWhitelist(Seq.with(Items.graphite), obj312);
         addLiquidWhitelist(PiLiquids.piLiquids, obj312);
         addLiquidWhitelist(Seq.with(Liquids.hydrogen), obj312);

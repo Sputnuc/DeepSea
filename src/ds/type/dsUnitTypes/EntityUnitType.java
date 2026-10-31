@@ -1,4 +1,4 @@
-package ds.type.entities.dsUnits;
+package ds.type.dsUnitTypes;
 
 import arc.audio.Sound;
 import arc.graphics.g2d.Draw;

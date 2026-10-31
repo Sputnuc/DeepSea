@@ -18,6 +18,8 @@ import mindustry.gen.EntityMapping;
 import mindustry.gen.Posc;
 import mindustry.mod.*;
 
+import static mindustry.Vars.control;
+
 public class DeepSea extends Mod{
     public DeepSea(){
         ClassMap.classes.put("WorldProcessor", DSWorldProcessor.class);
@@ -27,7 +29,6 @@ public class DeepSea extends Mod{
     public void loadContent(){
         EntityRegistry.register();
 
-        DSMusicLoader.load();
         ContentLoader.load();
         DSWorldProcessor.load();
         DSEnvRenderers.init();
@@ -45,6 +46,8 @@ public class DeepSea extends Mod{
             Events.on(EventType.ClientLoadEvent.class, e -> {
                 DSSetting.init();
                 CustomLogic.init();
+                DSMusicLoader.load();
+                DSMusicLoader.attach();
             });
         }
 
