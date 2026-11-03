@@ -12,6 +12,7 @@ public class DSSounds {
             //Shoot
             shootHarpoon,
             shootSmallWeapon,
+            shootSmallHeavy,
             shootMediumTank,
             shootImpulse,
             shootMortar ,
@@ -26,6 +27,7 @@ public class DSSounds {
     public static void load(){
         shootHarpoon = loadSound("harpoonShoot");
         shootSmallWeapon = loadSound("shootSmallWeaponAlt");
+        shootSmallHeavy = loadSound("shootSmallHeavy");
         shootMediumTank = loadSound("shootTank");
         shootImpulse = loadSound("shootImpulse");
         shootMortar = loadSound("shootMortar");

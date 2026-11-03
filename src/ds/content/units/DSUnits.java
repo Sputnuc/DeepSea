@@ -10,6 +10,7 @@ import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import deepsea.gen.SubmarineEnginec;
 import deepsea.gen.SubmarineMovec;
+import deepsea.gen.SubmarineUnitc;
 import deepsea.gen.TorpedoUnitc;
 import ds.content.DSFx;
 import ds.content.DSSounds;
@@ -69,14 +70,14 @@ public class DSUnits {
             annihilator;
 
     //Submarines
-    @Annotations.EntityDef(value = {Unitc.class, SubmarineEnginec.class, SubmarineMovec.class}) public static UnitType
+    @Annotations.EntityDef(SubmarineUnitc.class) public static UnitType
             //Core units
             moment,
             //Assault submarines
             complicity, consequences, correlation, culmination, cessation
             ;
 
-    @Annotations.EntityDef(value = {Unitc.class, SubmarineEnginec.class, SubmarineMovec.class}) public static UnitType anotherTestSubmarine;
+    @Annotations.EntityDef(SubmarineUnitc.class) public static UnitType anotherTestSubmarine;
 
     //For generate torpedo units
     @Annotations.EntityDef(value = {TorpedoUnitc.class}) public static UnitType torpedo;
@@ -155,20 +156,20 @@ public class DSUnits {
         complicity = new SubmarineUnitType("complicity"){{
             setUndEngines(0, -5, 180, false);
             undEngines.get(0).efficiencyMultiplier = 1.65f;
-            rotateSpeed = 1.85f;
+            rotateSpeed = 1.95f;
             speed = 2.65f;
             health = 95;
             omniMovement = true;
             hitSize = 8;
             moveSound = Sounds.none;
             weapons.add(new AdvancedLightWeapon(){{
-                x = 18/4f; y = 1;
-                mirror = true;
+                x = 0; y = 3;
+                mirror = false;
                 lightCone = 30;
                 lightLength = 30 * tilesize;
                 shootSound = Sounds.shootRetusa;
                 lightTileable = false;
-                reload = 120;
+                reload = 90;
                 rotate = false;
                 shootCone = 40;
                 inaccuracy = 7;
@@ -202,22 +203,22 @@ public class DSUnits {
         consequences = new SubmarineUnitType("consequences"){{
             setUndEngines(18/4f, -26/4f, 180, true);
             speed = 1.85f;
-            rotateSpeed = 1.5f;
+            rotateSpeed = 1.75f;
             health = 395;
             hitSize = 14;
             omniMovement = true;
             strafePenalty = 0.25f;
             weapons.add(new AdvancedLightWeapon(){{
                 x = 24/4f; y = 1;
-                shootY = 5;
+                shootY = 4;
                 mirror = true;
-                lightCone = 32;
+                lightCone = 13;
                 lightLength = 30*tilesize;
                 shootSound = Sounds.shootRetusa;
                 lightTileable = false;
-                reload = 30;
+                reload = 60;
                 rotate = false;
-                baseRotation = -9f;
+                alternate = false;
                 shootCone = 13;
                 bullet = new EmptyBulletType(){{
                     instantDisappear = true;
@@ -581,7 +582,7 @@ public class DSUnits {
             speed = 0.2f;
             health = 280;
             armor = 3;
-            hitSize = 8;
+            hitSize = 12;
             treadRects = new Rect[] {
                     new Rect(-22f, -24f, 11, 50)
             };
@@ -597,7 +598,7 @@ public class DSUnits {
                 reload = 90;
                 lightCone = 30;
                 lightLength = 30 * tilesize;
-                shootSound = Sounds.shootStell;
+                shootSound = DSSounds.shootSmallHeavy;
                 shake = 3.25f;
                 bullet = new BasicBulletType(16f, 40){{
                     height = 13;
@@ -625,7 +626,7 @@ public class DSUnits {
             speed = 0.18f;
             health = 600;
             armor = 3 * tierMultipliers[1];
-            hitSize = 14;
+            hitSize = 16;
             treadRects = new Rect[] {
                     new Rect(-26f, -31f, 11, 66)
             };
