@@ -1,10 +1,10 @@
 name: "deepsea"
 main: "ds.DeepSea"
-version: 0.2.5
+version: 0.2.6 (indev)
 minGameVersion: 159
 
-displayName: "Project: [#324ba6[]]Deep [#5aa9d6[]]Sea[white[]] [accent[]](Alpha)[white[]]"
-description: "The mod is about underwater campaign and more. \n[#4b457a[]]You're going TOO DEEP to come back[white[]] \n\nSpecial thanks to: \n [#ef75ff[]]Cirrusisakey (c4anide) - for many things[white[]] \n [#ffb969[]]AnDashik - some help[white[]] \n [#ff3d61[]]Skifor - some sounds[white[]]"
+displayName: "Project: [#324ba6[]]Deep [#5aa9d6[]]Sea[white[]]"
+description: "The mod is about underwater campaign and more. \n[#4b457a[]]You're going TOO DEEP to come back[white[]] \n\nSpecial thanks to: \n [#ef75ff[]]Cirrusisakey (c4anide) - for many things[white[]] \n [#ffb969[]]AnDashik - some help[white[]] \n [#ff3d61[]]Skifor - some sounds[white[]] \n [#d488db[]]Scp Solverion - music[white[]]"
 subtitle: "[#6967cf[]]DOWN... DEEP... BLUE[]"
 
 author: "[#ffd469[]]Sputnuc[]"
