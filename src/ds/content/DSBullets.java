@@ -5,6 +5,7 @@ import arc.graphics.g2d.*;
 import arc.math.Interp;
 import arc.math.Mathf;
 import ds.type.entities.bullets.AdvArtilleryBulletType;
+import ds.type.entities.bullets.AirClusterBulletType;
 import ds.world.graphics.DSPal;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
@@ -21,7 +22,13 @@ import static mindustry.Vars.tilesize;
 
 public class DSBullets {
     public static BulletType
-        smallApBullet, smallExBullet, smallSdBullet, smallBackshotBullet, smallClusterBullet, aaApBullet, aaUfBullet, aaSdBullet, mediumMortarHe
+            smallApBullet, smallExBullet, smallSdBullet,
+
+            smallBackshotBullet, smallBackshosClusterBullet,
+
+            aaApBullet, aaUfBullet, aaSdBullet,
+
+            mediumMortarHe, mediumMortarCluster
     ;
 
     public static void load(){
@@ -96,7 +103,7 @@ public class DSBullets {
             ammoMultiplier = 1;
             shootEffect = smokeEffect = Fx.none;
         }};
-        smallClusterBullet = new BasicBulletType(8,25){{
+        smallBackshosClusterBullet = new BasicBulletType(8,25){{
             shootPattern = new ShootPattern(){{
                 shots = 1;
             }};
@@ -253,6 +260,99 @@ public class DSBullets {
             hitShake = 18;
             splashDamage = 150;
             splashDamageRadius = 48;
+        }};
+        mediumMortarCluster = new AirClusterBulletType(4f, 0, "missile-large"){{
+            scaleLife = false;
+            splashDamage = 0;
+            lifetime = 30;
+            height = 18;
+            width = 10;
+            shrinkY = 0.75f;
+            shadowIncreaseFactor = 0.2f;
+            hitSound = Sounds.explosionMissile;
+            frontColor = hitColor = Color.valueOf("ffc7bf");
+            backColor = trailColor = Color.valueOf("d98e84");
+            hitEffect = new MultiEffect(
+                    new ExplosionEffect(){{
+                        waveColor = Color.white;
+                        sparkColor = Color.valueOf("ffc7bf");
+                        waveRad =  80;
+                        sparkRad = 74;
+                        sparkLen = 5;
+                        smokeRad = 39;
+                        smokes = 14;
+                        sparks = 18;
+                        lifetime = 40;
+                    }}
+            );
+            trailEffect = new Effect(10, e->{
+                Draw.color(e.color);
+                for(int sign : Mathf.signs){
+                    Drawf.tri(e.x, e.y, 1.5f + e.fin(Interp.slope), e.fin(Interp.slope) * 9, e.rotation + 90 * sign);
+                }
+            });
+
+            parts.add(
+                    new HaloPart(){{
+                        y = -4.5f;
+                        rotateSpeed = 0;
+                        haloRadius = 1;
+                        haloRadiusTo = 1;
+                        radius = 3;
+                        radiusTo = 4;
+                        tri = true;
+                        triLength = 3;
+                        triLengthTo = 5;
+                        progress = PartProgress.life;
+                        shapes = 2;
+                        haloRotation = 90;
+                        color = colorTo = Color.valueOf("ffc7bf");
+                        moveY = -2;
+                    }}
+            );
+            trailRotation = true;
+            trailLength = 9;
+            trailWidth = 1.9f;
+            hitShake = 5;
+            shrinkY = 0.75f;
+            fragBullets = 10;
+            fragRandomSpread = 20;
+            fragLifeMax = 1.2f;
+            fragLifeMin = 0.3f;
+            fragVelocityMax = 1.1f;
+            fragVelocityMin = 0.95f;
+            fragBullet = new AirClusterBulletType(4, 27, "shell"){{
+                armorMultiplier = 1.75f;
+                width = 8;
+                height = 12;
+                shadowIncreaseFactor = 0.2f;
+                lifetime = 60;
+                splashDamage = 65;
+                splashDamageRadius = 29;
+                landing = true;
+                trailLength = 4;
+                trailWidth = 1.9f;
+                hitShake = 8;
+                hitSound = Sounds.explosionDull;
+                hitSoundVolume = 0.65f;
+                hitSoundPitch = 1.05f;
+                frontColor = hitColor = Color.valueOf("ffc7bf");
+                backColor = trailColor = Color.valueOf("d98e84");
+                hitEffect = new MultiEffect(
+                        new ExplosionEffect(){{
+                            waveColor = Color.white;
+                            sparkColor = Color.valueOf("ffc7bf");
+                            waveRad =  30;
+                            sparkRad = 19;
+                            sparkLen = 8;
+                            smokeRad = 37;
+                            smokes = 3;
+                            sparks = 5;
+                            lifetime = 40;
+                        }},
+                        DSFx.spikesEffect(Color.valueOf("ffc7bf"), 18, 3, 1.75f, 0.75f, 25, 3, 360)
+                );
+            }};
         }};
     }
 }

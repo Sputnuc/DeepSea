@@ -1,6 +1,6 @@
-package ds.world.wprocess;
+package ds.world.wproc;
 
-import ds.world.wprocess.statemets.UCUnlockStatement;
+import ds.world.wproc.statemets.UCUnlockStatement;
 import mindustry.gen.LogicIO;
 import mindustry.logic.LAssembler;
 

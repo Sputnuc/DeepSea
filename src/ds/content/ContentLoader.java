@@ -7,12 +7,16 @@ import ds.content.liquids.PiLiquids;
 import ds.content.planets.DSPlanets;
 import ds.content.planets.DSSectorPresets;
 import ds.content.units.DSUnits;
-import ds.world.global.*;
+import ds.wprocesses.CableProcess;
+import ds.wprocesses.CasingProcess;
+import ds.wprocesses.DSWorldProcessHandler;
+import ds.wprocesses.UnitBarProcess;
 
 public class ContentLoader {
     public static void load(){
-        DSWorldProcessor.addProcess(new CableProcess("Cable processor"));
-
+        DSWorldProcessHandler.addProcess(new CableProcess("Cable process"));
+        DSWorldProcessHandler.addProcesses(new UnitBarProcess("UnitBar process"));
+        DSWorldProcessHandler.addProcess(new CasingProcess("Casing process"));
 
         DSStatusEffects.load();
         DSAttributes.load();

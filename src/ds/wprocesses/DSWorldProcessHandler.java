@@ -1,4 +1,4 @@
-package ds.world.global;
+package ds.wprocesses;
 
 import arc.Events;
 import arc.struct.Seq;
@@ -6,7 +6,7 @@ import arc.util.Log;
 import mindustry.Vars;
 import mindustry.game.EventType;
 
-public class DSWorldProcessor {
+public class DSWorldProcessHandler {
 
     public static Seq<WorldProcess> processes = new Seq<>();
 
@@ -32,7 +32,7 @@ public class DSWorldProcessor {
         }
 
         Log.info("Deep sea. World processor -> visual updater starting");
-        Events.run(EventType.Trigger.drawOver, ()->{
+        Events.run(EventType.Trigger.draw, ()->{
             for(WorldProcess process : processes){
                 process.visualUpdate();
             }
@@ -40,9 +40,18 @@ public class DSWorldProcessor {
     }
 
     public static void update(){
+        forceUpdate();
         if(Vars.world != null && Vars.state.isGame() && !Vars.state.isPaused() && !processes.isEmpty()){
             for(WorldProcess procces : processes){
                 procces.update();
+            }
+        }
+    }
+
+    public static void forceUpdate(){
+        if(Vars.world != null && Vars.state.isGame() && !processes.isEmpty()){
+            for(WorldProcess procces : processes){
+                procces.forceUpdate();
             }
         }
     }

@@ -10,9 +10,7 @@ import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Tmp;
-import ds.draw.DrawWire;
-import ds.world.global.CableProcess;
-import mindustry.Vars;
+import ds.wprocesses.CableProcess;
 import mindustry.gen.Posc;
 import mindustry.graphics.Layer;
 

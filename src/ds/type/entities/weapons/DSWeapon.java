@@ -8,6 +8,7 @@ import arc.struct.ObjectMap;
 import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
+import ds.type.entities.Casing;
 import ds.world.meta.DSStatValues;
 import mindustry.Vars;
 import mindustry.audio.SoundLoop;
@@ -27,7 +28,8 @@ import static mindustry.Vars.headless;
 
 public class DSWeapon extends Weapon {
 
-    public float ejectX = 0, ejectY = 0, ejectRotation = 0;
+    public float ejectX = 0, ejectY = 0, ejectRotation = 90, ejectForce = 9;
+    public Casing casing;
     public Effect ejectEffect = Fx.none;
     
     public boolean targetUnitPointPosition = false;
@@ -66,6 +68,7 @@ public class DSWeapon extends Weapon {
         super.draw(unit, mount);
     }
 
+    @Override
     public void update(Unit unit, WeaponMount mount){
         boolean can = unit.canShoot();
         float lastReload = mount.reload;
@@ -225,12 +228,13 @@ public class DSWeapon extends Weapon {
     @Override
     protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation){
         super.shoot(unit, mount, shootX, shootY, rotation);
+        boolean wasFlipped = mount.side;
         float
                 weaponRotation = unit.rotation - 90 + (rotate ? mount.rotation : baseRotation),
                 mountX = unit.x + Angles.trnsx(unit.rotation - 90, x, y),
                 mountY = unit.y + Angles.trnsy(unit.rotation - 90, x, y),
                 ejectX = mountX + Angles.trnsx(weaponRotation, this.ejectX, this.ejectY),
                 ejectY = mountY + Angles.trnsy(weaponRotation, this.ejectX, this.ejectY);
-        ejectEffect.at(ejectX, ejectY, weaponRotation + ejectRotation);
+        ejectEffect.at(ejectX, ejectY, (weaponRotation + ejectRotation) * Mathf.sign(this.x));
     }
 }

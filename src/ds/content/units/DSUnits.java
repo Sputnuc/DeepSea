@@ -8,18 +8,17 @@ import arc.math.Mathf;
 import arc.math.geom.Rect;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
-import deepsea.gen.SubmarineEnginec;
-import deepsea.gen.SubmarineMovec;
-import deepsea.gen.SubmarineUnitc;
-import deepsea.gen.TorpedoUnitc;
+import deepsea.gen.*;
 import ds.content.DSFx;
 import ds.content.DSSounds;
 import ds.content.DSStatusEffects;
 import ds.content.items.PiItems;
 import ds.type.dsUnitTypes.*;
+import ds.type.entities.Casing;
 import ds.type.entities.abilities.AdvancedArmorPlateAbility;
 import ds.type.entities.bullets.EmptyBulletType;
 import ds.type.entities.weapons.AntiTorpedoesWeapon;
+import ds.type.entities.weapons.TorpedoesLightWeapon;
 import ds.world.graphics.DSPal;
 import ds.type.entities.weapons.AdvancedLightWeapon;
 import ds.type.entities.weapons.DSWeapon;
@@ -77,7 +76,7 @@ public class DSUnits {
             complicity, consequences, correlation, culmination, cessation
             ;
 
-    @Annotations.EntityDef(SubmarineUnitc.class) public static UnitType anotherTestSubmarine;
+    @Annotations.EntityDef(value = {SubmarineUnitc.class, TestRadialBarc.class}) public static UnitType anotherTestSubmarine;
 
     //For generate torpedo units
     @Annotations.EntityDef(value = {TorpedoUnitc.class}) public static UnitType torpedo;
@@ -162,7 +161,7 @@ public class DSUnits {
             omniMovement = true;
             hitSize = 8;
             moveSound = Sounds.none;
-            weapons.add(new AdvancedLightWeapon(){{
+            weapons.add(new TorpedoesLightWeapon(){{
                 x = 0; y = 3;
                 mirror = false;
                 lightCone = 30;
@@ -208,7 +207,7 @@ public class DSUnits {
             hitSize = 14;
             omniMovement = true;
             strafePenalty = 0.25f;
-            weapons.add(new AdvancedLightWeapon(){{
+            weapons.add(new TorpedoesLightWeapon(){{
                 x = 24/4f; y = 1;
                 shootY = 4;
                 mirror = true;
@@ -224,10 +223,12 @@ public class DSUnits {
                     instantDisappear = true;
                     keepVelocity = false;
                     speed = 0.01f;
+                    rangeOverride = 240;
                     spawnUnit = new TorpedoUnitType("consequences-torpedo"){{
-                        speed = 5f;
+                        missileAccelTime = 80;
+                        speed = 4f;
                         rotateSpeed = 2.25f;
-                        lifetime = 48;
+                        lifetime = 110;
                         maxRange = 6f;
                         deathSound = Sounds.explosionPlasmaSmall;
                         weapons.add(new DSWeapon(){{
@@ -438,29 +439,31 @@ public class DSUnits {
                         rotationLimit = 15f;
                         shootCone = 25f;
                         top = false;
-                        reload = 30;
+                        reload = 60;
                         shake = 5.5f;
                         recoil = 4.1f;
-                        shootSound = DSSounds.shootMediumTank;
-                        shootSoundVolume = 1f;
-                        lightLength = 36 * tilesize;
+                        shootSound = DSSounds.shootHeavy;
+                        shootSoundVolume = 0.85f;
+                        lightLength = 19 * tilesize;
                         lightCone = 35f;
                         shootY = 11;
                         inaccuracy = 2;
-                        bullet = new BasicBulletType(20, 215){{
+                        shoot.shots = 2;
+                        shoot.shotDelay = 14;
+                        ejectX = 3.5f;
+                        ejectY = -5;
+                        ejectEffect = casing4;
+
+                        bullet = new BasicBulletType(20, 115){{
                             splashDamage = 56;
                             splashDamageRadius = 20;
-                            recoil = 0.4f;
                             sprite = "missile-large";
-                            pierce = true;
-                            pierceBuilding = true;
-                            pierceDamageFactor = 0.25f;
-                            lifetime = 14;
+                            lifetime = 11;
                             trailLength = 8;
                             trailWidth = 1f;
                             width = 10;
                             height = 25;
-                            shootEffect = DSFx.dsShootTank;
+                            shootEffect = DSFx.dsShootBigMech;
                             smokeEffect = new ParticleEffect(){{
                                 line = true;
                                 cone = 15;

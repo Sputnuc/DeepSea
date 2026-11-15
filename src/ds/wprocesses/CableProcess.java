@@ -1,11 +1,7 @@
-package ds.world.global;
+package ds.wprocesses;
 
-import arc.Events;
-import arc.graphics.g2d.Draw;
 import arc.struct.Seq;
-import arc.util.Log;
 import ds.type.entities.Cable;
-import mindustry.game.EventType;
 
 public class CableProcess extends  WorldProcess{
     public CableProcess(String name) {

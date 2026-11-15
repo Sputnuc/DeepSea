@@ -1,4 +1,4 @@
-package ds.world.global;
+package ds.wprocesses;
 
 import arc.Events;
 import arc.math.geom.Vec2;

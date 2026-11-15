@@ -1,6 +1,5 @@
-package ds.world.wprocess.instructions;
+package ds.world.wproc.instructions;
 
-import arc.Core;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.logic.LExecutor;

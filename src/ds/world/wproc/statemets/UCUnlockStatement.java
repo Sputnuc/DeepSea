@@ -1,10 +1,9 @@
-package ds.world.wprocess.statemets;
+package ds.world.wproc.statemets;
 
 import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
-import arc.util.Log;
-import ds.world.wprocess.instructions.UCUnlockInstruciton;
+import ds.world.wproc.instructions.UCUnlockInstruciton;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.logic.*;

@@ -48,9 +48,6 @@ abstract class SubmarineMoveComp implements WaterMovec, Velc{
         detectTime = Math.max(detectTime - Time.delta, 0);
         if(!dead) elevation = diving() ? 1f : 0f;
         submerging = !diving() ? submerging : 0f;
-
-        submerge(Mathf.cosDeg(Time.time / 10) >= 0);
-
         if((!Vars.net.client() || isLocal()) && (diving() || submerged()) && type instanceof SubmarineUnitType s) {
             vel.scl(Math.max(1f - s.underwaterDrag * Time.delta, 0));
         }
@@ -118,7 +115,6 @@ abstract class SubmarineMoveComp implements WaterMovec, Velc{
                 });
             }else type.draw(self());
         }
-
     }
 
     @Replace

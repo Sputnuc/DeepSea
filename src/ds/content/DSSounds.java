@@ -14,6 +14,7 @@ public class DSSounds {
             shootSmallWeapon,
             shootSmallHeavy,
             shootMediumTank,
+            shootHeavy,
             shootImpulse,
             shootMortar ,
             //Mech steps
@@ -29,6 +30,7 @@ public class DSSounds {
         shootSmallWeapon = loadSound("shootSmallWeaponAlt");
         shootSmallHeavy = loadSound("shootSmallHeavy");
         shootMediumTank = loadSound("shootTank");
+        shootHeavy = loadSound("shootHeavy");
         shootImpulse = loadSound("shootImpulse");
         shootMortar = loadSound("shootMortar");
         dsMechStep = loadSound("mech-step");

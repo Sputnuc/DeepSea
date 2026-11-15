@@ -1,5 +1,7 @@
 package ds.type.entities.comp;
 
+import arc.math.Angles;
+import arc.math.Mathf;
 import arc.struct.Seq;
 import ds.type.dsUnitTypes.ModuleUnitType;
 import ds.type.dsUnitTypes.parts.ModuleInstance;
@@ -13,6 +15,7 @@ abstract class UnitModuleComp implements Unitc{
 
     @SyncField(false) @SyncLocal Seq<ModuleInstance> modules, armorModules;
     @Import UnitType type;
+    @Import float rotation, elevation;
 
     private void createModules(){
         if(!(type instanceof ModuleUnitType)) return;
@@ -45,5 +48,12 @@ abstract class UnitModuleComp implements Unitc{
         while(damage > 0){
             damage = modules.random().damage(damage, self());
         }
+    }
+
+    @Override
+    public float speed(){
+        float strafePenalty = isGrounded() || !isPlayer() ? 1f : Mathf.lerp(1f, type.strafePenalty, Angles.angleDist(vel().angle(), rotation) / 180f);
+        float boost = Mathf.lerp(1f, type.canBoost ? type.boostMultiplier : 1f, elevation);
+        return type.speed * strafePenalty * boost * floorSpeedMultiplier();
     }
 }

@@ -1,9 +1,8 @@
-package ds.world.global;
+package ds.wprocesses;
 
 import arc.audio.Sound;
 import arc.math.Mathf;
 import arc.util.Time;
-import mindustry.Vars;
 import mindustry.entities.bullet.BulletType;
 import mindustry.game.Team;
 import mindustry.gen.Bullet;

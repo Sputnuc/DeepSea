@@ -128,10 +128,11 @@ public class PiItems {
         smallExAmmo = new AmmoItem("small-ex-ammo", DSBullets.smallExBullet, 3);
         smallSdAmmo = new AmmoItem("small-sd-ammo", DSBullets.smallSdBullet, 3);
         smallBackshotAmmo = new AmmoItem("small-backshot-ammo", DSBullets.smallBackshotBullet, 3);
-        smallClusterAmmo = new AmmoItem("small-cluster-ammo", DSBullets.smallClusterBullet, 3);
+        smallClusterAmmo = new AmmoItem("small-cluster-ammo", DSBullets.smallBackshosClusterBullet, 3);
         aaApAmmo = new AmmoItem("aa-ap-ammo", DSBullets.aaApBullet, 2);
         aaUfAmmo = new AmmoItem("aa-uf-ammo", DSBullets.aaUfBullet, 2);
         aaSdAmmo = new AmmoItem("aa-sd-ammo", DSBullets.aaSdBullet, 2);
         mediumMortarHeAmmo = new AmmoItem("medium-mortar-he-ammo", DSBullets.mediumMortarHe, 1);
+        mediumMortarClaserAmmo = new AmmoItem("medium-mortar-cluster-ammo", DSBullets.mediumMortarCluster, 1);
     }
 }

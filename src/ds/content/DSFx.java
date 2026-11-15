@@ -11,6 +11,7 @@ import arc.math.Rand;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Tmp;
+import ds.utilities.Utilities;
 import ds.world.graphics.DSPal;
 import mindustry.entities.Effect;
 import mindustry.entities.effect.ParticleEffect;
@@ -116,6 +117,23 @@ public class DSFx {
             float eY = Mathf.sinDeg(e.rotation) * foffset;
             Lines.ellipse(e.x + eX, e.y + eY, 0.45f * e.fin()+ 0.25f, 2.5f, 8, e.rotation);
         };
+    }),
+    dsShootBigMech = new Effect(18, e->{
+        color(e.color, Color.valueOf("ffffff"), e.color, e.fin());
+        for(int sign : Mathf.signs){
+            Drawf.tri(e.x, e.y, 6 * e.fout(Interp.pow5In), 5 + 8 * e.fin(Interp.slope), e.rotation + 90 * sign);
+        }
+        Drawf.tri(e.x, e.y, 6 * e.fout() + 2 * e.fin(Interp.slope), 14 * e.fin(Interp.pow5Out), e.rotation);
+        Drawf.tri(e.x, e.y, 6 * e.fout() + 2 * e.fin(Interp.slope), 3 * e.fout(Interp.pow5Out), e.rotation + 180);
+
+        float foffset = 4 + 14 * e.fin(Interp.circleOut);
+        float eX = Mathf.cosDeg(e.rotation)* foffset;
+        float eY = Mathf.sinDeg(e.rotation) * foffset;
+        drawElipse(e.x, e.y, e.rotation, 1.15f * e.fin()+ 0.4f, 1 + 9 * e.fin(Interp.circleOut), 3, 9, 2f * e.fout(Interp.circleOut));
+        drawElipse(e.x, e.y, e.rotation, 1.15f * e.fin()+ 0.4f, 1 + 9 * e.fin(Interp.circleOut), 3f, 9 - 2 * e.fout(Interp.circleOut), 2f * e.fout(Interp.circleOut));
+        stroke(1.8f * e.fout(Interp.circleOut));
+        Lines.ellipse(e.x + eX, e.y + eY, 0.75f * e.fin()+ 0.35f, 2.1f, 8, e.rotation);
+        Lines.ellipse(e.x + eX, e.y + eY, 0.75f * e.fin()+ 0.35f, 2.1f, 8 - 1.7f * e.fout(Interp.circleOut), e.rotation);
     }),
     dsBulletTrail = new Effect(12, e ->{
         color(e.color);
@@ -292,7 +310,34 @@ public class DSFx {
         Lines.circle(e.x, e.y, e.fin(Interp.pow2Out) * 29f + 1);
     });
 
+
+    public static void drawElipse(float x, float y, float rotation, float size, float moveLen, float w, float h, float stroke){
+        Lines.stroke(stroke);
+        float dx = Mathf.cosDeg(rotation) * moveLen, dy = Mathf.sinDeg(rotation) * moveLen;
+        Lines.ellipse(x + dx, y + dy, size, w, h, rotation);
+    }
+
     //FX Functions
+
+    public static Effect inclinedWave(Color color, float lifetime, float elipseStroke, float elipseWidth, float elipseHeight, float elipseSizeTo, float moveLen){
+        return inclinedWave(color, lifetime, elipseStroke, elipseWidth, elipseHeight, 0, elipseSizeTo, 0, moveLen, Interp.linear);
+    }
+
+    public static Effect inclinedWave(Color color, float lifetime, float elipseStroke, float elipseWidth, float elipseHeight, float elipseSizeFrom, float elipseSizeTo, float baseLen, float moveLen, Interp interp){
+        return inclinedWave(color, color, lifetime, elipseStroke, elipseWidth, elipseHeight, elipseSizeFrom, elipseSizeTo, 0, baseLen, moveLen, interp, interp, interp);
+    }
+
+    public static Effect inclinedWave(Color colorFrom, Color colorTo, float lifetime, float elipseStroke, float elipseWidth, float elipseHeight, float elipseSizeFrom, float elipseSizeTo, float rotationOffset, float baseLen, float moveLen, Interp interp, Interp colorInterp, Interp elipseInterp){
+        return new Effect(lifetime, e->{
+            color(colorFrom, colorTo, e.fin(colorInterp));
+            stroke(elipseStroke * e.fout(elipseInterp));
+            float len = moveLen * e.fin(interp) + baseLen;
+            float eX = Mathf.cosDeg(e.rotation + rotationOffset)* len;
+            float eY = Mathf.sinDeg(e.rotation + rotationOffset) * len;
+            float size = elipseSizeFrom + (elipseSizeTo - elipseSizeFrom) * e.fin(interp);
+            Lines.ellipse(e.x + eX, e.y + eY, size, elipseWidth, elipseHeight, e.rotation + rotationOffset);
+        });
+    }
 
     public static Effect smoothColorCircle(Color out, float rad, float lifetime, Interp interpolation) {
         return smoothColorCircle(out, rad, lifetime, interpolation, Interp.pow5Out);

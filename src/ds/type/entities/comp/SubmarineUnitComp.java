@@ -17,4 +17,8 @@ abstract class SubmarineUnitComp implements SubmarineMovec, SubmarineEnginec {
     public boolean canShoot(){
         return !disarmed && !(type.canBoost && isFlying()) && !submerged();
     }
+
+    public boolean underwaterShooting(){
+        return !disarmed && !(type.canBoost && isFlying()) && submerged();
+    }
 }
