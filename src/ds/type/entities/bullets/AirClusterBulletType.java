@@ -16,6 +16,7 @@ import mindustry.graphics.Pal;
 
 public class AirClusterBulletType extends ArtilleryBulletType {
     public float trailMult = 1f, trailSize = 4f;
+    public Interp tragectoryInterp = Interp.pow10Out;
     //Bullet trajectory height
     public float trajectoryZ = 50;
 
@@ -89,11 +90,11 @@ public class AirClusterBulletType extends ArtilleryBulletType {
 
         Draw.color(Pal.shadow, Pal.shadow.a);
 
-        float shadowSize = (1 + (!landing ? b.fin() : b.fout())) * trajectoryZ / 8 * shadowIncreaseFactor * (b.lifetime / b.type.lifetime);
+        float shadowSize = (1 + (!landing ? b.fin(tragectoryInterp) : b.fout(tragectoryInterp))) * trajectoryZ / 8 * shadowIncreaseFactor * (b.lifetime / b.type.lifetime);
 
-        Draw.alpha(((1 - (landing ? b.fin() : b.fout())) * Pal.shadow.a * 0.9f) + (Pal.shadow.a * 0.4f));
+        Draw.alpha(((1 - (landing ? b.fin(tragectoryInterp) : b.fout(tragectoryInterp))) * Pal.shadow.a * 0.9f) + (Pal.shadow.a * 0.4f));
 
-        Draw.rect(frontRegion, b.x - (!landing ? b.fin() : b.fout()) * trajectoryZ , b.y - (!landing ? b.fin() : b.fout()) * trajectoryZ, width * shadowSize, height * shadowSize, b.rotation() + offset);
+        Draw.rect(frontRegion, b.x - (!landing ? b.fin(tragectoryInterp) : b.fout(tragectoryInterp)) * trajectoryZ , b.y - (!landing ? b.fin(tragectoryInterp) : b.fout(tragectoryInterp)) * trajectoryZ, width * shadowSize, height * shadowSize, b.rotation() + offset);
 
         Draw.z(zLayer);
 

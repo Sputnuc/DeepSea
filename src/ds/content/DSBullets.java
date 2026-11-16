@@ -264,7 +264,7 @@ public class DSBullets {
         mediumMortarCluster = new AirClusterBulletType(4f, 0, "missile-large"){{
             scaleLife = false;
             splashDamage = 0;
-            lifetime = 30;
+            lifetime = 32;
             height = 18;
             width = 10;
             shrinkY = 0.75f;
@@ -321,12 +321,15 @@ public class DSBullets {
             fragLifeMin = 0.3f;
             fragVelocityMax = 1.1f;
             fragVelocityMin = 0.95f;
-            fragBullet = new AirClusterBulletType(4, 27, "shell"){{
+            tragectoryInterp = Interp.pow2Out;
+            fragBullet = new AirClusterBulletType(3.45f, 27, "shell"){{
+                drag = 0.01f;
+                tragectoryInterp = Interp.pow2Out;
                 armorMultiplier = 1.75f;
                 width = 8;
                 height = 12;
                 shadowIncreaseFactor = 0.2f;
-                lifetime = 60;
+                lifetime = 80;
                 splashDamage = 65;
                 splashDamageRadius = 29;
                 landing = true;

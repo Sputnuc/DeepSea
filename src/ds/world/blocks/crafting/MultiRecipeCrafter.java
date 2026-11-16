@@ -457,13 +457,13 @@ public class MultiRecipeCrafter extends Block {
                                                 if(recipe.powerUse != 0){
                                                     td.table(pwrUse ->{
                                                         pwrUse.image(Icon.power).color(Pal.accent);
-                                                        pwrUse.add(Strings.autoFixed(recipe.powerUse * 60, 3) + "/s");
+                                                        pwrUse.add(Strings.autoFixed(recipe.powerUse * 60, 2) + "/s");
                                                     });
                                                 }
                                                 td.table(arrow -> {
                                                     arrow.image(Icon.right).color(Pal.darkishGray).size(20f);
-                                                }).pad(10f);
-                                                td.add(Core.bundle.format("ui.craftTime", Strings.autoFixed(recipe.craftTime / 60, 3)));
+                                                }).pad(12f);
+                                                td.add(Core.bundle.format("ui.craftTime", Strings.autoFixed(recipe.craftTime / 60, 2)));
 
                                                 td.table(output -> addOutputResources(output, recipe))
                                                         .right().grow().pad(10f);
@@ -562,11 +562,8 @@ public class MultiRecipeCrafter extends Block {
         private void addResourceElement(Table table, TextureRegion icon, String text, boolean isOutput){
             table.table(element -> {
                 element.image(icon).size(25).padRight(4);
-                element.add(text).color(Color.lightGray);
             });
-            if (isOutput) {
-                table.right();
-            } else {
+            if (!isOutput) {
                 table.left();
             }
         }

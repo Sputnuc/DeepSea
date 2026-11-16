@@ -825,8 +825,8 @@ public class PiBlocks {
                     new BaseRecipe(ItemStack.with(sulfur, 9, aluminium, 4, steel, 5), ItemStack.with(smallSdAmmo, 1), 150, 0.25f),
                     new BaseRecipe(ItemStack.with(sulfur, 8, aluminium, 10, silver, 8), ItemStack.with(smallBackshotAmmo, 1), 120, 0.25f),
                     new BaseRecipe(ItemStack.with(sulfur, 8, aluminium, 9, steel, 7), ItemStack.with(smallClusterAmmo, 1), 150, 0.25f),
-                    new BaseRecipe(ItemStack.with(sulfur, 16, aluminium, 12, silver, 10, graphite, 15), ItemStack.with(mediumMortarHeAmmo, 2), 320, 0.5f),
-                    new BaseRecipe(ItemStack.with(sulfur, 23, potassium, 4, aluminium, 8, silver, 10, steel, 10), ItemStack.with(mediumMortarClaserAmmo, 1), 200, 0.5f)
+                    new BaseRecipe(ItemStack.with(sulfur, 11, aluminium, 12, silver, 10, graphite, 14), ItemStack.with(mediumMortarHeAmmo, 2), 320, 0.5f),
+                    new BaseRecipe(ItemStack.with(sulfur, 12, potassium, 4, aluminium, 8, silver, 10, steel, 10), ItemStack.with(mediumMortarClaserAmmo, 1), 200, 0.5f)
             );
             itemCapacity = 30;
         }};
