@@ -30,10 +30,10 @@ abstract class TorpedoUnitComp implements TimedKillc, SubmarineEnginec, Unitc, S
         return !diving();
     }
 
-    @Annotations.MethodPriority(10f)
+    @Annotations.MethodPriority(100f)
     @Annotations.Replace
     public void draw(){
-        if(type instanceof TorpedoUnitType sub) {
+        if(type instanceof TorpedoUnitType sub && !diving()) {
             if(!submerged()){
                 sub.drawUnderwater(self());
             } else Drawf.underwater(() -> {

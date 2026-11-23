@@ -1,7 +1,6 @@
 package ds.type.dsUnitTypes;
 
 import arc.graphics.Color;
-import ds.type.entities.DSUnitType;
 import mindustry.gen.MechUnit;
 
 public class DSMechUnitType extends DSUnitType {

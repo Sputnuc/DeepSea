@@ -80,6 +80,7 @@ public class DSUnits {
 
     //For generate torpedo units
     @Annotations.EntityDef(value = {TorpedoUnitc.class}) public static UnitType torpedo;
+    @Annotations.EntityDef(value = {BallisticMovementc.class, KineticImpactc.class}) public static UnitType icbt;
     public static void loadUnits(){
         //Core units
         moment = new SubmarineUnitType("moment"){{
@@ -753,6 +754,7 @@ public class DSUnits {
         anotherTestSubmarine = new SubmarineUnitType("test-submarine"){{
             setUndEngines(5, -5, 0, true);
         }};
+        icbt = new IcbtUnitType("test-icbt"){{}};
     }
     public static void loadFauna(){
         untitledFish = new FaunaUnitType("untitled-fish"){{

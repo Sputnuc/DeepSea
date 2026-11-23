@@ -65,7 +65,7 @@ public class TorpedoUnitType extends MissileUnitType {
 
     public void drawUnderwater(Unit unit){
         draw(unit);
-        if(unit instanceof TorpedoUnitc c){
+        if(unit instanceof TorpedoUnit){
             Draw.alpha(1);
             Draw.mixcol(unit.floorOn().mapColor.write(Tmp.c1).mul(0.9f), 0.65f);
             Draw.rect(region, unit.x, unit.y, unit.rotation - 90);

@@ -16,9 +16,7 @@ public class DSTechTree {
     public static void load(){
         obj312.techTree = nodeRoot("P-I-312", coreInfluence, false, ()->{
             //Sectors
-            node(theBeginning, ()->{
-                node(crevice, Seq.with(new Objectives.SectorComplete(theBeginning)), ()->{
-                });
+            node(diveIntoTheDarkness, ()->{
             });
 
             //Items

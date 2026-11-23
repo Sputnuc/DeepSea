@@ -2,7 +2,6 @@ package ds.type.dsUnitTypes;
 
 import arc.struct.Seq;
 import ds.type.dsUnitTypes.parts.UnitModule;
-import ds.type.entities.DSUnitType;
 
 import static ds.type.dsUnitTypes.parts.UnitModule.*;
 

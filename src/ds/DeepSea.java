@@ -37,6 +37,7 @@ public class DeepSea extends Mod{
         //DSMusicLoader.attach();
         if (!Vars.headless && Vars.ui != null) {
             Events.on(EventType.ClientLoadEvent.class, e -> {
+                UI.init();
                 DSSetting.init();
                 CustomLogic.init();
                 DSMusicLoader.load();

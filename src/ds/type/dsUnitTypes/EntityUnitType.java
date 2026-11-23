@@ -5,7 +5,6 @@ import arc.graphics.g2d.Draw;
 import arc.math.geom.Vec2;
 import ds.content.DSFx;
 import ds.world.ai.NodeAttackAi;
-import ds.type.entities.DSUnitType;
 import mindustry.entities.Effect;
 import mindustry.gen.Unit;
 

@@ -2,7 +2,6 @@ package ds.type.dsUnitTypes;
 
 import ds.content.DSFx;
 import ds.world.ai.PassiveAi;
-import ds.type.entities.DSUnitType;
 import mindustry.gen.Sounds;
 
 public class FaunaUnitType extends DSUnitType {

@@ -14,12 +14,12 @@ public class PiItems {
             aluminium, silver, sulfur, sandstone, /*graphite*/ manganeseHydroxide, manganese,
             //2-nd tier
             ironstone, steel, /*silicon*/potassium, magnesium,
-            //3-st tier
+            //3-rd tier
             strontium, molybdenum, lithium, sapphire,
-            //4-st tier
+            //4-th tier
             molybdenumSilicate, uranium, enrichedUranium, depletedUranium,
-            //5-st tier
-            denseAlloy, reinforsedMetalPlasticStructure;
+            //5-th tier
+            denseAlloy, plutonium, reinforsedMetalPlasticStructure;
 
     public static AmmoItem
             //AmmoItems

@@ -11,7 +11,6 @@ import arc.math.Rand;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Tmp;
-import ds.utilities.Utilities;
 import ds.world.graphics.DSPal;
 import mindustry.entities.Effect;
 import mindustry.entities.effect.ParticleEffect;
@@ -67,6 +66,28 @@ public class DSFx {
             Fill.circle(e.x + x, e.y + y, e.fin() * 1.5f * f + 0.75f);
         });
     }),
+    missileAltitudeTrailSmoke = new Effect(180f, 300f, b -> {
+        float intensity = 2f;
+        if(b.data instanceof Float f){
+            intensity = 1 +  f;
+        }
+        color(b.color, intensity * 0.7f);
+        for(int i = 0; i < 2 + Math.round(intensity * 2); i++){
+            rand.setSeed(b.id*2 + i);
+            float lenScl = rand.random(0.5f, 1f);
+            int fi = i;
+            float finalIntensity = intensity;
+            b.scaled(b.lifetime * lenScl, e -> {
+                randLenVectors(e.id + fi - 1, e.fin(Interp.pow10Out), (int)(2.9f * finalIntensity), 13f * finalIntensity, (x, y, in, out) -> {
+                    float fout = e.fout(Interp.pow5Out) * rand.random(0.5f, 1f);
+                    float rad = fout * ((2f + finalIntensity) * 2.35f);
+
+                    Fill.circle(e.x + x, e.y + y, rad);
+                    Drawf.light(e.x + x, e.y + y, rad * 2.5f, b.color, 0.5f);
+                });
+            });
+        }
+    }).layer(Layer.bullet - 1f),
     waterBlood = new Effect(600, e ->{
         color(Color.valueOf("e52020fe"), Color.valueOf("9e191900"), e.fin());
         randLenVectors(e.id, 9, 8f * e.fin(Interp.circleOut) * 4.25f, (x, y) -> {

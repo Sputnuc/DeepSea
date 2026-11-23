@@ -3,7 +3,7 @@ package ds.world.wproc.statemets;
 import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
-import ds.world.wproc.instructions.UCUnlockInstruciton;
+import ds.world.wproc.instructions.UCUnlockInstruction;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.logic.*;
@@ -134,7 +134,7 @@ public class UCUnlockStatement extends LStatement {
         }, Styles.logict, () -> {}).size(40f).padLeft(-1).color(table.color);
     }
 
-    private void stype(String type,String cname){
+    private void stype(String type, String cname){
         tfield.setText(cname);
         this.type = type;
         this.contentName = cname;
@@ -147,7 +147,7 @@ public class UCUnlockStatement extends LStatement {
 
     @Override
     public LExecutor.LInstruction build(LAssembler lAssembler) {
-        return new UCUnlockInstruciton(lAssembler.var('"' + type + '"'), lAssembler.var('"' + contentName + '"'));
+        return new UCUnlockInstruction(lAssembler.var('"' + type + '"'), lAssembler.var('"' + contentName + '"'));
     }
 
 

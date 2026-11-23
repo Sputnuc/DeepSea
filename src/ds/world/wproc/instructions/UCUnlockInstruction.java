@@ -9,17 +9,17 @@ import mindustry.type.Liquid;
 import mindustry.type.UnitType;
 import mindustry.world.Block;
 
-public class UCUnlockInstruciton implements LExecutor.LInstruction {
+public class UCUnlockInstruction implements LExecutor.LInstruction {
     public LVar LType;
 
     public LVar LcontentName;
 
-    public UCUnlockInstruciton(LVar type ,LVar content){
+    public UCUnlockInstruction(LVar type , LVar content){
         this.LcontentName = content;
         this.LType = type;
     }
 
-    public UCUnlockInstruciton(){}
+    public UCUnlockInstruction(){}
 
     @Override
     public void run(LExecutor lExecutor) {

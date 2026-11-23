@@ -45,7 +45,7 @@ public class DSPlanets {
                 r.lighting = true;
                 r.ambientLight = Color.valueOf("010205ec");
                 r.fire = false;
-                r.fog = false; //tru
+                r.fog = true;
                 r.defaultTeam = Team.sharded;
                 r.waveTeam = Team.crux;
                 r.coreCapture = false;
