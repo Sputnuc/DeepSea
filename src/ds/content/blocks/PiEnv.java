@@ -18,6 +18,8 @@ import static mindustry.content.Blocks.*;
 import static mindustry.type.ItemStack.with;
 
 public class PiEnv {
+
+    //TODO overlaying support tiles
     public static Block
             //Ores
             aluminiumOre, silverOre, potasiumOre,
@@ -66,7 +68,7 @@ public class PiEnv {
 
         //Limestone
         limestoneFloor = new Floor("limestone-floor"){{
-            variants = 4;
+            variants = 2;
             wall = limestoneWall;
         }};
         limestoneWall = new StaticWall("limestone-wall"){{

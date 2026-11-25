@@ -5,6 +5,8 @@ import mindustry.type.SectorPreset;
 import static ds.content.planets.DSPlanets.*;
 
 public class DSSectorPresets {
+    //TODO ballistic centres discovering
+
     public static SectorPreset diveIntoTheDarkness;
     public static void load(){
         diveIntoTheDarkness = new SectorPreset("dive-into-the-darkness", obj312, 10){{

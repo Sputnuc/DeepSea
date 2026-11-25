@@ -1,18 +1,18 @@
 package ds.type.dsUnitTypes.parts.patterns;
 
 public class TimedDetonateType extends DetonateType{
-    public float time;
+    public float detonateTime;
 
     public TimedDetonateType(){
-        this.time = 120;
+        this.detonateTime = 120;
     }
 
-    public TimedDetonateType(float time){
-        this.time = time;
+    public TimedDetonateType(float detonateTime){
+        this.detonateTime = detonateTime;
     }
 
     @Override
     public boolean detonate(float dist, float time, float alt) {
-        return time > this.time;
+        return time > this.detonateTime;
     }
 }

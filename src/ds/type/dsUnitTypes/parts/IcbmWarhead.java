@@ -6,7 +6,7 @@ import mindustry.entities.bullet.BulletType;
 import mindustry.gen.Unit;
 import mindustry.type.ItemStack;
 
-public class IcbtWarhead {
+public class IcbmWarhead {
 
     public DetonateType detonateType = new KineticDetonateType();
 
@@ -19,7 +19,7 @@ public class IcbtWarhead {
         unit.destroy();
     }
 
-    public IcbtWarhead(String name, BulletType bullet, ItemStack[] requirements){
+    public IcbmWarhead(String name, BulletType bullet, ItemStack[] requirements){
         this.bullet = bullet;
         this.requirements = requirements;
     }

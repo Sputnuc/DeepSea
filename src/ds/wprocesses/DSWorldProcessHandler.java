@@ -33,7 +33,7 @@ public class DSWorldProcessHandler {
 
         Log.info("Deep sea. World processor -> visual updater starting");
         Events.run(EventType.Trigger.draw, ()->{
-            for(WorldProcess process : processes){
+            for(WorldProcess process : processes) {
                 process.visualUpdate();
             }
         });

@@ -61,6 +61,7 @@ import static mindustry.content.Liquids.*;
 import static mindustry.type.ItemStack.*;
 
 public class PiBlocks {
+    //TODO ballistic targeting beacon
     public static Block
             //Test
             ammoTurret,
@@ -69,7 +70,7 @@ public class PiBlocks {
             //Power
             powerWire, powerTransmitter, powerDistributor, condensator, fuelGenerator, hydroTurbineGenerator, geothermalGenerator,
             //Effect
-            lightProjector, repairModule,
+            lightProjector, sonarBlock, repairModule,
             //Crafting
             ammoPress, hydrogenSulfideCollector, hydrogenSulfideDiffuser, manganeseSynthesizer, decompositionChamber, steelKiln, chemicalPlant,
             //Logistic
@@ -404,7 +405,9 @@ public class PiBlocks {
                         instantDisappear = true;
                         ammoMultiplier = 2;
                         speed = 0.01f;
-                        spawnUnit = new TorpedoUnitType("hydroid-torpedo"){{
+                        spawnUnit = DSUnits.icbm;
+                        /*
+                        new TorpedoUnitType("hydroid-torpedo"){{
                             speed = 5;
                             rotateSpeed = 0.75f;
                             deathSound = Sounds.explosionPlasmaSmall;
@@ -431,6 +434,7 @@ public class PiBlocks {
                                 }};
                             }});
                         }};
+                         */
                     }},
                     aluminium, new BulletType(){{
                         keepVelocity = false;

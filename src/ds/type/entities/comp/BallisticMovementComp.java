@@ -5,79 +5,118 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import arc.util.Time;
-import ds.type.dsUnitTypes.IcbtUnitType;
+import arc.util.Tmp;
+import deepsea.gen.BallisticMovementc;
+import ds.type.dsUnitTypes.IcbmUnitType;
+import ent.anno.Annotations;
 import ent.anno.Annotations.*;
+import mindustry.game.Team;
+import mindustry.gen.Posc;
+import mindustry.gen.TimedKillc;
 import mindustry.gen.Timerc;
 import mindustry.gen.Unitc;
 import mindustry.type.UnitType;
 
 @EntityComponent
-abstract class BallisticMovementComp implements Unitc, Timerc{
+abstract class BallisticMovementComp implements Unitc, Timerc, TimedKillc {
 
     @Import UnitType type;
     @Import float x, y, rotation, elevation;
-    @Import Vec2 vel;
-    @Import boolean dead;
 
-    float flightT, startX, startY, targetX, targetY;
-    boolean launched;
+    Posc target;
 
-    transient float alt, pathLength, flightTime;
-    transient Vec3 p0 = new Vec3(), p1 = new Vec3(), p2 = new Vec3();
+    float targetX, targetY, targetZ;
 
-    public void launch(float tx, float ty){
-        startX = x;
-        startY = y;
-        targetX = tx;
-        targetY = ty;
-        flightT = 0f;
-        alt = 0f;
-        launched = true;
-        pathLength = 0f; //пересчитается в update
+    @Import float time, lifetime;
+
+    @SyncField(true) @SyncLocal float alt, altVel;
+
+    @Override
+    @Replace(100)
+    public float speed(){
+        float strafePenalty = isGrounded() || !isPlayer() ? 1f : Mathf.lerp(1f, type.strafePenalty, Angles.angleDist(vel().angle(), rotation) / 180f);
+        float boost = Mathf.lerp(1f, type.canBoost ? type.boostMultiplier : 1f, elevation);
+        return type.speed * strafePenalty * boost * floorSpeedMultiplier();
+    }
+
+    public void setTargetPos(Vec2 pos){
+        targetX = pos.x; targetY = pos.y; targetZ = 0;
+    }
+
+    public void setTargetPos(Vec3 pos){
+        targetX = pos.x; targetY = pos.y; targetZ = pos.z;
+    }
+
+    public void updateTarget(){
+        targetX = target.getX(); targetY = target.getY();
+        if(target instanceof BallisticMovementc c) targetZ = c.altitude();
+    }
+
+    public void updateTarget(Posc t){
+        target = t;
+        updateTarget();
     }
 
     public float altitude(){
         return alt;
     }
 
+    public float altitudeIntercept(){
+        return alt + altVel * Time.delta;
+    }
+
+    public void moveAltitude(float to, float vel){
+        alt = Mathf.approachDelta(alt, to, vel);
+    }
+
+    @Override
+    @Annotations.Replace(10)
+    public void lookAt(float angle){
+        rotation = Angles.moveToward(rotation, angle, type.rotateSpeed * Time.delta * speedMultiplier());
+    }
+
+    public Vec3 getPos(){
+        return Tmp.v31.set(x, y, alt);
+    }
+
+    @Override
+    @Replace(100)
+    public boolean targetable(Team targeter){
+        return type.targetable(self(), targeter) && altitudeIntercept() < 10;
+    }
+
+    @Override
+    @Replace(100)
+    public boolean hittable(){
+        return type.hittable(self()) && altitudeIntercept() < 10;
+    }
+
+    public boolean targetable(Team targeter, float peakAltitude){
+        return type.targetable(self(), targeter) && peakAltitude >= altitudeIntercept();
+    }
+
+    public boolean hittable(float interceptAltitude){
+        return  type.hittable(self()) && interceptAltitude >= altitudeIntercept();
+    }
+
     public float altitudeFraction(){
-        return type instanceof IcbtUnitType t && t.peakAltitude > 0f ? Mathf.clamp(alt / t.peakAltitude) : 0f;
+        return type instanceof IcbmUnitType t && t.peakAltitude > 0f ? Mathf.clamp(alt / t.peakAltitude) : 0f;
     }
 
-    public float timeLeft(){
-        return launched && type instanceof IcbtUnitType t ? (1f - flightT) * flightTime(t) : 0f;
+    public float altitudeFraction(float min){
+        return type instanceof IcbmUnitType t && t.peakAltitude > 0f ? Math.max(Mathf.clamp(alt / t.peakAltitude), min) : min;
     }
 
-    public void predict(float ticksAhead, Vec3 out){
-        if(!launched || !(type instanceof IcbtUnitType t)){
-            out.set(x, y, alt);
-            return;
-        }
-        float tt = Mathf.clamp(flightT + ticksAhead / flightTime(t));
-        t.pattern.evaluate(startX, startY, targetX, targetY, t.peakAltitude, tt, out);
-    }
-
-
-
-    float flightTime(IcbtUnitType t){
-        if(pathLength <= 0f) pathLength = Math.max(t.pattern.groundLength(startX, startY, targetX, targetY), 1f);
-        return Math.max(pathLength / Math.max(t.speed, 0.01f), 1f);
+    @Override
+    public void kill(){
+        elevation = 0;
     }
 
     @Override
     public void update(){
-        elevation = 1f;
-        if(!launched || !(type instanceof IcbtUnitType t)) return;
+        elevation = dead() ? 0 : 1;
+        alt += altVel * Time.delta;
 
-        flightT = Math.min(flightT + Time.delta / flightTime(t), 1f);
-        t.pattern.evaluate(startX, startY, targetX, targetY, t.peakAltitude, flightT, p0);
-        x = p0.x;
-        y = p0.y;
-        alt = p0.z;
-        t.pattern.evaluate(startX, startY, targetX, targetY, t.peakAltitude, Math.max(flightT - 0.01f, 0f), p1);
-        t.pattern.evaluate(startX, startY, targetX, targetY, t.peakAltitude, Math.min(flightT + 0.01f, 1f), p2);
-        if(Mathf.dst(p1.x, p1.y, p2.x, p2.y) > 1e-3f) rotation = Angles.angle(p1.x, p1.y, p2.x, p2.y);
-
-        vel.setZero();
+        if(target != null) updateTarget();
     }
 }

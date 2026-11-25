@@ -1,10 +1,9 @@
 package ds.type.entities.comp;
 
-import arc.math.Mathf;
 import arc.math.geom.Vec3;
 import deepsea.gen.BallisticMovementc;
-import ds.type.dsUnitTypes.IcbtUnitType;
-import ds.type.dsUnitTypes.parts.IcbtWarhead;
+import ds.type.dsUnitTypes.IcbmUnitType;
+import ds.type.dsUnitTypes.parts.IcbmWarhead;
 import ent.anno.Annotations;
 import mindustry.gen.Unitc;
 import mindustry.type.UnitType;
@@ -12,23 +11,34 @@ import mindustry.type.UnitType;
 @Annotations.EntityComponent
 public abstract class KineticImpactComp implements Unitc, BallisticMovementc{
 
-    @Annotations.Import float targetX, targetY, flightTime;
+    @Annotations.Import float targetX, targetY, targetZ, time, x, y;
     @Annotations.Import float flightT;
-    @Annotations.Import Vec3 p0;
 
     @Annotations.Import
     UnitType type;
 
-    IcbtWarhead warHead;
+    boolean raised;
+    IcbmWarhead warHead;
+
+    public boolean isRaised(){
+        if(!(type instanceof IcbmUnitType t)) return false;
+        raised = raised || altitude() >= t.raisingAltitude;
+        return raised;
+    }
+
+    @Override
+    public void setType(UnitType type){
+        raised = false;
+    }
 
     //for external spawning ICBT with different warheads
-    public void setWarHead(IcbtWarhead h){
+    public void setWarHead(IcbmWarhead h){
         warHead = h;
     }
 
     @Override
     public void update(){
-        if(!(type instanceof IcbtUnitType t) || warHead == null) return;
-        if(warHead.detonateType.detonate(Mathf.dst(p0.x, p0.y, targetX, targetY), flightTime, altitude())) warHead.detonate(self());
+        if(!(type instanceof IcbmUnitType t) || warHead == null) return;
+        if(warHead.detonateType.detonate(Vec3.dst(x, y, altitude(), targetX, targetY, targetZ), time, altitude()) && isRaised()) warHead.detonate(self());
     }
 }

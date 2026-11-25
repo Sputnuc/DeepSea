@@ -14,7 +14,6 @@ import ds.content.DSSounds;
 import ds.content.DSStatusEffects;
 import ds.content.items.PiItems;
 import ds.type.dsUnitTypes.*;
-import ds.type.entities.Casing;
 import ds.type.entities.abilities.AdvancedArmorPlateAbility;
 import ds.type.entities.bullets.EmptyBulletType;
 import ds.type.entities.weapons.AntiTorpedoesWeapon;
@@ -39,7 +38,6 @@ import mindustry.entities.pattern.ShootMulti;
 import mindustry.entities.pattern.ShootPattern;
 import mindustry.gen.Sounds;
 import mindustry.gen.UnitEntity;
-import mindustry.gen.Unitc;
 import mindustry.graphics.Drawf;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
@@ -80,7 +78,7 @@ public class DSUnits {
 
     //For generate torpedo units
     @Annotations.EntityDef(value = {TorpedoUnitc.class}) public static UnitType torpedo;
-    @Annotations.EntityDef(value = {BallisticMovementc.class, KineticImpactc.class}) public static UnitType icbt;
+    @Annotations.EntityDef(BallisticMissilec.class) public static UnitType icbm;
     public static void loadUnits(){
         //Core units
         moment = new SubmarineUnitType("moment"){{
@@ -754,7 +752,18 @@ public class DSUnits {
         anotherTestSubmarine = new SubmarineUnitType("test-submarine"){{
             setUndEngines(5, -5, 0, true);
         }};
-        icbt = new IcbtUnitType("test-icbt"){{}};
+        icbm = new IcbmUnitType("test-icbt"){{
+            strafePenalty = 0.85f;
+            peakAltitude = raisingAltitude = 75;
+            missileAccelTime = 180;
+            alignmentDistance = 200;
+            speed = 8;
+            physics = false;
+            useUnitCap = false;
+            lifetime = 320 * 8 / speed;
+            altitudeSpeed = 1.45f;
+            rotateSpeed = 6;
+        }};
     }
     public static void loadFauna(){
         untitledFish = new FaunaUnitType("untitled-fish"){{

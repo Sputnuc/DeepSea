@@ -1,7 +1,7 @@
 package ds.type;
 
-import ds.type.dsUnitTypes.parts.IcbtWarhead;
+import ds.type.dsUnitTypes.parts.IcbmWarhead;
 
 public interface WarheadStorage {
-    IcbtWarhead getWarhead();
+    IcbmWarhead getWarhead();
 }

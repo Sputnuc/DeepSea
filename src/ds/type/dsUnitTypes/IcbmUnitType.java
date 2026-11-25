@@ -7,10 +7,9 @@ import arc.math.Mathf;
 import arc.util.Tmp;
 import deepsea.gen.BallisticMovementc;
 import deepsea.gen.KineticImpactc;
+import ds.ai.AltitudeMissileAi;
 import ds.content.DSFx;
-import ds.type.dsUnitTypes.parts.IcbtWarhead;
-import ds.type.dsUnitTypes.parts.patterns.BasicPattern;
-import ds.type.dsUnitTypes.parts.patterns.FlightPattern;
+import ds.type.dsUnitTypes.parts.IcbmWarhead;
 import mindustry.ai.types.CommandAI;
 import mindustry.entities.Effect;
 import mindustry.entities.bullet.ExplosionBulletType;
@@ -26,9 +25,8 @@ import mindustry.world.blocks.environment.Floor;
 import static mindustry.Vars.world;
 
 //For ICBT (like ICBM, but torpedoes)
-public class IcbtUnitType extends DSUnitType {
-
-    public IcbtWarhead defaultWarhead = new IcbtWarhead(
+public class IcbmUnitType extends DSUnitType {
+    public IcbmWarhead defaultWarhead = new IcbmWarhead(
             "standart-warhead",
             new ExplosionBulletType(){{
                 despawnEffect = DSFx.dsMassiveExplosion;
@@ -47,14 +45,19 @@ public class IcbtUnitType extends DSUnitType {
     public float peakAltitude = 100;
     public float shrinkPower = 0.75f;
     public float alphaPower = 0.75f;
+    public float risingSpeedPenalty = 0.85f;
+    //min raising altitude
+    public float raisingAltitude = 70;
     //determines whether ICBT can be launchable ONLY manually
     public boolean strategic = false;
     //ICBT can be launched from sector A to sector B
     public boolean interSector = false;
+    public float altitudeSpeed = 1.75f;
 
-    public FlightPattern pattern = new BasicPattern();
+    public boolean canMiss = true;
+    public float alignmentDistance = 50;
 
-    public IcbtUnitType(String name) {
+    public IcbmUnitType(String name) {
         super(name);
         speed = 5;
         flying = true;
@@ -62,6 +65,8 @@ public class IcbtUnitType extends DSUnitType {
         drawCell = false;
         engineSize = 0;
         deathSound = wreckSound = Sounds.none;
+        omniMovement = false;
+        controller = u -> new AltitudeMissileAi();
     }
 
     @Override
@@ -83,16 +88,14 @@ public class IcbtUnitType extends DSUnitType {
         if(unit instanceof KineticImpactc u){
             u.setWarHead(defaultWarhead);
         }
-        if(unit instanceof BallisticMovementc b){
-            b.launch(0, 0);
-        }
         return unit;
     }
 
-    public Unit launch(Team team, float x, float y, float rotation, float targetX, float targetY, IcbtWarhead warHead){
+    public Unit launch(Team team, float x, float y, float rotation, float targetX, float targetY, IcbmWarhead warHead){
         Unit u = spawn(team, x, y, rotation);
         if(u instanceof BallisticMovementc b){
-            b.launch(targetX, targetY);
+            b.targetX(targetX);
+            b.targetY(targetY);
         }
         if(u instanceof KineticImpactc c && warHead != null){
             c.setWarHead(warHead);
@@ -141,8 +144,10 @@ public class IcbtUnitType extends DSUnitType {
     @Override
     public void drawShadow(Unit unit){
         float o = 0;
+        float shrinkY = 0;
         if(unit instanceof BallisticMovementc c){
             o = c.altitude() * shadowOffsetScl;
+            shrinkY = 1 - (1 - c.altitudeFraction()) * shrinkPower;
         }
         float x = unit.x - o, y = unit.y - o;
         Floor floor = world.floorWorld(x, y);
@@ -152,7 +157,7 @@ public class IcbtUnitType extends DSUnitType {
         unit.shadowAlpha = unit.shadowAlpha < 0 ? dest : Mathf.approachDelta(unit.shadowAlpha, dest, 0.11f);
         Draw.color(Pal.shadow, Pal.shadow.a * unit.shadowAlpha);
 
-        Draw.rect(shadowRegion, unit.x - o, unit.y - o, unit.rotation - 90);
+        Draw.rect(shadowRegion, unit.x - o, unit.y - o, region.width * region.scl(), region.height * region.scl() * shrinkY,unit.rotation - 90);
         Draw.color();
     }
 
