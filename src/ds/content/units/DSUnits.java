@@ -754,15 +754,17 @@ public class DSUnits {
         }};
         icbm = new IcbmUnitType("test-icbt"){{
             strafePenalty = 0.85f;
-            peakAltitude = raisingAltitude = 75;
+            peakAltitude = 150;
+            raisingAltitude = 75;
             missileAccelTime = 180;
-            alignmentDistance = 200;
+            alignmentDistance = 300;
             speed = 8;
             physics = false;
             useUnitCap = false;
             lifetime = 320 * 8 / speed;
             raiseSpeed = 1.45f;
             rotateSpeed = 6;
+            shrinkPower = 0.45f;
         }};
     }
     public static void loadFauna(){

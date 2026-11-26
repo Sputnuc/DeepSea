@@ -100,7 +100,7 @@ public class AltitudeMissileAi extends MissileAI {
                 : Mathf.pow(Math.min(time / accelTime, 1f), 2f) * maxSpeed;
         unit.moveAt(vec.trns(unit.rotation, currentTargetSpeed));
         boolean isRaised = unit instanceof KineticImpactc k && k.isRaised();
-        if(dist2D < t.alignmentDistance && isRaised){
+        if(/* dist2D < t.alignmentDistance && */isRaised){
             if(timeLeft > 0.1f){
                 float deltaZ = aimZ - c.altitude();
                 float requiredAltVel = (deltaZ / timeLeft) + (0.5f * t.gravity * timeLeft);
@@ -111,7 +111,7 @@ public class AltitudeMissileAi extends MissileAI {
                 c.altVel(nextAltVel);
             }
         } else {
-            c.moveAltitude(t.peakAltitude, t.raiseSpeed);
+            c.altVel(t.raiseSpeed);
         }
     }
 

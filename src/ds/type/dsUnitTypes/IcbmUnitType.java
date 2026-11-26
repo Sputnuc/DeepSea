@@ -39,7 +39,7 @@ public class IcbmUnitType extends DSUnitType {
     public Effect engineEffect = DSFx.dsMoveEffect;
     public Color effectColor = Color.grays(0.6f).lerp(Pal.redLight, 0.5f).a(0.4f);
     public float effectInterval = 4, effectChance = 1f;
-    public float effectX, effectY = -5;
+    public float effectX = 0, effectY = -5;
     public float shadowOffsetScl = 0.5f;
     //a max altitude that icbt can reach (for interceptor bullets/torpedoes)
     public float peakAltitude = 100;
@@ -56,9 +56,13 @@ public class IcbmUnitType extends DSUnitType {
     public float descendSpeed = 6;
     public float ballisticAccel = 1f / 3f;
     public float gravity = 0.09f;
+    public float shadowBendScl = 0.8f;
+    public float shadowRisingReduction = 0.3f;
 
     public boolean canMiss = true;
     public float alignmentDistance = 50;
+
+
 
     public IcbmUnitType(String name) {
         super(name);
@@ -109,8 +113,8 @@ public class IcbmUnitType extends DSUnitType {
     @Override
     public void update(Unit unit){
         if(!(unit instanceof BallisticMovementc b)) return;
-        float x = Angles.trnsx(b.rotation(), effectY, effectX) + b.x();
-        float y = Angles.trnsx(b.rotation(), effectY, effectX) + b.y();
+        float x = Angles.trnsx(unit.rotation(), effectY, effectX) + unit.x();
+        float y = Angles.trnsx(unit.rotation(), effectY, effectX) + unit.y();
         if(effectInterval > 0) {
             if (b.timer(0, effectInterval)) {
                 if (Mathf.chance(effectChance)) {
@@ -135,7 +139,7 @@ public class IcbmUnitType extends DSUnitType {
         }
 
         if(unit instanceof BallisticMovementc b){
-            shrinkY = 1 - (1 - b.altitudeFraction()) * shrinkPower;
+            shrinkY = 1 - (Mathf.clamp(Math.abs(b.altVel()) / Math.max(descendSpeed, raiseSpeed))) * shrinkPower;
             alpha =  (1 - b.altitudeFraction() * alphaPower);
         }
 
@@ -146,21 +150,37 @@ public class IcbmUnitType extends DSUnitType {
 
     @Override
     public void drawShadow(Unit unit){
-        float o = 0;
-        float shrinkY = 0;
-        if(unit instanceof BallisticMovementc c){
-            o = c.altitude() * shadowOffsetScl;
-            shrinkY = 1 - (1 - c.altitudeFraction()) * shrinkPower;
+        float o        = 0f;
+        float sRot     = unit.rotation - 90f;
+        float altAlpha = 1f;
+
+        if(unit instanceof BallisticMovementc c && unit.type instanceof IcbmUnitType t){
+            o        = c.altitude() * shadowOffsetScl;
+            altAlpha = 1f - c.altitudeFraction() * alphaPower;
+
+            float dx = c.targetX() - unit.x;
+            float dy = c.targetY() - unit.y;
+            if(dx * dx + dy * dy > 1f){
+                float aimRot = Angles.angle(unit.x, unit.y, c.targetX(), c.targetY()) - 90f;
+                float bend = shadowBend(c, t);
+                float from = unit.rotation - 90f;
+                float diff = ((aimRot - from + 540f) % 360f) - 180f;
+                sRot = from + diff * bend;
+            }
         }
+
         float x = unit.x - o, y = unit.y - o;
         Floor floor = world.floorWorld(x, y);
 
         float dest = floor.canShadow ? 1f : 0f;
-        //yes, this updates state in draw()... which isn't a problem, because I don't want it to be obvious anyway
+        // yes, this updates state in draw()... which isn't a problem, because I don't want it to be obvious anyway
         unit.shadowAlpha = unit.shadowAlpha < 0 ? dest : Mathf.approachDelta(unit.shadowAlpha, dest, 0.11f);
-        Draw.color(Pal.shadow, Pal.shadow.a * unit.shadowAlpha);
 
-        Draw.rect(shadowRegion, unit.x - o, unit.y - o, region.width * region.scl(), region.height * region.scl() * shrinkY,unit.rotation - 90);
+        Draw.color(Pal.shadow, Pal.shadow.a * unit.shadowAlpha * altAlpha);
+        Draw.rect(shadowRegion, x, y,
+                region.width  * region.scl(),
+                region.height * region.scl(),
+                sRot);
         Draw.color();
     }
 
@@ -181,5 +201,12 @@ public class IcbmUnitType extends DSUnitType {
         float size = Math.max(region.width, region.height) * region.scl() * softShadowScl;
         Draw.rect(softShadowRegion, x, y, size * rad * Draw.xscl, size * rad * Draw.yscl, rotation - 90);
         Draw.color();
+    }
+    
+    private float shadowBend(BallisticMovementc c, IcbmUnitType t){
+        float vNorm = c.altVel() / Math.max(t.raiseSpeed, 0.01f);
+        return (vNorm > 0f
+                ? Mathf.lerp(1f, t.shadowRisingReduction, Mathf.clamp(vNorm))
+                : 1f) * t.shadowBendScl;
     }
 }
