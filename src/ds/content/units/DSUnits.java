@@ -761,7 +761,7 @@ public class DSUnits {
             physics = false;
             useUnitCap = false;
             lifetime = 320 * 8 / speed;
-            altitudeSpeed = 1.45f;
+            raiseSpeed = 1.45f;
             rotateSpeed = 6;
         }};
     }

@@ -39,6 +39,14 @@ public abstract class KineticImpactComp implements Unitc, BallisticMovementc{
     @Override
     public void update(){
         if(!(type instanceof IcbmUnitType t) || warHead == null) return;
-        if(warHead.detonateType.detonate(Vec3.dst(x, y, altitude(), targetX, targetY, targetZ), time, altitude()) && isRaised()) warHead.detonate(self());
+
+        float currentAlt = altitude();
+        float dist3D = Vec3.dst(x, y, currentAlt, targetX, targetY, targetZ);
+
+        if(isRaised() && (warHead.detonateType.detonate(dist3D, time, currentAlt) || currentAlt <= 0f)){
+            if(currentAlt < 0f) alt(0f);
+            warHead.detonate(self());
+        }
     }
+
 }

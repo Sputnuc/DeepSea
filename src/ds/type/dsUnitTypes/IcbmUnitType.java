@@ -52,7 +52,10 @@ public class IcbmUnitType extends DSUnitType {
     public boolean strategic = false;
     //ICBT can be launched from sector A to sector B
     public boolean interSector = false;
-    public float altitudeSpeed = 1.75f;
+    public float raiseSpeed = 1.75f;
+    public float descendSpeed = 6;
+    public float ballisticAccel = 1f / 3f;
+    public float gravity = 0.09f;
 
     public boolean canMiss = true;
     public float alignmentDistance = 50;

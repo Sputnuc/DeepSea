@@ -39,6 +39,16 @@ abstract class BallisticMovementComp implements Unitc, Timerc, TimedKillc {
         return type.speed * strafePenalty * boost * floorSpeedMultiplier();
     }
 
+    public void setVel3D(float vx, float vy, float vz){
+        vel().set(vx, vy);
+        rotation = Angles.angle(vx, vy);
+        altVel = vz;
+    }
+
+    public void setVel3D(Vec3 v){
+        setVel3D(v.x, v.y, v.z);
+    }
+
     public void setTargetPos(Vec2 pos){
         targetX = pos.x; targetY = pos.y; targetZ = 0;
     }
@@ -66,7 +76,7 @@ abstract class BallisticMovementComp implements Unitc, Timerc, TimedKillc {
     }
 
     public void moveAltitude(float to, float vel){
-        alt = Mathf.approachDelta(alt, to, vel);
+        altVel = Mathf.clamp((to - alt) / Time.delta, -vel, vel);
     }
 
     @Override
